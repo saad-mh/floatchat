@@ -4,7 +4,7 @@
 
 ## Overview
 
-**FloatChat** is an AI-driven conversational platform designed to make global **Argo float ocean data** accessible to everyone — from scientists and policymakers to students and enthusiasts.  
+**FloatChat** is an AI-driven conversational platform designed to make global **Argo float ocean data** accessible to everyone, from scientists and policymakers to students and enthusiasts.  
 
 The project bridges the gap between **complex NetCDF datasets** and **intuitive natural language queries**, combining the power of **AI, structured databases, and interactive visualizations** into a single user-friendly interface.
 
