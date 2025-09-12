@@ -1,4 +1,4 @@
-#  FloatChat — AI-Powered Conversational Interface for Argo Ocean Data
+#  FloatChat : AI-Powered Conversational Interface for Argo Ocean Data
 
 ---
 
