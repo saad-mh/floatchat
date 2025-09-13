@@ -24,7 +24,7 @@ export function ReportCard({ card }: ReportCardProps) {
       case "summary":
         return <SummaryCard text={card.text} provenance={card.provenance} />
       default:
-        return <div className="p-4 text-muted-foreground">Unsupported card type</div>
+        return <div className="p-4 text-muted-foreground">New card type huh?</div>
     }
   }
 

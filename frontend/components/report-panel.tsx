@@ -35,7 +35,7 @@ export function ReportPanel({ question, isGenerating }: ReportPanelProps) {
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
               <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
-              <p className="text-muted-foreground">Analyzing ocean data...</p>
+              <p className="text-muted-foreground">Analyzing data...</p>
             </div>
           </div>
         ) : (
