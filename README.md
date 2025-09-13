@@ -58,7 +58,7 @@ Argo floats form the backbone of global ocean observing, but the datasets are:
 - Complex (NetCDF, QC flags, multiple variables),
 - Technical (requiring domain expertise).
 
-By building FloatChat, we make **ocean intelligence conversational** — helping:
+By building FloatChat, we make **ocean intelligence conversational**, helping:
 - Scientists speed up exploratory analysis,
 - Policymakers access relevant insights without technical barriers,
 - Educators and students engage with ocean data interactively.
