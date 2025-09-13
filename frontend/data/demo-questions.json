@@ -1,0 +1,171 @@
+{
+  "demo_questions": [
+    {
+      "id": "dq01",
+      "prompt": "Show me salinity profiles near the equator in March 2023.",
+      "primaryContentType": "map",
+      "cards": [
+        {
+          "type": "map",
+          "title": "Floats within 100 km of (0°N, 0°E) — March 2023",
+          "dataUri": "/demo/maps/dq01map.json"
+        },
+        {
+          "type": "chart",
+          "title": "Salinity vs Depth — Selected Profiles",
+          "dataUri": "/demo/charts/dq01salinityprofiles.json"
+        },
+        {
+          "type": "summary",
+          "title": "Quick Summary",
+          "text": "Found 6 profiles from 3 floats. Near-surface salinity ranges 34.8–35.2 PSU. See QC notes.",
+          "provenance": ["WMO_5901234.nc", "WMO_5902345.nc"]
+        }
+      ]
+    },
+
+    {
+      "id": "dq02",
+      "prompt": "Compare BGC parameters in the Arabian Sea for the last 6 months.",
+      "primaryContentType": "chart",
+      "cards": [
+        {
+          "type": "chart",
+          "title": "BGC Time-Series — Arabian Sea (6 months)",
+          "dataUri": "/demo/charts/dq02_bgc_timeseries.json"
+        },
+        { "type": "map", "title": "Profile Locations (Arabian Sea)", "dataUri": "/demo/maps/dq02_map.json" },
+        { "type": "table", "title": "BGC Stats (mean, median, std)", "dataUri": "/demo/tables/dq02_bgc_stats.json" }
+      ]
+    },
+
+    {
+      "id": "dq03",
+      "prompt": "What are the nearest ARGO floats to 15.5°N, 70.2°E?",
+      "primaryContentType": "map",
+      "cards": [
+        { "type": "map", "title": "Nearest floats to (15.5N, 70.2E)", "dataUri": "/demo/maps/dq03_nearest.json" },
+        {
+          "type": "summary",
+          "title": "Nearest Float List",
+          "text": "Top 5 nearest floats: WMO_5901234 (12 km), WMO_5905678 (24 km)...",
+          "provenance": ["WMO_5901234.nc"]
+        }
+      ]
+    },
+
+    {
+      "id": "dq04",
+      "prompt": "Show temperature profiles for float WMO_5901234 for its last 3 cycles.",
+      "primaryContentType": "chart",
+      "cards": [
+        {
+          "type": "chart",
+          "title": "Temperature vs Depth — WMO_5901234 (last 3 cycles)",
+          "dataUri": "/demo/charts/dq04_temp_profiles.json"
+        },
+        {
+          "type": "summary",
+          "title": "Profile Metadata",
+          "text": "Cycles: 182 to 184. Deployment date: 2021-06-10. QC: majority good.",
+          "provenance": ["WMO_5901234_cycle182.nc"]
+        }
+      ]
+    },
+
+    {
+      "id": "dq05",
+      "prompt": "Show time-depth heatmap of oxygen at 10°S, 80°E over the last year.",
+      "primaryContentType": "chart",
+      "cards": [
+        {
+          "type": "chart",
+          "title": "Oxygen Time-Depth Heatmap — (10S,80E)",
+          "dataUri": "/demo/charts/dq05_o2_heatmap.json"
+        },
+        { "type": "map", "title": "Sampling locations contributing to heatmap", "dataUri": "/demo/maps/dq05_map.json" }
+      ]
+    },
+
+    {
+      "id": "dq06",
+      "prompt": "Compare salinity correlation with temperature for profiles in the southern Indian Ocean.",
+      "primaryContentType": "chart",
+      "cards": [
+        {
+          "type": "chart",
+          "title": "Salinity vs Temperature — Scatter + Regression",
+          "dataUri": "/demo/charts/dq06_scatter.json"
+        },
+        {
+          "type": "summary",
+          "title": "Statistical Summary",
+          "text": "Pearson r = -0.18 (p < 0.01). Weak negative correlation at depth > 200m.",
+          "provenance": ["aggregated_stats_2024_q3.json"]
+        }
+      ]
+    },
+
+    {
+      "id": "dq07",
+      "prompt": "List all BGC floats that reported chlorophyll above 1.5 mg/m³ in July 2024.",
+      "primaryContentType": "table",
+      "cards": [
+        {
+          "type": "table",
+          "title": "BGC floats with Chl_a > 1.5 — July 2024",
+          "dataUri": "/demo/tables/dq07_chl_list.json"
+        },
+        { "type": "map", "title": "Locations of these observations", "dataUri": "/demo/maps/dq07_map.json" }
+      ]
+    },
+
+    {
+      "id": "dq08",
+      "prompt": "Show me the deployment history and trajectory for float WMO_5902345.",
+      "primaryContentType": "map",
+      "cards": [
+        {
+          "type": "map",
+          "title": "Trajectory & Deployment History — WMO_5902345",
+          "dataUri": "/demo/maps/dq08_trajectory.json"
+        },
+        {
+          "type": "summary",
+          "title": "Deployment Details",
+          "text": "Deployed: 2020-04-12 at 12.3N, 62.1E. Status: Active. Last contact: 2025-08-21.",
+          "provenance": ["WMO_5902345_deploy.json"]
+        }
+      ]
+    },
+
+    {
+      "id": "dq09",
+      "prompt": "Give me the raw CSV snippet for profile_id P_5901234_184.",
+      "primaryContentType": "table",
+      "cards": [
+        {
+          "type": "table",
+          "title": "Raw CSV snippet — profile P_5901234_184",
+          "dataUri": "/demo/tables/dq09_raw_csv.json"
+        },
+        { "type": "summary", "title": "File", "text": "Original NetCDF: WMO_5901234_cycle184.nc" }
+      ]
+    },
+
+    {
+      "id": "dq10",
+      "prompt": "Summarize the QC status for all profiles from float WMO_5905678 in 2024.",
+      "primaryContentType": "summary",
+      "cards": [
+        {
+          "type": "summary",
+          "title": "QC Overview — WMO_5905678 (2024)",
+          "text": "Total profiles: 12. QC pass: 10, flagged: 2 (pressure anomalies). See detailed QC table.",
+          "provenance": ["WMO_5905678_qc_report_2024.json"]
+        },
+        { "type": "table", "title": "QC Details", "dataUri": "/demo/tables/dq10_qc_details.json" }
+      ]
+    }
+  ]
+}
