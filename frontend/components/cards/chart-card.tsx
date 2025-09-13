@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import type { ChartData } from "@/types/demo"
 import { fetchDemoData } from "@/lib/demo-data"
+import { useTheme } from "next-themes"
 
 interface ChartCardProps {
   dataUri?: string
 }
 
 export function ChartCard({ dataUri }: ChartCardProps) {
+  const { theme } = useTheme()
   const [chartData, setChartData] = useState<ChartData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -102,8 +104,9 @@ export function ChartCard({ dataUri }: ChartCardProps) {
   const maxDepth = Math.max(...allDepths)
   const valueRange = maxValue - minValue
 
-  // Color palette for traces
-  const colors = ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"]
+  const colors = theme === 'light' 
+    ? ["#4A90E2", "#475569", "#64748b", "#3b82f6", "#10b981"]
+    : ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"]
 
   return (
     <div className="space-y-4">
