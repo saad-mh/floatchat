@@ -9,8 +9,8 @@ import { fetchDemoData } from "@/lib/demo-data";
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
   loading: () => (
-    <div className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
-      <Globe className="w-8 h-8 text-muted-foreground animate-pulse" />
+    <div className="flex items-center justify-center h-48 sm:h-56 md:h-64 lg:h-72 bg-muted/20 rounded-lg">
+      <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground animate-pulse" />
     </div>
   ),
 });

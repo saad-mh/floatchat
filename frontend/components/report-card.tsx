@@ -115,8 +115,8 @@ export function ReportCard({ card }: ReportCardProps) {
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="pt-0 p-4 md:p-6 md:pt-0">
-        <div className="min-h-[200px] md:min-h-[250px] max-h-[400px] md:max-h-[500px] overflow-hidden">
+      <CardContent className="pt-0 p-3 sm:p-4 md:p-6 md:pt-0">
+        <div className="min-h-[200px] sm:min-h-[250px] md:min-h-[300px] w-full overflow-hidden">
           {renderCardContent()}
         </div>
       </CardContent>

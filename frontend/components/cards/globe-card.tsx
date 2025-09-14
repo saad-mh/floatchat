@@ -11,20 +11,27 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
   const globeRef = useRef<HTMLDivElement>(null);
   const globeInstance = useRef<any>(null);
   const [containerWidth, setContainerWidth] = useState<number>(100);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    function handleResize() {
-      if (globeRef.current) {
-        setContainerWidth(globeRef.current.offsetWidth || 400);
-      }
-    }
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !globeRef.current) return;
+    function handleResize() {
+      if (typeof window !== "undefined" && globeRef.current) {
+        setContainerWidth(globeRef.current.offsetWidth || 400);
+      }
+    }
+    if (typeof window !== "undefined") {
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, [isClient]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !globeRef.current || !isClient) return;
     let center = { lat: 0, lng: 0, altitude: 1.5 };
     if (points.length > 0) {
       const sumLat = points.reduce((acc, p) => acc + p.lat, 0);
@@ -81,8 +88,19 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
     };
   }, [points, height, containerWidth]);
 
+  if (!isClient) {
+    return (
+      <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full flex items-center justify-center" style={{ height }}>
+        <div className="text-center text-muted-foreground">
+          <div className="w-8 h-8 mx-auto mb-2 animate-pulse bg-muted rounded-full"></div>
+          <p className="text-sm">Loading 3D view...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-card rounded-lg shadow-lg overflow-hidden max-w-300 w-full" style={{ height }}>
+    <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full" style={{ height }}>
       <div ref={globeRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );
