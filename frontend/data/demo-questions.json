@@ -6,8 +6,13 @@
       "primaryContentType": "map",
       "cards": [
         {
+          "type": "flat-map",
+          "title": "Geographic Distribution — 2D Flat Map",
+          "dataUri": "/demo/maps/dq01map.json"
+        },
+        {
           "type": "map",
-          "title": "Floats within 100 km of (0°N, 0°E) — March 2023",
+          "title": "Floats within 100 km of (0°N, 0°E) — 3D Globe View",
           "dataUri": "/demo/maps/dq01map.json"
         },
         {

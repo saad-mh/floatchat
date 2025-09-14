@@ -29,19 +29,23 @@ export default function FloatChatPage() {
   };
 
   return (
-    <>
-      <div className="h-screen bg-background overflow-hidden flex items-center justify-center">
-        <div className="flex h-[90vh] w-[90vw] gap-x-8 items-stretch">
+    <div className="h-screen bg-background overflow-hidden">
+      {/* Desktop Layout (Large screens) */}
+      <div className="hidden lg:block h-full">
+        <div className="flex h-full">
           {/* Chat Interface */}
           <motion.div
             initial={{ width: "100%" }}
             animate={{
               width: activeQuestion ? "33.333%" : "100%",
             }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="flex-shrink-0 border border-border rounded-xl shadow-2xl bg-card/90 z-10"
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="flex-shrink-0 border-r border-border"
           >
-            <ChatInterface onQuestionSubmit={handleQuestionSubmit} isCompact={!!activeQuestion} />
+            <ChatInterface
+              onQuestionSubmit={handleQuestionSubmit}
+              isCompact={!!activeQuestion}
+            />
           </motion.div>
 
           {/* Report Panel */}
@@ -51,18 +55,60 @@ export default function FloatChatPage() {
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "100%", opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="flex-1 border border-border rounded-xl shadow-2xl bg-card/95 z-20"
-                style={{ marginLeft: '0px' }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="flex-1 bg-secondary/20"
               >
-                <ReportPanel question={activeQuestion} isGenerating={isGenerating} />
+                <ReportPanel
+                  question={activeQuestion}
+                  isGenerating={isGenerating}
+                />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
 
-      {/* Mobile Layout */}
+      {/* Tablet Layout (Medium screens) */}
+      <div className="hidden md:block lg:hidden h-full">
+        <AnimatePresence mode="wait">
+          {!showMobileReport ? (
+            <motion.div
+              key="chat"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className="h-full p-3"
+            >
+              <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
+                <ChatInterface
+                  onQuestionSubmit={handleQuestionSubmit}
+                  isCompact={false}
+                />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="report"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className="h-full p-3"
+            >
+              <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
+                <ReportPanel
+                  question={activeQuestion!}
+                  isGenerating={isGenerating}
+                  onBack={handleMobileBack}
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Mobile Layout (Small screens) */}
       <div className="md:hidden h-full">
         <AnimatePresence mode="wait">
           {!showMobileReport ? (
@@ -97,6 +143,6 @@ export default function FloatChatPage() {
           )}
         </AnimatePresence>
       </div>
-    </>
+    </div>
   );
 }
