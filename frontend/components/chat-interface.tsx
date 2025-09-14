@@ -24,6 +24,7 @@ interface ChatMessage {
   timestamp: Date;
 }
 
+
 export function ChatInterface({
   onQuestionSubmit,
   isCompact,
@@ -32,6 +33,9 @@ export function ChatInterface({
   const [inputValue, setInputValue] = useState("");
   const [showQueryId, setShowQueryId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [usedSuggestions, setUsedSuggestions] = useState<string[]>([]);
+  // Compact suggestion indices state
+  const [suggestionIndices, setSuggestionIndices] = useState([0, 1]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -40,6 +44,13 @@ export function ChatInterface({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    // Reset indices if demo questions change or out of bounds
+    if (suggestionIndices.some(idx => idx >= demoData.demo_questions.length)) {
+      setSuggestionIndices([0, 1]);
+    }
+  }, [demoData.demo_questions.length, suggestionIndices]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,12 +110,18 @@ export function ChatInterface({
     }
   };
 
-  // Track which suggestions have been used
-  const [usedSuggestions, setUsedSuggestions] = useState<string[]>([]);
-
   const handleSuggestionClick = (question: DemoQuestion) => {
     setInputValue(question.prompt);
     setUsedSuggestions((prev) => [...prev, question.id]);
+  };
+
+  // Compact suggestion click handler
+  const handleCompactSuggestionClick = (idx: number) => {
+    handleSuggestionClick(demoData.demo_questions[suggestionIndices[idx]] as DemoQuestion);
+    // Find next unused index
+    let nextIdx = Math.max(...suggestionIndices) + 1;
+    if (nextIdx >= demoData.demo_questions.length) nextIdx = 0;
+    setSuggestionIndices(prev => prev.map((v, i) => i === idx ? nextIdx : v));
   };
 
   return (
@@ -287,15 +304,15 @@ export function ChatInterface({
 
         {isCompact && (
           <div className="mt-3 flex flex-wrap gap-1 md:gap-2">
-            {demoData.demo_questions.slice(0, 3).map((question) => (
+            {suggestionIndices.map((sIdx, i) => (
               <Button
-                key={question.id}
+                key={demoData.demo_questions[sIdx].id}
                 variant="outline"
                 size="sm"
-                onClick={() => handleSuggestionClick(question as DemoQuestion)}
+                onClick={() => handleCompactSuggestionClick(i)}
                 className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
               >
-                {question.prompt.slice(0, 20)}...
+                {demoData.demo_questions[sIdx].prompt.slice(0, 20)}...
               </Button>
             ))}
           </div>
