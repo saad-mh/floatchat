@@ -131,7 +131,11 @@ export function ChatInterface({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-3">
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-              <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              <img
+                src="/logo.svg"
+                alt="FloatChat Logo"
+                className="w-5 h-5 md:w-6 md:h-6"
+              />
             </div>
             <div>
               <h1 className="text-lg md:text-xl font-bold text-foreground">
@@ -154,8 +158,12 @@ export function ChatInterface({
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-6 md:py-12"
           >
-            <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
-              <MessageCircle className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+            <div className="w-20 h-20 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+              <img
+                src="/logo.svg"
+                alt="FloatChat Logo"
+                className="w-10 h-10 md:w-10 md:h-10"
+              />
             </div>
             <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2 md:mb-3">
               Welcome to FloatChat
@@ -172,7 +180,6 @@ export function ChatInterface({
               </p>
               <div className="grid gap-2 md:gap-3">
                 {(() => {
-                  // Show 4 suggestions, replacing used ones with unused
                   const suggestions: DemoQuestion[] = [];
                   const usedSet = new Set(usedSuggestions);
                   let i = 0, j = 0;
@@ -183,7 +190,6 @@ export function ChatInterface({
                     }
                     j++;
                   }
-                  // If not enough unused, fill with used
                   j = 0;
                   while (suggestions.length < 4 && j < demoData.demo_questions.length) {
                     const q = demoData.demo_questions[j];
@@ -212,10 +218,8 @@ export function ChatInterface({
         {/* Chat Messages */}
         {messages.map((message, idx) => {
           const isAssistant = message.type === "assistant";
-          // Only show the query toggle for the most recent assistant message that matches a demo question
           let matchedQuestion: DemoQuestion | undefined = undefined;
           const isLastAssistant = isAssistant && idx === messages.length - 1;
-          // Find the last submitted question id from user messages
           let lastUserPrompt = "";
           for (let i = messages.length - 1; i >= 0; i--) {
             if (messages[i].type === "user") {
@@ -251,7 +255,7 @@ export function ChatInterface({
                     minute: "2-digit",
                   })}
                 </p>
-                {/* Query toggle for the last assistant message only */}
+                {/* Query toggle for the last assistant message */}
                 {isLastAssistant && matchedQuestion && (
                   <div className="mt-2">
                     <Button

@@ -71,7 +71,7 @@ export default function CatsPage() {
       </div>
       <div className="mt-8 text-center text-sm text-muted-foreground">
         Warning: Viewing too many cats may result in spontaneous meowing.<br />
-        Powered by Magical Cats Society 🐾
+        Powered by the Magical Cats Society 🐾
       </div>
 
       <div className="mt-6 flex justify-center">

@@ -84,12 +84,10 @@ export function ChartCard({ dataUri }: ChartCardProps) {
     );
   }
 
-  // Chart colors
   const colors = theme === "light"
     ? ["#4A90E2", "#475569", "#64748b", "#3b82f6", "#10b981"]
     : ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"];
 
-  // Find min/max for axes
   const allValues = chartData.traces.flatMap((t: any) => t.values);
   const allDepths = chartData.traces.flatMap((t: any) => t.depths);
   const minValue = Math.min(...allValues);
@@ -97,7 +95,6 @@ export function ChartCard({ dataUri }: ChartCardProps) {
   const minDepth = Math.min(...allDepths);
   const maxDepth = Math.max(...allDepths);
 
-  // Chart area
   return (
     <Card className="space-y-4 p-4 w-300">
       {/* Header */}
@@ -150,45 +147,35 @@ export function ChartCard({ dataUri }: ChartCardProps) {
       {/* Chart */}
       <div className="flex justify-center items-center w-full">
         <div className="relative h-64 w-full max-w-5xl">
-          {/* Chart SVG (line/point) */}
           <svg className="absolute inset-0 w-full h-full">
-          {/* Axes */}
-          {/* Responsive axes: use viewBox and scale to container */}
+
           <line x1="40" y1="10" x2="40" y2="230" stroke="#ccc" strokeWidth="2" />
           <line x1="40" y1="230" x2="calc(100% - 40)" y2="230" stroke="#ccc" strokeWidth="2" />
 
-          {/* Y-axis labels (depth) */}
           {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
             <text key={i} x={10} y={230 - p * 220} fontSize="10" fill="#888">{Math.round(minDepth + p * (maxDepth - minDepth))}m</text>
           ))}
 
-          {/* X-axis labels (value) */}
+
           {(() => {
-            const chartWidth = 900; // Use fixed width for SVG
+            const chartWidth = 900;
             return [0, 0.5, 1].map((p, i) => (
               <text key={i} x={40 + p * chartWidth} y={245} fontSize="10" fill="#888">{(minValue + p * (maxValue - minValue)).toFixed(2)}</text>
             ));
           })()}
-
-          {/* Traces */}
           {chartData.traces.map((trace: any, traceIdx: number) => {
             if (!visibleTraces.has(trace.id)) return null;
             const color = colors[traceIdx % colors.length];
-            // Responsive width
             const chartWidth = window.innerWidth > 900 ? 900 : 320;
-            // Map data points to chart coordinates
             const points = trace.depths.map((depth: number, i: number): { x: number; y: number; value: number; depth: number; idx: number } => {
               const x = 40 + ((trace.values[i] - minValue) / (maxValue - minValue)) * chartWidth;
               const y = 230 - ((depth - minDepth) / (maxDepth - minDepth)) * 220;
               return { x, y, value: trace.values[i], depth, idx: i };
             });
-            // Line path
             const linePath = points.map((p: { x: number; y: number }, i: number) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
             return (
               <g key={trace.id}>
-                {/* Line */}
                 <path d={linePath} stroke={color} strokeWidth="2" fill="none" />
-                {/* Points */}
                 {points.map((p: { x: number; y: number; value: number; depth: number; idx: number }, i: number) => (
                   <circle
                     key={i}
@@ -214,9 +201,7 @@ export function ChartCard({ dataUri }: ChartCardProps) {
           const value = trace.values[hovered.pointIdx];
           const depth = trace.depths[hovered.pointIdx];
           const color = colors[hovered.traceIdx % colors.length];
-          // Responsive width
           const chartWidth = window.innerWidth > 900 ? 900 : 320;
-          // Chart coordinates
           const x = 40 + ((value - minValue) / (maxValue - minValue)) * chartWidth;
           const y = 230 - ((depth - minDepth) / (maxDepth - minDepth)) * 220;
           return (

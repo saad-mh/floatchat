@@ -17,8 +17,6 @@ export default function FloatChatPage() {
     setActiveQuestion(question);
     setIsGenerating(true);
     setShowMobileReport(true);
-
-    // Simulate generation delay
     setTimeout(() => {
       setIsGenerating(false);
     }, 2200);
