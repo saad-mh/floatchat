@@ -1,6 +1,7 @@
 // Demo data service for FloatChat
 export interface DemoDataResponse {
   map?: any
+  globe?: any
   chart?: any
   table?: any
   summary?: any

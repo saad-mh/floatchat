@@ -18,7 +18,7 @@
         {
           "type": "summary",
           "title": "Quick Summary",
-          "text": "Found 6 profiles from 3 floats. Near-surface salinity ranges 34.8–35.2 PSU. See QC notes.",
+          "text": "Found 6 profiles from 3 floats. Near-surface salinity ranges 34.8 to 35.2 PSU. See QC notes.",
           "provenance": ["WMO_5901234.nc", "WMO_5902345.nc"]
         }
       ]

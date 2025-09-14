@@ -6,7 +6,7 @@ export interface DemoQuestion {
 }
 
 export interface DemoCard {
-  type: "map" | "chart" | "table" | "summary"
+  type: "map" | "chart" | "table"  | "summary" | "globe"
   title: string
   dataUri?: string
   text?: string

@@ -7,16 +7,32 @@ import { MapCard } from "@/components/cards/map-card";
 import { ChartCard } from "@/components/cards/chart-card";
 import { TableCard } from "@/components/cards/table-card";
 import { SummaryCard } from "@/components/cards/summary-card";
+import { GlobeCard } from "@/components/cards/globe-card";
 
 interface ReportCardProps {
   card: DemoCard;
 }
 
 export function ReportCard({ card }: ReportCardProps) {
+  // Helper to get demo points for dq01
+  const getEquatorDemoPoints = () => [
+    { lat: 0, lng: 0, label: "Equator", color: "#4A90E2" },
+    { lat: 2, lng: 3, label: "Float 1", color: "#10b981" },
+    { lat: -1.5, lng: -2.2, label: "Float 2", color: "#3b82f6" }
+  ];
+
   const renderCardContent = () => {
     switch (card.type) {
-      case "map":
+      case "map": {
         return <MapCard dataUri={card.dataUri} />;
+      }
+      case "globe": {
+        return <>
+            <div className="mt-4">
+              <GlobeCard points={getEquatorDemoPoints()} height={300} />
+            </div>
+          </>;
+      }
       case "chart":
         return <ChartCard dataUri={card.dataUri} />;
       case "table":
