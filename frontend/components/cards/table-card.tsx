@@ -148,9 +148,9 @@ export function TableCard({ dataUri }: TableCardProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       {/* Table controls */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 md:gap-4">
         <div className="flex items-center gap-2 flex-1">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -161,29 +161,29 @@ export function TableCard({ dataUri }: TableCardProps) {
                 setSearchTerm(e.target.value)
                 setCurrentPage(1)
               }}
-              className="pl-9 bg-background border-border"
+              className="pl-9 bg-background border-border text-sm"
             />
           </div>
-          <Badge variant="secondary" className="text-xs">
+          <Badge variant="secondary" className="text-xs whitespace-nowrap">
             {filteredAndSortedData().length} rows
           </Badge>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="text-xs bg-transparent">
-            <Filter className="w-3 h-3 mr-1" />
-            Filter
+        <div className="flex items-center gap-1 md:gap-2">
+          <Button variant="outline" size="sm" className="text-xs bg-transparent px-2 md:px-3">
+            <Filter className="w-3 h-3 md:mr-1" />
+            <span className="hidden md:inline">Filter</span>
           </Button>
-          <Button variant="outline" size="sm" className="text-xs bg-transparent">
-            <Download className="w-3 h-3 mr-1" />
-            Export
+          <Button variant="outline" size="sm" className="text-xs bg-transparent px-2 md:px-3">
+            <Download className="w-3 h-3 md:mr-1" />
+            <span className="hidden md:inline">Export</span>
           </Button>
         </div>
       </div>
 
       {/* Table */}
       <div className="rounded-lg border border-border overflow-hidden bg-card">
-        <div className="max-h-80 overflow-auto">
+        <div className="max-h-80 overflow-auto overflow-x-auto">
           <Table>
             <TableHeader className="sticky top-0 bg-muted/50 backdrop-blur-sm">
               <TableRow>

@@ -9,10 +9,12 @@ import type { DemoQuestion } from "@/types/demo"
 export default function FloatChatPage() {
   const [activeQuestion, setActiveQuestion] = useState<DemoQuestion | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [showMobileReport, setShowMobileReport] = useState(false)
 
   const handleQuestionSubmit = async (question: DemoQuestion) => {
     setActiveQuestion(question)
     setIsGenerating(true)
+    setShowMobileReport(true)
 
     // Simulate generation delay
     setTimeout(() => {
@@ -20,9 +22,14 @@ export default function FloatChatPage() {
     }, 2200)
   }
 
+  const handleMobileBack = () => {
+    setShowMobileReport(false)
+  }
+
   return (
     <div className="h-screen bg-background overflow-hidden">
-      <div className="flex h-full">
+      {/* Desktop Layout */}
+      <div className="hidden md:flex h-full">
         {/* Chat Interface */}
         <motion.div
           initial={{ width: "100%" }}
@@ -46,6 +53,39 @@ export default function FloatChatPage() {
               className="flex-1 bg-secondary/20"
             >
               <ReportPanel question={activeQuestion} isGenerating={isGenerating} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="md:hidden h-full">
+        <AnimatePresence mode="wait">
+          {!showMobileReport ? (
+            <motion.div
+              key="chat"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="h-full"
+            >
+              <ChatInterface onQuestionSubmit={handleQuestionSubmit} isCompact={false} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="report"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+              className="h-full"
+            >
+              <ReportPanel 
+                question={activeQuestion!} 
+                isGenerating={isGenerating} 
+                onBack={handleMobileBack}
+              />
             </motion.div>
           )}
         </AnimatePresence>

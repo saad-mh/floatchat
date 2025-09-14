@@ -30,16 +30,16 @@ export function ReportCard({ card }: ReportCardProps) {
 
   return (
     <Card className="bg-card border-border shadow-lg hover:shadow-xl transition-shadow duration-200">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-3 md:pb-4 p-4 md:p-6">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold text-card-foreground">{card.title}</CardTitle>
+          <CardTitle className="text-base md:text-lg font-semibold text-card-foreground">{card.title}</CardTitle>
           <Badge variant="secondary" className="text-xs bg-secondary/50 text-secondary-foreground">
             {card.type}
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
-        <div className="min-h-[200px] max-h-[500px] overflow-hidden">{renderCardContent()}</div>
+      <CardContent className="pt-0 p-4 md:p-6 md:pt-0">
+        <div className="min-h-[200px] md:min-h-[250px] max-h-[400px] md:max-h-[500px] overflow-hidden">{renderCardContent()}</div>
       </CardContent>
     </Card>
   )
