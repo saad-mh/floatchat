@@ -1,30 +1,32 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { ChatInterface } from "@/components/chat-interface"
-import { ReportPanel } from "@/components/report-panel"
-import type { DemoQuestion } from "@/types/demo"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChatInterface } from "@/components/chat-interface";
+import { ReportPanel } from "@/components/report-panel";
+import type { DemoQuestion } from "@/types/demo";
 
 export default function FloatChatPage() {
-  const [activeQuestion, setActiveQuestion] = useState<DemoQuestion | null>(null)
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [showMobileReport, setShowMobileReport] = useState(false)
+  const [activeQuestion, setActiveQuestion] = useState<DemoQuestion | null>(
+    null
+  );
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [showMobileReport, setShowMobileReport] = useState(false);
 
   const handleQuestionSubmit = async (question: DemoQuestion) => {
-    setActiveQuestion(question)
-    setIsGenerating(true)
-    setShowMobileReport(true)
+    setActiveQuestion(question);
+    setIsGenerating(true);
+    setShowMobileReport(true);
 
     // Simulate generation delay
     setTimeout(() => {
-      setIsGenerating(false)
-    }, 2200)
-  }
+      setIsGenerating(false);
+    }, 2200);
+  };
 
   const handleMobileBack = () => {
-    setShowMobileReport(false)
-  }
+    setShowMobileReport(false);
+  };
 
   return (
     <div className="h-screen bg-background overflow-hidden">
@@ -39,7 +41,10 @@ export default function FloatChatPage() {
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className="flex-shrink-0 border-r border-border"
         >
-          <ChatInterface onQuestionSubmit={handleQuestionSubmit} isCompact={!!activeQuestion} />
+          <ChatInterface
+            onQuestionSubmit={handleQuestionSubmit}
+            isCompact={!!activeQuestion}
+          />
         </motion.div>
 
         {/* Report Panel */}
@@ -52,7 +57,10 @@ export default function FloatChatPage() {
               transition={{ duration: 1, ease: "easeInOut" }}
               className="flex-1 bg-secondary/20"
             >
-              <ReportPanel question={activeQuestion} isGenerating={isGenerating} />
+              <ReportPanel
+                question={activeQuestion}
+                isGenerating={isGenerating}
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -70,7 +78,10 @@ export default function FloatChatPage() {
               transition={{ duration: 0.3 }}
               className="h-full"
             >
-              <ChatInterface onQuestionSubmit={handleQuestionSubmit} isCompact={false} />
+              <ChatInterface
+                onQuestionSubmit={handleQuestionSubmit}
+                isCompact={false}
+              />
             </motion.div>
           ) : (
             <motion.div
@@ -81,9 +92,9 @@ export default function FloatChatPage() {
               transition={{ duration: 0.3 }}
               className="h-full"
             >
-              <ReportPanel 
-                question={activeQuestion!} 
-                isGenerating={isGenerating} 
+              <ReportPanel
+                question={activeQuestion!}
+                isGenerating={isGenerating}
                 onBack={handleMobileBack}
               />
             </motion.div>
@@ -91,5 +102,5 @@ export default function FloatChatPage() {
         </AnimatePresence>
       </div>
     </div>
-  )
+  );
 }

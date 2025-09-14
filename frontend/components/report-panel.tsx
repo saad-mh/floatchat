@@ -1,18 +1,22 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Loader2, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import type { DemoQuestion } from "@/types/demo"
-import { ReportCard } from "@/components/report-card"
+import { motion } from "framer-motion";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { DemoQuestion } from "@/types/demo";
+import { ReportCard } from "@/components/report-card";
 
 interface ReportPanelProps {
-  question: DemoQuestion
-  isGenerating: boolean
-  onBack?: () => void
+  question: DemoQuestion;
+  isGenerating: boolean;
+  onBack?: () => void;
 }
 
-export function ReportPanel({ question, isGenerating, onBack }: ReportPanelProps) {
+export function ReportPanel({
+  question,
+  isGenerating,
+  onBack,
+}: ReportPanelProps) {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
@@ -30,8 +34,12 @@ export function ReportPanel({ question, isGenerating, onBack }: ReportPanelProps
               </Button>
             )}
             <div>
-              <h2 className="text-base md:text-lg font-semibold text-foreground">Analysis Report</h2>
-              <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">{question.prompt}</p>
+              <h2 className="text-base md:text-lg font-semibold text-foreground">
+                Analysis Report
+              </h2>
+              <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                {question.prompt}
+              </p>
             </div>
           </div>
           {isGenerating && (
@@ -73,5 +81,5 @@ export function ReportPanel({ question, isGenerating, onBack }: ReportPanelProps
         )}
       </div>
     </div>
-  )
+  );
 }

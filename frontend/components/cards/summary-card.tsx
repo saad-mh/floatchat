@@ -1,26 +1,34 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { FileText, ExternalLink, Copy, Check, AlertCircle, Info, TrendingUp } from "lucide-react"
-import { useState } from "react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  FileText,
+  ExternalLink,
+  Copy,
+  Check,
+  AlertCircle,
+  Info,
+  TrendingUp,
+} from "lucide-react";
+import { useState } from "react";
 
 interface SummaryCardProps {
-  text?: string
-  provenance?: string[]
+  text?: string;
+  provenance?: string[];
 }
 
 export function SummaryCard({ text, provenance }: SummaryCardProps) {
-  const [copiedText, setCopiedText] = useState(false)
+  const [copiedText, setCopiedText] = useState(false);
 
   const handleCopyText = async () => {
     if (text) {
-      await navigator.clipboard.writeText(text)
-      setCopiedText(true)
-      setTimeout(() => setCopiedText(false), 2000)
+      await navigator.clipboard.writeText(text);
+      setCopiedText(true);
+      setTimeout(() => setCopiedText(false), 2000);
     }
-  }
+  };
 
   if (!text) {
     return (
@@ -30,27 +38,35 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
           <p className="text-sm text-muted-foreground">No summary available</p>
         </div>
       </div>
-    )
+    );
   }
 
   // Parse text for key insights (simple pattern matching)
-  const insights = []
+  const insights = [];
   if (text.includes("profiles")) {
-    const profileMatch = text.match(/(\d+)\s+profiles?/i)
+    const profileMatch = text.match(/(\d+)\s+profiles?/i);
     if (profileMatch) {
-      insights.push({ type: "data", label: "Profiles", value: profileMatch[1] })
+      insights.push({
+        type: "data",
+        label: "Profiles",
+        value: profileMatch[1],
+      });
     }
   }
   if (text.includes("floats")) {
-    const floatMatch = text.match(/(\d+)\s+floats?/i)
+    const floatMatch = text.match(/(\d+)\s+floats?/i);
     if (floatMatch) {
-      insights.push({ type: "data", label: "Floats", value: floatMatch[1] })
+      insights.push({ type: "data", label: "Floats", value: floatMatch[1] });
     }
   }
   if (text.includes("ranges") || text.includes("range")) {
-    const rangeMatch = text.match(/([\d.]+)[-–]([\d.]+)\s*(\w+)/i)
+    const rangeMatch = text.match(/([\d.]+)[-–]([\d.]+)\s*(\w+)/i);
     if (rangeMatch) {
-      insights.push({ type: "range", label: "Range", value: `${rangeMatch[1]}-${rangeMatch[2]} ${rangeMatch[3]}` })
+      insights.push({
+        type: "range",
+        label: "Range",
+        value: `${rangeMatch[1]}-${rangeMatch[2]} ${rangeMatch[3]}`,
+      });
     }
   }
 
@@ -68,8 +84,12 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
                   <Info className="w-3 h-3 md:w-4 md:h-4 text-primary" />
                 )}
                 <div>
-                  <div className="text-xs text-muted-foreground">{insight.label}</div>
-                  <div className="text-xs md:text-sm font-medium text-foreground">{insight.value}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {insight.label}
+                  </div>
+                  <div className="text-xs md:text-sm font-medium text-foreground">
+                    {insight.value}
+                  </div>
                 </div>
               </div>
             </Card>
@@ -86,7 +106,9 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
                 <FileText className="w-3 h-3 md:w-4 md:h-4 text-primary" />
               </div>
               <div className="flex-1">
-                <p className="text-foreground leading-relaxed text-sm mb-0">{text}</p>
+                <p className="text-foreground leading-relaxed text-sm mb-0">
+                  {text}
+                </p>
               </div>
             </div>
           </div>
@@ -99,7 +121,11 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
           onClick={handleCopyText}
           className="absolute top-1 right-1 md:top-2 md:right-2 h-6 w-6 p-0 opacity-70 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
         >
-          {copiedText ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
+          {copiedText ? (
+            <Check className="w-3 h-3 text-green-500" />
+          ) : (
+            <Copy className="w-3 h-3" />
+          )}
         </Button>
       </div>
 
@@ -108,14 +134,16 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-muted-foreground" />
-            <h4 className="text-sm font-medium text-foreground">Data Sources & Provenance</h4>
+            <h4 className="text-sm font-medium text-foreground">
+              Data Sources & Provenance
+            </h4>
           </div>
 
           <div className="grid gap-2">
             {provenance.map((source, index) => {
-              const isNetCDF = source.includes(".nc")
-              const isJSON = source.includes(".json")
-              const isCSV = source.includes(".csv")
+              const isNetCDF = source.includes(".nc");
+              const isJSON = source.includes(".json");
+              const isCSV = source.includes(".csv");
 
               return (
                 <div
@@ -127,15 +155,17 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
                       <FileText className="w-3 h-3 text-primary" />
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-foreground font-mono">{source}</div>
+                      <div className="text-sm font-medium text-foreground font-mono">
+                        {source}
+                      </div>
                       <div className="text-xs text-muted-foreground">
                         {isNetCDF
                           ? "NetCDF Ocean Data File"
                           : isJSON
-                            ? "JSON Metadata File"
-                            : isCSV
-                              ? "CSV Data Export"
-                              : "Data File"}
+                          ? "JSON Metadata File"
+                          : isCSV
+                          ? "CSV Data Export"
+                          : "Data File"}
                       </div>
                     </div>
                   </div>
@@ -147,18 +177,24 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
                         isNetCDF
                           ? "bg-blue-500/20 text-blue-400"
                           : isJSON
-                            ? "bg-green-500/20 text-green-400"
-                            : "bg-gray-500/20 text-gray-400"
+                          ? "bg-green-500/20 text-green-400"
+                          : "bg-gray-500/20 text-gray-400"
                       }`}
                     >
-                      {isNetCDF ? "NetCDF" : isJSON ? "JSON" : isCSV ? "CSV" : "DATA"}
+                      {isNetCDF
+                        ? "NetCDF"
+                        : isJSON
+                        ? "JSON"
+                        : isCSV
+                        ? "CSV"
+                        : "DATA"}
                     </Badge>
                     <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
                       <ExternalLink className="w-3 h-3" />
                     </Button>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
 
@@ -169,12 +205,13 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
               <span className="font-medium">Data Quality Note</span>
             </div>
             <p>
-              All data sources have been validated and processed through the Argo Quality Control system. Timestamps
-              reflect data collection times in UTC.
+              All data sources have been validated and processed through the
+              Argo Quality Control system. Timestamps reflect data collection
+              times in UTC.
             </p>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

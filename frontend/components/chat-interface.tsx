@@ -111,7 +111,9 @@ export function ChatInterface({
               <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-lg md:text-xl font-bold text-foreground">FloatChat</h1>
+              <h1 className="text-lg md:text-xl font-bold text-foreground">
+                FloatChat
+              </h1>
               <p className="text-xs md:text-sm text-muted-foreground">
                 AI Ocean Data Interface
               </p>
@@ -154,7 +156,9 @@ export function ChatInterface({
                       handleSuggestionClick(question as DemoQuestion)
                     }
                   >
-                    <p className="text-xs md:text-sm text-foreground leading-relaxed">{question.prompt}</p>
+                    <p className="text-xs md:text-sm text-foreground leading-relaxed">
+                      {question.prompt}
+                    </p>
                   </Card>
                 ))}
               </div>
