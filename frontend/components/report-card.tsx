@@ -19,27 +19,37 @@ interface ReportCardProps {
 export function ReportCard({ card }: ReportCardProps) {
   // Helper to get demo points for dq01
   // Helper to fetch points from card.dataUri.map
-  const [globePoints, setGlobePoints] = useState<Array<{ lat: number; lng: number; label?: string; color?: string }>>([]);
+  const [globePoints, setGlobePoints] = useState<
+    Array<{ lat: number; lng: number; label?: string; color?: string }>
+  >([]);
 
   const [loadingGlobe, setLoadingGlobe] = useState(false);
   const [globeError, setGlobeError] = useState<string | null>(null);
   useEffect(() => {
     async function fetchDemoCardData() {
       // Only run for supported types with a dataUri
-      if (["globe", "map", "chart", "table", "summary"].includes(card.type) && card.dataUri) {
+      if (
+        ["globe", "map", "chart", "table", "summary"].includes(card.type) &&
+        card.dataUri
+      ) {
         setLoadingGlobe(true);
         setGlobeError(null);
         try {
           // Extract questionId and dataType from dataUri
           // e.g. /demo/maps/dq01map.json, /demo/charts/dq01salinityprofiles.json
-          const match = card.dataUri.match(/\/([a-zA-Z0-9]+)(map|chart|table|summary)[^/]*\.json$/);
+          const match = card.dataUri.match(
+            /\/([a-zA-Z0-9]+)(map|chart|table|summary)[^/]*\.json$/
+          );
           const questionId = match ? match[1] : null;
           let dataType = null;
           if (card.type === "globe" || card.type === "map") dataType = "map";
           else if (card.type === "chart") dataType = "chart";
           else if (card.type === "table") dataType = "table";
           else if (card.type === "summary") dataType = "summary";
-          if (!questionId || !dataType) throw new Error("Could not determine questionId or dataType from dataUri");
+          if (!questionId || !dataType)
+            throw new Error(
+              "Could not determine questionId or dataType from dataUri"
+            );
           const data = await fetchDemoData(questionId, dataType);
           if (card.type === "globe") {
             if (data && Array.isArray(data.markers)) {
@@ -48,7 +58,7 @@ export function ReportCard({ card }: ReportCardProps) {
                   lat: m.lat,
                   lng: m.lon ?? m.lng,
                   label: m.label,
-                  color: m.color || "#4A90E2"
+                  color: m.color || "#4A90E2",
                 }))
               );
             } else {
@@ -78,7 +88,9 @@ export function ReportCard({ card }: ReportCardProps) {
         return (
           <div className="mt-4">
             {loadingGlobe ? (
-              <div className="p-4 text-muted-foreground">3D viewport loading</div>
+              <div className="p-4 text-muted-foreground">
+                3D viewport loading
+              </div>
             ) : globeError ? (
               <div className="p-4 text-destructive">{globeError}</div>
             ) : (

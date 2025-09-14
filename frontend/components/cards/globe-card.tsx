@@ -47,7 +47,7 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
       maxR: 8,
       propagationSpeed: 5,
       repeatPeriod: 1200,
-      color: p.color || "#4A90E2"
+      color: p.color || "#4A90E2",
     }));
 
     if (!globeInstance.current) {
@@ -65,11 +65,11 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
         .ringsData(ringsData)
         .ringColor((d: any) => (t: any) => {
           const base = d.color || "#4A90E2";
-          const hex = base.replace('#','');
-          const r = parseInt(hex.substring(0,2),16);
-          const g = parseInt(hex.substring(2,4),16);
-          const b = parseInt(hex.substring(4,6),16);
-          return `rgba(${r},${g},${b},${Math.sqrt(1-t)})`;
+          const hex = base.replace("#", "");
+          const r = parseInt(hex.substring(0, 2), 16);
+          const g = parseInt(hex.substring(2, 4), 16);
+          const b = parseInt(hex.substring(4, 6), 16);
+          return `rgba(${r},${g},${b},${Math.sqrt(1 - t)})`;
         })
         .ringMaxRadius((d: any) => d.maxR || 8)
         .ringPropagationSpeed((d: any) => d.propagationSpeed || 5)
@@ -90,7 +90,10 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
 
   if (!isClient) {
     return (
-      <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full flex items-center justify-center" style={{ height }}>
+      <div
+        className="bg-card rounded-lg shadow-lg overflow-hidden w-full flex items-center justify-center"
+        style={{ height }}
+      >
         <div className="text-center text-muted-foreground">
           <div className="w-8 h-8 mx-auto mb-2 animate-pulse bg-muted rounded-full"></div>
           <p className="text-sm">Loading 3D view...</p>
@@ -100,7 +103,10 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
   }
 
   return (
-    <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full" style={{ height }}>
+    <div
+      className="bg-card rounded-lg shadow-lg overflow-hidden w-full"
+      style={{ height }}
+    >
       <div ref={globeRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );

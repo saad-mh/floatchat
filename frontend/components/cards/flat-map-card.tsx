@@ -56,9 +56,7 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
       <div className="flex items-center justify-center h-48 sm:h-56 md:h-64 lg:h-72 bg-muted/20 rounded-lg">
         <div className="text-center">
           <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground mx-auto mb-2 animate-pulse" />
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Hold on
-          </p>
+          <p className="text-xs sm:text-sm text-muted-foreground">Hold on</p>
         </div>
       </div>
     );
