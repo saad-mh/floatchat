@@ -9,14 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/theme-toggle";
-// Update DemoQuestion type to match JSON structure
-interface DemoQuestion {
-  id: string;
-  prompt: string;
-  primaryContentType: string;
-  cards: Array<any>;
-  querieGenerated?: string;
-}
+import type { DemoQuestion } from "@/types/demo";
 import demoData from "@/data/demo-questions.json";
 
 interface ChatInterfaceProps {
@@ -82,7 +75,7 @@ export function ChatInterface({
           timestamp: new Date(),
         };
         setMessages((prev) => [...prev, assistantMessage]);
-  setShowQueryId(null);
+        setShowQueryId(null);
       }, 1500);
     } else {
       // Handle unrecognized question
@@ -190,7 +183,9 @@ export function ChatInterface({
             }
           }
           if (isLastAssistant) {
-            matchedQuestion = demoData.demo_questions.find((q) => q.prompt.toLowerCase() === lastUserPrompt.toLowerCase());
+            matchedQuestion = demoData.demo_questions.find(
+              (q) => q.prompt.toLowerCase() === lastUserPrompt.toLowerCase()
+            ) as DemoQuestion | undefined;
           }
           return (
             <motion.div
@@ -222,9 +217,17 @@ export function ChatInterface({
                       variant="outline"
                       size="sm"
                       className="text-xs border-border"
-                      onClick={() => setShowQueryId(showQueryId === matchedQuestion.id ? null : matchedQuestion.id)}
+                      onClick={() =>
+                        setShowQueryId(
+                          showQueryId === matchedQuestion.id
+                            ? null
+                            : matchedQuestion.id
+                        )
+                      }
                     >
-                      {showQueryId === matchedQuestion.id ? "Hide Query" : "Show Query"}
+                      {showQueryId === matchedQuestion.id
+                        ? "Hide Query"
+                        : "Show Query"}
                     </Button>
                     {showQueryId === matchedQuestion.id && (
                       <div className="mt-2 p-2 rounded bg-muted text-xs font-mono whitespace-pre-wrap border border-border">

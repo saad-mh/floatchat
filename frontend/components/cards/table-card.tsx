@@ -248,7 +248,7 @@ export function TableCard({ dataUri }: TableCardProps) {
   return (
     <div className="space-y-3 md:space-y-4">
       {/* Table controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 md:gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 md:gap-4">
         <div className="flex items-center gap-2 flex-1">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -262,12 +262,15 @@ export function TableCard({ dataUri }: TableCardProps) {
               className="pl-9 bg-background border-border text-sm"
             />
           </div>
-          <Badge variant="secondary" className="text-xs whitespace-nowrap">
+          <Badge
+            variant="secondary"
+            className="text-xs whitespace-nowrap px-3 py-1"
+          >
             {filteredAndSortedData().length} rows
           </Badge>
         </div>
 
-        <div className="flex items-center gap-1 md:gap-2">
+        <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -289,9 +292,9 @@ export function TableCard({ dataUri }: TableCardProps) {
 
       {/* Table */}
       <div className="rounded-lg border border-border overflow-hidden bg-card">
-        <div className="max-h-80 overflow-auto overflow-x-auto">
+        <div className="max-h-80 sm:max-h-96 overflow-auto mobile-table-scroll">
           <Table>
-            <TableHeader className="sticky top-0 bg-muted/50 backdrop-blur-sm">
+            <TableHeader className="sticky top-0 bg-muted/50 backdrop-blur-sm z-10">
               <TableRow>
                 {tableData.headers.map((header, index) => (
                   <TableHead
@@ -299,14 +302,14 @@ export function TableCard({ dataUri }: TableCardProps) {
                     className="text-foreground font-medium cursor-pointer hover:bg-muted/70 transition-colors"
                     onClick={() => handleSort(index)}
                   >
-                    <div className="flex items-center gap-1">
-                      <span>{header}</span>
+                    <div className="flex items-center gap-1 text-xs sm:text-sm">
+                      <span className="truncate">{header}</span>
                       {sortColumn === index && (
-                        <div className="text-primary">
+                        <div className="text-primary flex-shrink-0">
                           {sortDirection === "asc" ? (
-                            <ChevronUp className="w-3 h-3" />
+                            <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4" />
                           ) : (
-                            <ChevronDown className="w-3 h-3" />
+                            <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
                           )}
                         </div>
                       )}
@@ -322,18 +325,25 @@ export function TableCard({ dataUri }: TableCardProps) {
                   className="hover:bg-muted/30 transition-colors"
                 >
                   {row.map((cell, cellIndex) => (
-                    <TableCell key={cellIndex} className="text-foreground">
+                    <TableCell
+                      key={cellIndex}
+                      className="text-foreground px-3 py-3 sm:py-4 text-xs sm:text-sm"
+                    >
                       {cellIndex === 6 ? ( // QC Status column
                         <Badge
                           variant={cell === "Good" ? "default" : "destructive"}
-                          className="text-xs"
+                          className="text-xs px-2 py-1"
                         >
                           {cell}
                         </Badge>
                       ) : cellIndex === 0 ? ( // Float ID column
-                        <span className="font-mono text-primary">{cell}</span>
+                        <span className="font-mono text-primary text-xs sm:text-sm truncate block">
+                          {cell}
+                        </span>
                       ) : (
-                        cell
+                        <span className="truncate block" title={cell}>
+                          {cell}
+                        </span>
                       )}
                     </TableCell>
                   ))}

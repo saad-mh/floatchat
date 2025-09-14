@@ -123,3 +123,48 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Mobile touch improvements */
+@layer utilities {
+  /* Better touch targets for mobile */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Smooth scrolling for mobile */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent zoom on input focus on iOS */
+  @media screen and (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+  
+  /* Better table scrolling on mobile */
+  .mobile-table-scroll {
+    @apply overflow-x-auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
+  
+  .mobile-table-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .mobile-table-scroll::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+  
+  .mobile-table-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+}

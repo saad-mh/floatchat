@@ -5,7 +5,6 @@ import { Globe } from "lucide-react";
 import dynamic from "next/dynamic";
 import type { MapData } from "@/types/demo";
 import { fetchDemoData } from "@/lib/demo-data";
-import ErrorBoundary from "@/components/error-boundary";
 
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
@@ -16,11 +15,11 @@ const Plot = dynamic(() => import("react-plotly.js"), {
   ),
 });
 
-interface MapCardProps {
+interface FlatMapCardProps {
   dataUri?: string;
 }
 
-export function MapCard({ dataUri }: MapCardProps) {
+export function FlatMapCard({ dataUri }: FlatMapCardProps) {
   const [mapData, setMapData] = useState<MapData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +107,7 @@ export function MapCard({ dataUri }: MapCardProps) {
   const layout = {
     geo: {
       projection: {
-        type: "natural earth" as const,
+        type: "equirectangular" as const,
       },
       showland: true,
       landcolor: "rgb(144, 180, 110)",
@@ -134,7 +133,7 @@ export function MapCard({ dataUri }: MapCardProps) {
     modeBarButtonsToRemove: ["select2d", "lasso2d", "autoScale2d"] as any,
     toImageButtonOptions: {
       format: "png" as const,
-      filename: "argo_floats_map",
+      filename: "argo_floats_flat_map",
       height: 500,
       width: 700,
       scale: 1,
@@ -164,7 +163,7 @@ export function MapCard({ dataUri }: MapCardProps) {
             }
           }}
           onError={(error) => {
-            console.warn("Plotly error in 3D map:", error);
+            console.warn("Plotly error in 2D flat map:", error);
             // Don't throw, just log the error
           }}
         />

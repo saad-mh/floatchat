@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { DemoCard } from "@/types/demo";
 import { MapCard } from "@/components/cards/map-card";
+import { FlatMapCard } from "@/components/cards/flat-map-card";
 import { ChartCard } from "@/components/cards/chart-card";
 import { TableCard } from "@/components/cards/table-card";
 import { SummaryCard } from "@/components/cards/summary-card";
@@ -15,6 +16,8 @@ interface ReportCardProps {
 export function ReportCard({ card }: ReportCardProps) {
   const renderCardContent = () => {
     switch (card.type) {
+      case "flat-map":
+        return <FlatMapCard dataUri={card.dataUri} />;
       case "map":
         return <MapCard dataUri={card.dataUri} />;
       case "chart":
