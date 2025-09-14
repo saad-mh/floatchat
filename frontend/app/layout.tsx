@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FloatChat - AI Ocean Data Interface",
+  title: "FloatChat",
   description: "Conversational interface for Argo ocean float data",
 };
 

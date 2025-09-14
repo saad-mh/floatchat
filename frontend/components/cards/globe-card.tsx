@@ -10,10 +10,21 @@ interface GlobeCardProps {
 export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
   const globeRef = useRef<HTMLDivElement>(null);
   const globeInstance = useRef<any>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(100);
+
+  useEffect(() => {
+    function handleResize() {
+      if (globeRef.current) {
+        setContainerWidth(globeRef.current.offsetWidth || 400);
+      }
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined" || !globeRef.current) return;
-    // Calculate center of points
     let center = { lat: 0, lng: 0, altitude: 1.5 };
     if (points.length > 0) {
       const sumLat = points.reduce((acc, p) => acc + p.lat, 0);
@@ -23,7 +34,6 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
       center.altitude = 0.4;
     }
 
-    // Prepare rings data
     const ringsData = points.map((p) => ({
       lat: p.lat,
       lng: p.lng,
@@ -36,9 +46,9 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
     if (!globeInstance.current) {
       globeInstance.current = new Globe(globeRef.current)
         .height(height)
-        .width(globeRef.current.offsetWidth || 600)
+        .width(containerWidth)
         .backgroundColor("#101624")
-        .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
+        .globeImageUrl("/earth-blue-marble.jpg")
         .pointLat((d: any) => d.lat)
         .pointLng((d: any) => d.lng)
         .pointColor((d: any) => d.color || "#4A90E2")
@@ -47,7 +57,6 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
         .pointsData(points)
         .ringsData(ringsData)
         .ringColor((d: any) => (t: any) => {
-          // Use color interpolator similar to example
           const base = d.color || "#4A90E2";
           const hex = base.replace('#','');
           const r = parseInt(hex.substring(0,2),16);
@@ -60,6 +69,7 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
         .ringRepeatPeriod((d: any) => d.repeatPeriod || 1200)
         .pointOfView(center, 2000);
     } else {
+      globeInstance.current.width(containerWidth);
       globeInstance.current.pointsData(points);
       globeInstance.current.ringsData(ringsData);
       globeInstance.current.pointOfView(center, 100);
@@ -69,10 +79,10 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
         globeInstance.current = null;
       }
     };
-  }, [points, height]);
+  }, [points, height, containerWidth]);
 
   return (
-    <div className="bg-card rounded-lg shadow-lg p-4" style={{ height, minWidth: 400 }}>
+    <div className="bg-card rounded-lg shadow-lg overflow-hidden max-w-300 w-full" style={{ height }}>
       <div ref={globeRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );

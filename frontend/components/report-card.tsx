@@ -32,7 +32,7 @@ export function ReportCard({ card }: ReportCardProps) {
       case "globe": {
         return <>
             <div className="mt-4">
-              <GlobeCard points={getEquatorDemoPoints()} height={300} />
+              <GlobeCard points={getEquatorDemoPoints()} height={400} />
             </div>
           </>;
       }

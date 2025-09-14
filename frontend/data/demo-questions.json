@@ -7,17 +7,17 @@
       "cards": [
         {
           "type": "flat-map",
-          "title": "Geographic Distribution — 2D Flat Map",
+          "title": "Geographic Distribution : 2D Flat Map",
           "dataUri": "/demo/maps/dq01map.json"
         },
         {
-          "type": "map",
-          "title": "Floats within 100 km of (0°N, 0°E) — 3D Globe View",
+          "type": "globe",
+          "title": "Floats within 100 km of (0°N, 0°E) : Globe View",
           "dataUri": "/demo/maps/dq01map.json"
         },
         {
           "type": "chart",
-          "title": "Salinity vs Depth — Selected Profiles",
+          "title": "Salinity vs Depth : Selected Profiles",
           "dataUri": "/demo/charts/dq01salinityprofiles.json"
         },
         {
