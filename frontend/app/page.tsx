@@ -13,7 +13,7 @@ export default function FloatChatPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showMobileReport, setShowMobileReport] = useState(false);
 
-  const handleQuestionSubmit = async (question: DemoQuestion) => {
+  const handleQuestionSubmit = (question: DemoQuestion) => {
     setActiveQuestion(question);
     setIsGenerating(true);
     setShowMobileReport(true);
