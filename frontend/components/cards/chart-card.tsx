@@ -84,16 +84,41 @@ export function ChartCard({ dataUri }: ChartCardProps) {
   }
 
   // Calculate ranges for scaling
+  const colors = theme === 'light' 
+    ? ["#4A90E2", "#475569", "#64748b", "#3b82f6", "#10b981"]
+    : ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"]
+
   const visibleData = chartData.traces.filter((trace) => visibleTraces.has(trace.id))
   const allValues = visibleData.flatMap((trace) => trace.values)
   const allDepths = visibleData.flatMap((trace) => trace.depths)
 
   if (allValues.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
-        <div className="text-center">
+      <div className="flex flex-col items-center justify-center h-64 bg-muted/20 rounded-lg">
+        <div className="text-center mb-4">
           <BarChart3 className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
           <p className="text-sm text-muted-foreground">No traces selected</p>
+        </div>
+        <div className="flex flex-wrap gap-2 justify-center">
+          {chartData.traces.map((trace, index) => {
+            const color = colors[index % colors.length]
+            return (
+              <Button
+                key={trace.id}
+                variant="ghost"
+                size="sm"
+                onClick={() => toggleTrace(trace.id)}
+                className="h-6 px-2 text-xs bg-accent/30"
+              >
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                  <span>{trace.float}</span>
+                  <EyeOff className="w-3 h-3" />
+                  <span className="ml-1">Select</span>
+                </div>
+              </Button>
+            )
+          })}
         </div>
       </div>
     )
@@ -103,10 +128,6 @@ export function ChartCard({ dataUri }: ChartCardProps) {
   const maxValue = Math.max(...allValues)
   const maxDepth = Math.max(...allDepths)
   const valueRange = maxValue - minValue
-
-  const colors = theme === 'light' 
-    ? ["#4A90E2", "#475569", "#64748b", "#3b82f6", "#10b981"]
-    : ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"]
 
   return (
     <div className="space-y-4">
@@ -237,38 +258,34 @@ export function ChartCard({ dataUri }: ChartCardProps) {
             })}
 
             {/* Tooltip */}
-            {hoveredPoint && (
-              <div className="absolute pointer-events-none z-20">
-                {(() => {
-                  const trace = chartData.traces.find((t) => t.id === hoveredPoint.traceId)
-                  if (!trace) return null
+            {hoveredPoint && (() => {
+              const trace = chartData.traces.find((t) => t.id === hoveredPoint.traceId)
+              if (!trace) return null
 
-                  const point = trace.depths.map((depth, i) => ({
-                    x: ((trace.values[i] - minValue) / valueRange) * 100,
-                    y: (depth / maxDepth) * 100,
-                    value: trace.values[i],
-                    depth,
-                  }))[hoveredPoint.pointIndex]
+              const point = trace.depths.map((depth, i) => ({
+                x: ((trace.values[i] - minValue) / valueRange) * 100,
+                y: (depth / maxDepth) * 100,
+                value: trace.values[i],
+                depth,
+              }))[hoveredPoint.pointIndex]
 
-                  return (
-                    <div
-                      className="bg-popover/95 backdrop-blur-sm text-popover-foreground px-3 py-2 rounded-lg shadow-xl border border-border text-xs"
-                      style={{
-                        left: `${point.x}%`,
-                        top: `${point.y}%`,
-                        transform: "translate(-50%, -120%)",
-                      }}
-                    >
-                      <div className="font-medium">{trace.float}</div>
-                      <div className="text-muted-foreground">Depth: {point.depth}m</div>
-                      <div className="text-muted-foreground">
-                        {chartData.variable}: {point.value.toFixed(2)} {chartData.units}
-                      </div>
-                    </div>
-                  )
-                })()}
-              </div>
-            )}
+              return (
+                <div
+                  className="absolute pointer-events-none z-20 bg-popover/95 backdrop-blur-sm text-popover-foreground px-3 py-2 rounded-lg shadow-xl border border-border text-xs"
+                  style={{
+                    left: `calc(${point.x}% - 12px)`,
+                    top: `calc(${point.y}% - 24px)`,
+                    minWidth: '120px',
+                  }}
+                >
+                  <div className="font-medium">{trace.float}</div>
+                  <div className="text-muted-foreground">Depth: {point.depth}m</div>
+                  <div className="text-muted-foreground">
+                    {chartData.variable}: {point.value.toFixed(2)} {chartData.units}
+                  </div>
+                </div>
+              )
+            })()}
           </div>
         </div>
 

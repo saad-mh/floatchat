@@ -9,7 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/theme-toggle";
-import type { DemoQuestion } from "@/types/demo";
+// Update DemoQuestion type to match JSON structure
+interface DemoQuestion {
+  id: string;
+  prompt: string;
+  primaryContentType: string;
+  cards: Array<any>;
+  querieGenerated?: string;
+}
 import demoData from "@/data/demo-questions.json";
 
 interface ChatInterfaceProps {
@@ -30,6 +37,7 @@ export function ChatInterface({
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const [showQueryId, setShowQueryId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -74,6 +82,7 @@ export function ChatInterface({
           timestamp: new Date(),
         };
         setMessages((prev) => [...prev, assistantMessage]);
+  setShowQueryId(null);
       }, 1500);
     } else {
       // Handle unrecognized question
@@ -159,32 +168,59 @@ export function ChatInterface({
         )}
 
         {/* Chat Messages */}
-        {messages.map((message) => (
-          <motion.div
-            key={message.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`flex ${
-              message.type === "user" ? "justify-end" : "justify-start"
-            }`}
-          >
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                message.type === "user"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-card text-card-foreground border border-border"
+        {messages.map((message, idx) => {
+          const isAssistant = message.type === "assistant";
+          // Only show the query toggle for the most recent assistant message that matches a demo question
+          let matchedQuestion: DemoQuestion | undefined = undefined;
+          const isLastAssistant = isAssistant && idx === messages.length - 1 && showQueryId !== null;
+          if (isLastAssistant) {
+            matchedQuestion = demoData.demo_questions.find((q) => q.id === showQueryId);
+          }
+          return (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex ${
+                message.type === "user" ? "justify-end" : "justify-start"
               }`}
             >
-              <p className="text-sm">{message.content}</p>
-              <p className="text-xs opacity-70 mt-1">
-                {message.timestamp.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
-            </div>
-          </motion.div>
-        ))}
+              <div
+                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                  message.type === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-card text-card-foreground border border-border"
+                }`}
+              >
+                <p className="text-sm">{message.content}</p>
+                <p className="text-xs opacity-70 mt-1">
+                  {message.timestamp.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+                {/* Query toggle for the last assistant message only */}
+                {isLastAssistant && matchedQuestion && (
+                  <div className="mt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs border-border"
+                      onClick={() => setShowQueryId(showQueryId === matchedQuestion.id ? null : matchedQuestion.id)}
+                    >
+                      {showQueryId === matchedQuestion.id ? "Hide Query" : "Show Query"}
+                    </Button>
+                    {showQueryId === matchedQuestion.id && (
+                      <div className="mt-2 p-2 rounded bg-muted text-xs font-mono whitespace-pre-wrap border border-border">
+                        {matchedQuestion.querieGenerated}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
         <div ref={messagesEndRef} />
       </div>
 

@@ -29,7 +29,7 @@ export default function FloatChatPage() {
             animate={{
               width: activeQuestion ? "33.333%" : "100%",
             }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
             className="flex-shrink-0 border border-border rounded-xl shadow-2xl bg-card/90 z-10"
           >
             <ChatInterface onQuestionSubmit={handleQuestionSubmit} isCompact={!!activeQuestion} />
@@ -42,7 +42,7 @@ export default function FloatChatPage() {
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "100%", opacity: 0 }}
-                transition={{ duration: 1, ease: "easeInOut" }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
                 className="flex-1 border border-border rounded-xl shadow-2xl bg-card/95 z-20"
                 style={{ marginLeft: '0px' }}
               >
