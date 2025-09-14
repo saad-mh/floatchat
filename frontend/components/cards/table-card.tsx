@@ -50,7 +50,6 @@ export function TableCard({ dataUri }: TableCardProps) {
   useEffect(() => {
     const loadTableData = async () => {
       if (!dataUri) {
-        // Generate enhanced sample table data for demo
         setTableData({
           headers: [
             "Float ID",

@@ -1,5 +1,7 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import { fetchDemoData } from "@/lib/demo-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { DemoCard } from "@/types/demo";
@@ -16,11 +18,54 @@ interface ReportCardProps {
 
 export function ReportCard({ card }: ReportCardProps) {
   // Helper to get demo points for dq01
-  const getEquatorDemoPoints = () => [
-    { lat: 0, lng: 0, label: "Equator", color: "#4A90E2" },
-    { lat: 2, lng: 3, label: "Float 1", color: "#10b981" },
-    { lat: -1.5, lng: -2.2, label: "Float 2", color: "#3b82f6" }
-  ];
+  // Helper to fetch points from card.dataUri.map
+  const [globePoints, setGlobePoints] = useState<Array<{ lat: number; lng: number; label?: string; color?: string }>>([]);
+
+  const [loadingGlobe, setLoadingGlobe] = useState(false);
+  const [globeError, setGlobeError] = useState<string | null>(null);
+  useEffect(() => {
+    async function fetchDemoCardData() {
+      // Only run for supported types with a dataUri
+      if (["globe", "map", "chart", "table", "summary"].includes(card.type) && card.dataUri) {
+        setLoadingGlobe(true);
+        setGlobeError(null);
+        try {
+          // Extract questionId and dataType from dataUri
+          // e.g. /demo/maps/dq01map.json, /demo/charts/dq01salinityprofiles.json
+          const match = card.dataUri.match(/\/([a-zA-Z0-9]+)(map|chart|table|summary)[^/]*\.json$/);
+          const questionId = match ? match[1] : null;
+          let dataType = null;
+          if (card.type === "globe" || card.type === "map") dataType = "map";
+          else if (card.type === "chart") dataType = "chart";
+          else if (card.type === "table") dataType = "table";
+          else if (card.type === "summary") dataType = "summary";
+          if (!questionId || !dataType) throw new Error("Could not determine questionId or dataType from dataUri");
+          const data = await fetchDemoData(questionId, dataType);
+          if (card.type === "globe") {
+            if (data && Array.isArray(data.markers)) {
+              setGlobePoints(
+                data.markers.map((m: any) => ({
+                  lat: m.lat,
+                  lng: m.lon ?? m.lng,
+                  label: m.label,
+                  color: m.color || "#4A90E2"
+                }))
+              );
+            } else {
+              setGlobePoints([]);
+              setGlobeError("No markers found in map data.");
+            }
+          }
+          // For other types, you could set state here as needed
+        } catch (e) {
+          setGlobePoints([]);
+          setGlobeError("Failed to load demo data.");
+        }
+        setLoadingGlobe(false);
+      }
+    }
+    fetchDemoCardData();
+  }, [card.type, card.dataUri]);
 
   const renderCardContent = () => {
     switch (card.type) {
@@ -30,11 +75,17 @@ export function ReportCard({ card }: ReportCardProps) {
         return <MapCard dataUri={card.dataUri} />;
       }
       case "globe": {
-        return <>
-            <div className="mt-4">
-              <GlobeCard points={getEquatorDemoPoints()} height={400} />
-            </div>
-          </>;
+        return (
+          <div className="mt-4">
+            {loadingGlobe ? (
+              <div className="p-4 text-muted-foreground">3D viewport loading</div>
+            ) : globeError ? (
+              <div className="p-4 text-destructive">{globeError}</div>
+            ) : (
+              <GlobeCard points={globePoints} height={400} />
+            )}
+          </div>
+        );
       }
       case "chart":
         return <ChartCard dataUri={card.dataUri} />;
