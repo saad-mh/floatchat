@@ -24,7 +24,6 @@ export default function CatsPage() {
     fetchCats();
   }, []);
 
-  // Silly captions for cats
   const captions = [
     "Professional napper",
     "Plotting world domination",
