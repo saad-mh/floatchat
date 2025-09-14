@@ -172,9 +172,17 @@ export function ChatInterface({
           const isAssistant = message.type === "assistant";
           // Only show the query toggle for the most recent assistant message that matches a demo question
           let matchedQuestion: DemoQuestion | undefined = undefined;
-          const isLastAssistant = isAssistant && idx === messages.length - 1 && showQueryId !== null;
+          const isLastAssistant = isAssistant && idx === messages.length - 1;
+          // Find the last submitted question id from user messages
+          let lastUserPrompt = "";
+          for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].type === "user") {
+              lastUserPrompt = messages[i].content;
+              break;
+            }
+          }
           if (isLastAssistant) {
-            matchedQuestion = demoData.demo_questions.find((q) => q.id === showQueryId);
+            matchedQuestion = demoData.demo_questions.find((q) => q.prompt.toLowerCase() === lastUserPrompt.toLowerCase());
           }
           return (
             <motion.div
