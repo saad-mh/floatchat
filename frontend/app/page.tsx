@@ -29,6 +29,7 @@ export default function FloatChatPage() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="h-screen bg-background overflow-hidden">
       {/* Desktop Layout */}
       <div className="hidden md:flex h-full">
@@ -103,4 +104,38 @@ export default function FloatChatPage() {
       </div>
     </div>
   );
+=======
+      <div className="h-screen bg-background overflow-hidden flex items-center justify-center">
+        <div className="flex h-[90vh] w-[90vw] gap-x-8 items-stretch">
+          {/* Chat Interface */}
+          <motion.div
+            initial={{ width: "100%" }}
+            animate={{
+              width: activeQuestion ? "33.333%" : "100%",
+            }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="flex-shrink-0 border border-border rounded-xl shadow-2xl bg-card/90 z-10"
+          >
+            <ChatInterface onQuestionSubmit={handleQuestionSubmit} isCompact={!!activeQuestion} />
+          </motion.div>
+
+          {/* Report Panel */}
+          <AnimatePresence>
+            {activeQuestion && (
+              <motion.div
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0 }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                className="flex-1 border border-border rounded-xl shadow-2xl bg-card/95 z-20"
+                style={{ marginLeft: '0px' }}
+              >
+                <ReportPanel question={activeQuestion} isGenerating={isGenerating} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+  )
+>>>>>>> a99ec0ff96f1cea4fca7cf576ef63927fb8a3b0d
 }

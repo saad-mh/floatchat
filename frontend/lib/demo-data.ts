@@ -12,9 +12,9 @@ const demoDataSets = {
     map: {
       center: { lat: 0, lon: 0, zoom: 5 },
       markers: [
-        { id: "WMO_5901234", lat: 0.12, lon: -0.03, label: "WMO_5901234", popup: "3 profiles — Mar 2023" },
-        { id: "WMO_5902345", lat: -0.2, lon: 0.8, label: "WMO_5902345", popup: "2 profiles — Mar 2023" },
-        { id: "WMO_5903456", lat: 0.05, lon: 0.15, label: "WMO_5903456", popup: "1 profile — Mar 2023" },
+        { id: "WMO_5901234", lat: 0.12, lon: -0.03, label: "WMO_5901234", popup: "3 profiles - Mar 2023" },
+        { id: "WMO_5902345", lat: -0.2, lon: 0.8, label: "WMO_5902345", popup: "2 profiles - Mar 2023" },
+        { id: "WMO_5903456", lat: 0.05, lon: 0.15, label: "WMO_5903456", popup: "1 profile - Mar 2023" },
       ],
       bbox: null,
     },

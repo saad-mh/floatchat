@@ -22,6 +22,8 @@
           "provenance": ["WMO_5901234.nc", "WMO_5902345.nc"]
         }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM profiles WHERE ABS(latitude) < 5 AND ABS(longitude) < 5 AND EXTRACT(MONTH FROM date) = 3 AND EXTRACT(YEAR FROM date) = 2023 AND parameter = 'salinity';"
     },
 
     {
@@ -37,6 +39,8 @@
         { "type": "map", "title": "Profile Locations (Arabian Sea)", "dataUri": "/demo/maps/dq02_map.json" },
         { "type": "table", "title": "BGC Stats (mean, median, std)", "dataUri": "/demo/tables/dq02_bgc_stats.json" }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM bgc_profiles WHERE region = 'Arabian Sea' AND date >= DATE_SUB(CURRENT_DATE, INTERVAL 6 MONTH);"
     },
 
     {
@@ -52,6 +56,8 @@
           "provenance": ["WMO_5901234.nc"]
         }
       ]
+        ,
+        "querieGenerated": "SELECT *, SQRT(POW(latitude-15.5,2)+POW(longitude-70.2,2)) AS distance FROM floats ORDER BY distance ASC LIMIT 5;"
     },
 
     {
@@ -71,6 +77,8 @@
           "provenance": ["WMO_5901234_cycle182.nc"]
         }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM profiles WHERE float_id = 'WMO_5901234' AND cycle BETWEEN 182 AND 184 AND parameter = 'temperature';"
     },
 
     {
@@ -85,6 +93,8 @@
         },
         { "type": "map", "title": "Sampling locations contributing to heatmap", "dataUri": "/demo/maps/dq05_map.json" }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM profiles WHERE latitude = -10 AND longitude = 80 AND parameter = 'oxygen' AND date >= DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR);"
     },
 
     {
@@ -104,6 +114,8 @@
           "provenance": ["aggregated_stats_2024_q3.json"]
         }
       ]
+        ,
+        "querieGenerated": "SELECT salinity, temperature FROM profiles WHERE region = 'Southern Indian Ocean' AND depth > 200;"
     },
 
     {
@@ -118,6 +130,8 @@
         },
         { "type": "map", "title": "Locations of these observations", "dataUri": "/demo/maps/dq07_map.json" }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM bgc_profiles WHERE parameter = 'chlorophyll' AND value > 1.5 AND EXTRACT(MONTH FROM date) = 7 AND EXTRACT(YEAR FROM date) = 2024;"
     },
 
     {
@@ -137,6 +151,8 @@
           "provenance": ["WMO_5902345_deploy.json"]
         }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM deployments WHERE float_id = 'WMO_5902345'; SELECT * FROM trajectories WHERE float_id = 'WMO_5902345';"
     },
 
     {
@@ -151,6 +167,8 @@
         },
         { "type": "summary", "title": "File", "text": "Original NetCDF: WMO_5901234_cycle184.nc" }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM profiles WHERE profile_id = 'P_5901234_184';"
     },
 
     {
@@ -166,6 +184,8 @@
         },
         { "type": "table", "title": "QC Details", "dataUri": "/demo/tables/dq10_qc_details.json" }
       ]
+        ,
+        "querieGenerated": "SELECT * FROM qc_reports WHERE float_id = 'WMO_5905678' AND EXTRACT(YEAR FROM date) = 2024;"
     }
   ]
 }

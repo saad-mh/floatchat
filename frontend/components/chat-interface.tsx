@@ -104,6 +104,7 @@ export function ChatInterface({
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
+<<<<<<< HEAD
       <div className="p-4 md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-3">
@@ -118,6 +119,16 @@ export function ChatInterface({
                 AI Ocean Data Interface
               </p>
             </div>
+=======
+      <div className="p-6 border-b border-border">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+            <MessageCircle className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-foreground">FloatChat</h1>
+            <p className="text-sm text-muted-foreground">AI Ocean Data Interface</p>
+>>>>>>> a99ec0ff96f1cea4fca7cf576ef63927fb8a3b0d
           </div>
           <ThemeToggle />
         </div>
