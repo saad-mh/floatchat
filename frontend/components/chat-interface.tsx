@@ -113,53 +113,61 @@ export function ChatInterface({
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="p-6 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-            <MessageCircle className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-foreground">FloatChat</h1>
-            <p className="text-sm text-muted-foreground">AI Ocean Data Interface</p>
+      <div className="p-4 md:p-6 border-b border-border">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+              <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-lg md:text-xl font-bold text-foreground">
+                FloatChat
+              </h1>
+              <p className="text-xs md:text-sm text-muted-foreground">
+                AI Ocean Data Interface
+              </p>
+            </div>
           </div>
           <ThemeToggle />
         </div>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
         {messages.length === 0 && !isCompact && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-12"
+            className="text-center py-6 md:py-12"
           >
-            <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-6">
-              <MessageCircle className="w-8 h-8 text-primary" />
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+              <MessageCircle className="w-6 h-6 md:w-8 md:h-8 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-3">
+            <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2 md:mb-3">
               Welcome to FloatChat
             </h2>
-            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            <p className="text-muted-foreground mb-6 md:mb-8 max-w-md mx-auto px-4 text-sm md:text-base">
               Ask questions about Argo ocean float data and get interactive
               visualizations and analysis.
             </p>
 
             {/* Demo Question Suggestions */}
-            <div className="space-y-3 max-w-2xl mx-auto">
-              <p className="text-sm font-medium text-foreground mb-4">
+            <div className="space-y-3 max-w-2xl mx-auto px-4">
+              <p className="text-sm font-medium text-foreground mb-3 md:mb-4">
                 Try these demo questions:
               </p>
-              <div className="grid gap-2">
+              <div className="grid gap-2 md:gap-3">
                 {demoData.demo_questions.slice(0, 4).map((question) => (
                   <Card
                     key={question.id}
-                    className="p-3 cursor-pointer hover:bg-accent/50 transition-colors text-left"
+                    className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
                     onClick={() =>
                       handleSuggestionClick(question as DemoQuestion)
                     }
                   >
-                    <p className="text-sm text-foreground">{question.prompt}</p>
+                    <p className="text-xs md:text-sm text-foreground leading-relaxed">
+                      {question.prompt}
+                    </p>
                   </Card>
                 ))}
               </div>
@@ -233,34 +241,34 @@ export function ChatInterface({
       </div>
 
       {/* Input Area */}
-      <div className="p-6 border-t border-border">
-        <form onSubmit={handleSubmit} className="flex gap-3">
+      <div className="p-4 md:p-6 border-t border-border">
+        <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask about ocean data..."
-            className="flex-1 bg-input border-border text-foreground placeholder:text-muted-foreground"
+            className="flex-1 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm md:text-base"
           />
           <Button
             type="submit"
-            size="icon"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            size="default"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 md:px-6 whitespace-nowrap"
           >
             <Send className="w-4 h-4" />
           </Button>
         </form>
 
         {isCompact && (
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-1 md:gap-2">
             {demoData.demo_questions.slice(0, 3).map((question) => (
               <Button
                 key={question.id}
                 variant="outline"
                 size="sm"
                 onClick={() => handleSuggestionClick(question as DemoQuestion)}
-                className="text-xs border-border hover:bg-accent/50"
+                className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
               >
-                {question.prompt.slice(0, 30)}...
+                {question.prompt.slice(0, 20)}...
               </Button>
             ))}
           </div>

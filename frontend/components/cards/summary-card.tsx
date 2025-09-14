@@ -55,21 +55,21 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       {/* Key insights */}
       {insights.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
           {insights.map((insight, index) => (
-            <Card key={index} className="p-3 bg-muted/20 border-border">
+            <Card key={index} className="p-2 md:p-3 bg-muted/20 border-border">
               <div className="flex items-center gap-2">
                 {insight.type === "data" ? (
-                  <TrendingUp className="w-4 h-4 text-primary" />
+                  <TrendingUp className="w-3 h-3 md:w-4 md:h-4 text-primary" />
                 ) : (
-                  <Info className="w-4 h-4 text-primary" />
+                  <Info className="w-3 h-3 md:w-4 md:h-4 text-primary" />
                 )}
                 <div>
                   <div className="text-xs text-muted-foreground">{insight.label}</div>
-                  <div className="text-sm font-medium text-foreground">{insight.value}</div>
+                  <div className="text-xs md:text-sm font-medium text-foreground">{insight.value}</div>
                 </div>
               </div>
             </Card>
@@ -78,12 +78,12 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
       )}
 
       {/* Main summary text */}
-      <div className="relative">
+      <div className="relative group">
         <div className="prose prose-sm max-w-none">
-          <div className="bg-muted/20 rounded-lg p-4 border border-border">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <FileText className="w-4 h-4 text-primary" />
+          <div className="bg-muted/20 rounded-lg p-3 md:p-4 border border-border">
+            <div className="flex items-start gap-2 md:gap-3">
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <FileText className="w-3 h-3 md:w-4 md:h-4 text-primary" />
               </div>
               <div className="flex-1">
                 <p className="text-foreground leading-relaxed text-sm mb-0">{text}</p>
@@ -97,7 +97,7 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
           variant="ghost"
           size="sm"
           onClick={handleCopyText}
-          className="absolute top-2 right-2 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute top-1 right-1 md:top-2 md:right-2 h-6 w-6 p-0 opacity-70 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
         >
           {copiedText ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
         </Button>

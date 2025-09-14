@@ -1,24 +1,46 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Loader2 } from "lucide-react"
-import type { DemoQuestion } from "@/types/demo"
-import { ReportCard } from "@/components/report-card"
+import { motion } from "framer-motion";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { DemoQuestion } from "@/types/demo";
+import { ReportCard } from "@/components/report-card";
 
 interface ReportPanelProps {
-  question: DemoQuestion
-  isGenerating: boolean
+  question: DemoQuestion;
+  isGenerating: boolean;
+  onBack?: () => void;
 }
 
-export function ReportPanel({ question, isGenerating }: ReportPanelProps) {
+export function ReportPanel({
+  question,
+  isGenerating,
+  onBack,
+}: ReportPanelProps) {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="p-6 border-b border-border">
+      <div className="p-3 md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-foreground">Analysis Report</h2>
-            <p className="text-sm text-muted-foreground mt-1">{question.prompt}</p>
+          <div className="flex items-center gap-3">
+            {onBack && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onBack}
+                className="md:hidden"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+            )}
+            <div>
+              <h2 className="text-base md:text-lg font-semibold text-foreground">
+                Analysis Report
+              </h2>
+              <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                {question.prompt}
+              </p>
+            </div>
           </div>
           {isGenerating && (
             <div className="flex items-center gap-2 text-primary">
@@ -30,12 +52,12 @@ export function ReportPanel({ question, isGenerating }: ReportPanelProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-3 md:p-6">
         {isGenerating ? (
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
               <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
-              <p className="text-muted-foreground">Analyzing data...</p>
+              <p className="text-muted-foreground">Analyzing ocean data...</p>
             </div>
           </div>
         ) : (
@@ -43,7 +65,7 @@ export function ReportPanel({ question, isGenerating }: ReportPanelProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-4 md:space-y-6"
           >
             {question.cards.map((card, index) => (
               <motion.div
@@ -59,5 +81,5 @@ export function ReportPanel({ question, isGenerating }: ReportPanelProps) {
         )}
       </div>
     </div>
-  )
+  );
 }
