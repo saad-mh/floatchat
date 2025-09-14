@@ -99,8 +99,12 @@ export function ChatInterface({
     }
   };
 
+  // Track which suggestions have been used
+  const [usedSuggestions, setUsedSuggestions] = useState<string[]>([]);
+
   const handleSuggestionClick = (question: DemoQuestion) => {
     setInputValue(question.prompt);
+    setUsedSuggestions((prev) => [...prev, question.id]);
   };
 
   return (
@@ -150,19 +154,39 @@ export function ChatInterface({
                 Try these demo questions:
               </p>
               <div className="grid gap-2 md:gap-3">
-                {demoData.demo_questions.slice(0, 4).map((question) => (
-                  <Card
-                    key={question.id}
-                    className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
-                    onClick={() =>
-                      handleSuggestionClick(question as DemoQuestion)
+                {(() => {
+                  // Show 4 suggestions, replacing used ones with unused
+                  const suggestions: DemoQuestion[] = [];
+                  const usedSet = new Set(usedSuggestions);
+                  let i = 0, j = 0;
+                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
+                    const q = demoData.demo_questions[j];
+                    if (!usedSet.has(q.id)) {
+                      suggestions.push(q as DemoQuestion);
                     }
-                  >
-                    <p className="text-xs md:text-sm text-foreground leading-relaxed">
-                      {question.prompt}
-                    </p>
-                  </Card>
-                ))}
+                    j++;
+                  }
+                  // If not enough unused, fill with used
+                  j = 0;
+                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
+                    const q = demoData.demo_questions[j];
+                    if (usedSet.has(q.id)) {
+                      suggestions.push(q as DemoQuestion);
+                    }
+                    j++;
+                  }
+                  return suggestions.map((question) => (
+                    <Card
+                      key={question.id}
+                      className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
+                      onClick={() => handleSuggestionClick(question as DemoQuestion)}
+                    >
+                      <p className="text-xs md:text-sm text-foreground leading-relaxed">
+                        {question.prompt}
+                      </p>
+                    </Card>
+                  ));
+                })()}
               </div>
             </div>
           </motion.div>

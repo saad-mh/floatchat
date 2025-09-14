@@ -146,7 +146,6 @@ export function TableCard({ dataUri }: TableCardProps) {
       }
 
       try {
-        // In a real implementation, this would fetch from the dataUri
         const response = await fetch(dataUri);
         if (!response.ok) {
           throw new Error("Failed to load table data");

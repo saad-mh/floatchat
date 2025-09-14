@@ -45,7 +45,7 @@ export function ReportPanel({
           {isGenerating && (
             <div className="flex items-center gap-2 text-primary">
               <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="text-sm">Generating...</span>
+              <span className="text-sm">Generating</span>
             </div>
           )}
         </div>

@@ -1,10 +1,11 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
-import { BarChart3, TrendingDown, Info, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { ChartData } from "@/types/demo";
+import { Card } from "@/components/ui/card";
+import { Download, TrendingDown } from "lucide-react";
 import { fetchDemoData } from "@/lib/demo-data";
 import { useTheme } from "next-themes";
 
@@ -14,14 +15,11 @@ interface ChartCardProps {
 
 export function ChartCard({ dataUri }: ChartCardProps) {
   const { theme } = useTheme();
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [chartData, setChartData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<{ traceIdx: number; pointIdx: number } | null>(null);
   const [visibleTraces, setVisibleTraces] = useState<Set<string>>(new Set());
-  const [hoveredPoint, setHoveredPoint] = useState<{
-    traceId: string;
-    pointIndex: number;
-  } | null>(null);
 
   useEffect(() => {
     const loadChartData = async () => {
@@ -34,341 +32,217 @@ export function ChartCard({ dataUri }: ChartCardProps) {
           ? "dq04"
           : "dq01";
         const data = await fetchDemoData(questionId, "chart");
-
-        if (data) {
-          setChartData(data);
-          // Initially show all traces
-          setVisibleTraces(new Set(data.traces.map((trace: any) => trace.id)));
-        } else {
-          setError("No chart data available");
-        }
+        setChartData(data);
+        setVisibleTraces(new Set(data.traces.map((trace: any) => trace.id)));
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load chart data"
-        );
+        setError(err instanceof Error ? err.message : "Failed to load chart data");
       } finally {
         setLoading(false);
       }
     };
-
     loadChartData();
   }, [dataUri]);
 
-  const toggleTrace = (traceId: string) => {
-    setVisibleTraces((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(traceId)) {
-        newSet.delete(traceId);
-      } else {
-        newSet.add(traceId);
-      }
-      return newSet;
+  const handleDownload = () => {
+    if (!chartData) return;
+    let csv = `float,depth,value\n`;
+    chartData.traces.forEach((trace: any) => {
+      trace.depths.forEach((depth: number, i: number) => {
+        csv += `${trace.float},${depth},${trace.values[i]}\n`;
+      });
     });
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${chartData.variable}_profiles.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
+      <Card className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
         <div className="text-center">
-          <BarChart3 className="w-8 h-8 text-muted-foreground mx-auto mb-2 animate-pulse" />
-          <p className="text-sm text-muted-foreground">Loading chart...</p>
+          <TrendingDown className="w-8 h-8 text-muted-foreground mx-auto mb-2 animate-pulse" />
+          <p className="text-sm text-muted-foreground">Creating charts</p>
         </div>
-      </div>
+      </Card>
     );
   }
 
   if (error || !chartData) {
     return (
-      <div className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
+      <Card className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
         <div className="text-center">
-          <BarChart3 className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">
-            {error || "No chart data available"}
-          </p>
+          <TrendingDown className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+          <p className="text-sm text-muted-foreground">{error || "No chart data available"}</p>
         </div>
-      </div>
+      </Card>
     );
   }
 
-  // Calculate ranges for scaling
-  const colors =
-    theme === "light"
-      ? ["#4A90E2", "#475569", "#64748b", "#3b82f6", "#10b981"]
-      : ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"];
+  // Chart colors
+  const colors = theme === "light"
+    ? ["#4A90E2", "#475569", "#64748b", "#3b82f6", "#10b981"]
+    : ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"];
 
-  const visibleData = chartData.traces.filter((trace) =>
-    visibleTraces.has(trace.id)
-  );
-  const allValues = visibleData.flatMap((trace) => trace.values);
-  const allDepths = visibleData.flatMap((trace) => trace.depths);
-
-  if (allValues.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 bg-muted/20 rounded-lg">
-        <div className="text-center mb-4">
-          <BarChart3 className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">No traces selected</p>
-        </div>
-        <div className="flex flex-wrap gap-2 justify-center">
-          {chartData.traces.map((trace, index) => {
-            const color = colors[index % colors.length];
-            return (
-              <Button
-                key={trace.id}
-                variant="ghost"
-                size="sm"
-                onClick={() => toggleTrace(trace.id)}
-                className="h-6 px-2 text-xs bg-accent/30"
-              >
-                <div className="flex items-center gap-1">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: color }}
-                  />
-                  <span>{trace.float}</span>
-                  <EyeOff className="w-3 h-3" />
-                  <span className="ml-1">Select</span>
-                </div>
-              </Button>
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-
+  // Find min/max for axes
+  const allValues = chartData.traces.flatMap((t: any) => t.values);
+  const allDepths = chartData.traces.flatMap((t: any) => t.depths);
   const minValue = Math.min(...allValues);
   const maxValue = Math.max(...allValues);
+  const minDepth = Math.min(...allDepths);
   const maxDepth = Math.max(...allDepths);
-  const valueRange = maxValue - minValue;
 
+  // Chart area
   return (
-    <div className="space-y-4">
-      {/* Chart header with controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          <div className="flex items-center gap-2">
-            <TrendingDown className="w-4 h-4 text-primary" />
-            <span className="text-xs sm:text-sm font-medium text-foreground truncate">
-              {chartData.variable} ({chartData.units})
-            </span>
-          </div>
-          <Badge
-            variant="secondary"
-            className="text-xs px-2 py-1 whitespace-nowrap"
-          >
-            {visibleData.length} of {chartData.traces.length} profiles
-          </Badge>
+    <Card className="space-y-4 p-4 w-300">
+      {/* Header */}
+      <div className="flex items-center gap-2 justify-between">
+        <div className="flex items-center gap-2">
+          <TrendingDown className="w-4 h-4 text-primary" />
+          <span className="text-xs sm:text-sm font-medium text-foreground truncate">
+            {chartData.variable} ({chartData.units})
+          </span>
         </div>
-
-        {/* Legend controls */}
-        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-2 sm:pb-0">
-          {chartData.traces.map((trace, index) => {
-            const isVisible = visibleTraces.has(trace.id);
-            const color = colors[index % colors.length];
-
-            return (
-              <Button
-                key={trace.id}
-                variant="ghost"
-                size="sm"
-                onClick={() => toggleTrace(trace.id)}
-                className={`h-6 px-2 text-xs ${
-                  isVisible ? "bg-accent/50" : "opacity-50"
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <div
-                    className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: color }}
-                  />
-                  <span className="text-xs">{trace.float}</span>
-                  {isVisible ? (
-                    <Eye className="w-3 h-3 flex-shrink-0" />
-                  ) : (
-                    <EyeOff className="w-3 h-3 flex-shrink-0" />
-                  )}
-                </div>
-              </Button>
-            );
-          })}
-        </div>
+        <Badge variant="secondary" className="text-xs px-2 py-1 whitespace-nowrap">
+          {Array.from(visibleTraces).length} of {chartData.traces.length} profiles
+        </Badge>
+        <Button variant="outline" size="sm" className="flex items-center gap-1 text-xs border-border" onClick={handleDownload}>
+          <Download className="w-4 h-4" /> Download
+        </Button>
       </div>
 
-      {/* Chart area */}
-      <div className="h-56 sm:h-64 md:h-72 bg-muted/20 rounded-lg p-3 sm:p-4 relative overflow-hidden">
-        <div className="flex h-full">
-          {/* Y-axis (Depth) */}
-          <div className="w-8 sm:w-12 flex flex-col justify-between text-xs text-muted-foreground pr-2 sm:pr-3">
-            <span className="font-mono text-xs">0m</span>
-            <span className="font-mono text-xs">
-              {Math.round(maxDepth / 4)}m
-            </span>
-            <span className="font-mono text-xs">
-              {Math.round(maxDepth / 2)}m
-            </span>
-            <span className="font-mono text-xs">
-              {Math.round((3 * maxDepth) / 4)}m
-            </span>
-            <span className="font-mono text-xs">{maxDepth}m</span>
-          </div>
+      {/* Profile toggles */}
+      <div className="flex flex-wrap gap-2 mb-2 justify-center">
+        {chartData.traces.map((trace: any, idx: number) => {
+          const isVisible = visibleTraces.has(trace.id);
+          const color = colors[idx % colors.length];
+          return (
+            <Button
+              key={trace.id}
+              variant={isVisible ? "default" : "outline"}
+              size="sm"
+              className={`text-xs px-2 py-1 flex items-center gap-1 border ${isVisible ? "border-primary" : "border-border opacity-60"}`}
+              style={{ backgroundColor: isVisible ? color + "22" : undefined, color: color }}
+              onClick={() => {
+                setVisibleTraces(prev => {
+                  const newSet = new Set(prev);
+                  if (newSet.has(trace.id)) {
+                    newSet.delete(trace.id);
+                  } else {
+                    newSet.add(trace.id);
+                  }
+                  return newSet;
+                });
+              }}
+            >
+              <span className="font-mono">{trace.float}</span>
+              <span>{isVisible ? "Hide" : "Show"}</span>
+            </Button>
+          );
+        })}
+      </div>
 
-          {/* Chart plotting area */}
-          <div className="flex-1 relative border-l border-b border-border bg-gradient-to-b from-transparent to-muted/10">
-            {/* Grid lines */}
-            <div className="absolute inset-0">
-              {/* Horizontal grid lines (depth) */}
-              {[0, 25, 50, 75, 100].map((percent) => (
-                <div
-                  key={`h-${percent}`}
-                  className="absolute w-full border-t border-border/20"
-                  style={{ top: `${percent}%` }}
-                />
-              ))}
-              {/* Vertical grid lines (values) */}
-              {[0, 25, 50, 75, 100].map((percent) => (
-                <div
-                  key={`v-${percent}`}
-                  className="absolute h-full border-l border-border/20"
-                  style={{ left: `${percent}%` }}
-                />
-              ))}
+      {/* Chart */}
+      <div className="flex justify-center items-center w-full">
+        <div className="relative h-64 w-full max-w-5xl">
+          {/* Chart SVG (line/point) */}
+          <svg className="absolute inset-0 w-full h-full">
+          {/* Axes */}
+          {/* Responsive axes: use viewBox and scale to container */}
+          <line x1="40" y1="10" x2="40" y2="230" stroke="#ccc" strokeWidth="2" />
+          <line x1="40" y1="230" x2="calc(100% - 40)" y2="230" stroke="#ccc" strokeWidth="2" />
+
+          {/* Y-axis labels (depth) */}
+          {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
+            <text key={i} x={10} y={230 - p * 220} fontSize="10" fill="#888">{Math.round(minDepth + p * (maxDepth - minDepth))}m</text>
+          ))}
+
+          {/* X-axis labels (value) */}
+          {(() => {
+            const chartWidth = 900; // Use fixed width for SVG
+            return [0, 0.5, 1].map((p, i) => (
+              <text key={i} x={40 + p * chartWidth} y={245} fontSize="10" fill="#888">{(minValue + p * (maxValue - minValue)).toFixed(2)}</text>
+            ));
+          })()}
+
+          {/* Traces */}
+          {chartData.traces.map((trace: any, traceIdx: number) => {
+            if (!visibleTraces.has(trace.id)) return null;
+            const color = colors[traceIdx % colors.length];
+            // Responsive width
+            const chartWidth = window.innerWidth > 900 ? 900 : 320;
+            // Map data points to chart coordinates
+            const points = trace.depths.map((depth: number, i: number): { x: number; y: number; value: number; depth: number; idx: number } => {
+              const x = 40 + ((trace.values[i] - minValue) / (maxValue - minValue)) * chartWidth;
+              const y = 230 - ((depth - minDepth) / (maxDepth - minDepth)) * 220;
+              return { x, y, value: trace.values[i], depth, idx: i };
+            });
+            // Line path
+            const linePath = points.map((p: { x: number; y: number }, i: number) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
+            return (
+              <g key={trace.id}>
+                {/* Line */}
+                <path d={linePath} stroke={color} strokeWidth="2" fill="none" />
+                {/* Points */}
+                {points.map((p: { x: number; y: number; value: number; depth: number; idx: number }, i: number) => (
+                  <circle
+                    key={i}
+                    cx={p.x}
+                    cy={p.y}
+                    r={hovered?.traceIdx === traceIdx && hovered?.pointIdx === i ? 7 : 5}
+                    fill={color}
+                    stroke="#fff"
+                    strokeWidth="1"
+                    style={{ cursor: "pointer" }}
+                    onMouseEnter={() => setHovered({ traceIdx, pointIdx: i })}
+                    onMouseLeave={() => setHovered(null)}
+                  />
+                ))}
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Tooltip */}
+        {hovered && (() => {
+          const trace = chartData.traces[hovered.traceIdx];
+          const value = trace.values[hovered.pointIdx];
+          const depth = trace.depths[hovered.pointIdx];
+          const color = colors[hovered.traceIdx % colors.length];
+          // Responsive width
+          const chartWidth = window.innerWidth > 900 ? 900 : 320;
+          // Chart coordinates
+          const x = 40 + ((value - minValue) / (maxValue - minValue)) * chartWidth;
+          const y = 230 - ((depth - minDepth) / (maxDepth - minDepth)) * 220;
+          return (
+            <div
+              className="absolute z-10 px-3 py-2 rounded-lg shadow-xl border border-border text-xs bg-popover/95 text-popover-foreground"
+              style={{ left: x + 10, top: y - 40, minWidth: 120, pointerEvents: "none" }}
+            >
+              <div className="font-medium" style={{ color }}>{trace.float}</div>
+              <div className="text-muted-foreground">Depth: {depth}m</div>
+              <div className="text-muted-foreground">{chartData.variable}: {value.toFixed(2)} {chartData.units}</div>
             </div>
-
-            {/* Profile traces */}
-            {visibleData.map((trace, traceIndex) => {
-              const color =
-                colors[
-                  chartData.traces.findIndex((t) => t.id === trace.id) %
-                    colors.length
-                ];
-              const points = trace.depths.map((depth, i) => {
-                const x = ((trace.values[i] - minValue) / valueRange) * 100;
-                const y = (depth / maxDepth) * 100;
-                return { x, y, value: trace.values[i], depth };
-              });
-
-              return (
-                <div key={trace.id} className="absolute inset-0">
-                  {/* Profile line */}
-                  <svg className="w-full h-full overflow-visible">
-                    <defs>
-                      <filter id={`glow-${trace.id}`}>
-                        <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-                        <feMerge>
-                          <feMergeNode in="coloredBlur" />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-                    </defs>
-
-                    {/* Connecting line */}
-                    <polyline
-                      points={points.map((p) => `${p.x}%,${p.y}%`).join(" ")}
-                      fill="none"
-                      stroke={color}
-                      strokeWidth="2"
-                      className="drop-shadow-sm"
-                      style={{ filter: `url(#glow-${trace.id})` }}
-                    />
-
-                    {/* Data points */}
-                    {points.map((point, i) => (
-                      <circle
-                        key={i}
-                        cx={`${point.x}%`}
-                        cy={`${point.y}%`}
-                        r={
-                          hoveredPoint?.traceId === trace.id &&
-                          hoveredPoint?.pointIndex === i
-                            ? "6"
-                            : "4"
-                        }
-                        fill={color}
-                        stroke="white"
-                        strokeWidth="1"
-                        className="cursor-pointer transition-all duration-200 drop-shadow-sm"
-                        onMouseEnter={() =>
-                          setHoveredPoint({ traceId: trace.id, pointIndex: i })
-                        }
-                        onMouseLeave={() => setHoveredPoint(null)}
-                      />
-                    ))}
-                  </svg>
-                </div>
-              );
-            })}
-
-            {/* Tooltip */}
-            {hoveredPoint &&
-              (() => {
-                const trace = chartData.traces.find(
-                  (t) => t.id === hoveredPoint.traceId
-                );
-                if (!trace) return null;
-
-                const point = trace.depths.map((depth, i) => ({
-                  x: ((trace.values[i] - minValue) / valueRange) * 100,
-                  y: (depth / maxDepth) * 100,
-                  value: trace.values[i],
-                  depth,
-                }))[hoveredPoint.pointIndex];
-
-                return (
-                  <div
-                    className="absolute pointer-events-none z-20 bg-popover/95 backdrop-blur-sm text-popover-foreground px-3 py-2 rounded-lg shadow-xl border border-border text-xs"
-                    style={{
-                      left: `calc(${point.x}% - 12px)`,
-                      top: `calc(${point.y}% - 24px)`,
-                      minWidth: "120px",
-                    }}
-                  >
-                    <div className="font-medium">{trace.float}</div>
-                    <div className="text-muted-foreground">
-                      Depth: {point.depth}m
-                    </div>
-                    <div className="text-muted-foreground">
-                      {chartData.variable}: {point.value.toFixed(2)}{" "}
-                      {chartData.units}
-                    </div>
-                  </div>
-                );
-              })()}
-          </div>
-        </div>
-
-        {/* X-axis labels */}
-        <div className="absolute -bottom-5 sm:-bottom-6 left-8 sm:left-12 right-0 flex justify-between text-xs text-muted-foreground font-mono">
-          <span className="text-xs">{minValue.toFixed(2)}</span>
-          <span className="text-xs hidden sm:inline">
-            {((minValue + maxValue) / 2).toFixed(2)}
-          </span>
-          <span className="text-xs">{maxValue.toFixed(2)}</span>
-        </div>
-
-        {/* X-axis title */}
-        <div className="absolute -bottom-8 sm:-bottom-10 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground truncate">
-          {chartData.variable} ({chartData.units})
+          );
+        })()}
         </div>
       </div>
 
       {/* Chart statistics */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-          <div className="flex items-center gap-1">
-            <Info className="w-3 h-3" />
-            <span className="truncate">
-              Range: {minValue.toFixed(2)} - {maxValue.toFixed(2)}{" "}
-              {chartData.units}
-            </span>
-          </div>
-          <div className="whitespace-nowrap">Max depth: {maxDepth}m</div>
+        <div className="flex items-center gap-2">
+          <span>Range: {minValue.toFixed(2)} - {maxValue.toFixed(2)} {chartData.units}</span>
+          <span className="ml-4">Max depth: {maxDepth}m</span>
         </div>
-        <div className="whitespace-nowrap">
-          {visibleData.reduce((sum, trace) => sum + trace.values.length, 0)}{" "}
-          data points
+        <div>
+          {chartData.traces.reduce((sum: number, t: any) => sum + t.values.length, 0)} data points
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

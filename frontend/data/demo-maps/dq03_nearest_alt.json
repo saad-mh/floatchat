@@ -1,0 +1,5 @@
+[
+  { "lat": 15.5, "lng": 70.2, "label": "Query Point", "color": "#f43f5e" },
+  { "lat": 15.6, "lng": 70.3, "label": "Nearest Float X", "color": "#3b82f6" },
+  { "lat": 15.4, "lng": 70.1, "label": "Nearest Float Y", "color": "#f59e42" }
+]

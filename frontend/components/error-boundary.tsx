@@ -28,8 +28,6 @@ class ErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.warn("Error caught by ErrorBoundary:", error, errorInfo);
-
-    // Don't throw for Plotly scroll zoom errors - just log them
     if (
       error.message.includes("_scrollZoom") ||
       error.message.includes("plotly")
