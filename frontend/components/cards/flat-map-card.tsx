@@ -129,6 +129,7 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
     displayModeBar: true,
     displaylogo: false,
     modeBarButtonsToRemove: ["select2d", "lasso2d", "autoScale2d"] as any,
+    scrollZoom: true, // Explicitly enable scroll zoom
     toImageButtonOptions: {
       format: "png" as const,
       filename: "argo_floats_flat_map",
@@ -150,14 +151,47 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
             // Prevent scroll zoom errors by ensuring proper initialization
             try {
               const plotlyDiv = graphDiv as any;
-              if (plotlyDiv && plotlyDiv._fullLayout) {
-                // Safely initialize scroll zoom if it doesn't exist
-                if (!plotlyDiv._fullLayout._scrollZoom) {
-                  plotlyDiv._fullLayout._scrollZoom = {};
-                }
+              if (plotlyDiv) {
+                // Wait for plotly to fully initialize
+                setTimeout(() => {
+                  try {
+                    if (plotlyDiv._fullLayout) {
+                      // Safely initialize scroll zoom components
+                      if (!plotlyDiv._fullLayout._scrollZoom) {
+                        plotlyDiv._fullLayout._scrollZoom = {
+                          xaxis: {},
+                          yaxis: {}
+                        };
+                      }
+                      // Ensure scroll zoom components exist
+                      if (!plotlyDiv._fullLayout._scrollZoom.xaxis) {
+                        plotlyDiv._fullLayout._scrollZoom.xaxis = {};
+                      }
+                      if (!plotlyDiv._fullLayout._scrollZoom.yaxis) {
+                        plotlyDiv._fullLayout._scrollZoom.yaxis = {};
+                      }
+                    }
+                  } catch (e) {
+                    console.warn("ScrollZoom delayed initialization handled:", e);
+                  }
+                }, 100);
               }
             } catch (e) {
               console.warn("ScrollZoom initialization handled:", e);
+            }
+          }}
+          onUpdate={(figure, graphDiv) => {
+            // Handle updates safely to prevent scroll zoom errors
+            try {
+              const plotlyDiv = graphDiv as any;
+              if (plotlyDiv && plotlyDiv._fullLayout && !plotlyDiv._fullLayout._scrollZoom) {
+                plotlyDiv._fullLayout._scrollZoom = {
+                  xaxis: {},
+                  yaxis: {}
+                };
+              }
+            } catch (e) {
+              console.warn("ScrollZoom update handled:", e);
             }
           }}
           onError={(error) => {
