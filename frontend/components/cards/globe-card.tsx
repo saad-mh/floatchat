@@ -32,19 +32,20 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
 
   // Initialize globe once
   useEffect(() => {
-    if (typeof window === "undefined" || !isClient || globeInstance.current) return;
-    
+    if (typeof window === "undefined" || !isClient || globeInstance.current)
+      return;
+
     // Small delay to ensure the div is properly rendered
     const initializeGlobe = async () => {
       if (!globeRef.current) return;
-      
+
       // Dynamically import Globe only on client side
       try {
         const GlobeModule = await import("globe.gl");
         const Globe = GlobeModule.default;
-        
+
         if (!globeRef.current || globeInstance.current) return;
-        
+
         globeInstance.current = new Globe(globeRef.current)
           .height(height)
           .width(containerWidth)
@@ -68,7 +69,7 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
           .ringMaxRadius((d: any) => d.maxR || 8)
           .ringPropagationSpeed((d: any) => d.propagationSpeed || 5)
           .ringRepeatPeriod((d: any) => d.repeatPeriod || 1200);
-        
+
         setGlobeLoaded(true);
       } catch (error) {
         console.error("Error loading globe:", error);
@@ -78,7 +79,7 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
 
     // Add a small delay to ensure DOM is ready
     setTimeout(initializeGlobe, 100);
-    
+
     return () => {
       if (globeInstance.current) {
         globeInstance.current = null;
@@ -90,7 +91,7 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
   // Update globe data when props change
   useEffect(() => {
     if (!globeInstance.current || !globeLoaded) return;
-    
+
     let center = { lat: 0, lng: 0, altitude: 1.5 };
     if (points.length > 0) {
       const sumLat = points.reduce((acc, p) => acc + p.lat, 0);

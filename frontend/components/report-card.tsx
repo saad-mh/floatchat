@@ -13,17 +13,23 @@ import { TableCard } from "@/components/cards/table-card";
 import { SummaryCard } from "@/components/cards/summary-card";
 
 // Dynamically import GlobeCard to prevent SSR issues
-const GlobeCard = dynamic(() => import("@/components/cards/globe-card").then(mod => ({ default: mod.GlobeCard })), {
-  ssr: false,
-  loading: () => (
-    <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full flex items-center justify-center h-96">
-      <div className="text-center text-muted-foreground">
-        <div className="w-8 h-8 mx-auto mb-2 animate-pulse bg-muted rounded-full"></div>
-        <p className="text-sm">Loading 3D view...</p>
+const GlobeCard = dynamic(
+  () =>
+    import("@/components/cards/globe-card").then((mod) => ({
+      default: mod.GlobeCard,
+    })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full flex items-center justify-center h-96">
+        <div className="text-center text-muted-foreground">
+          <div className="w-8 h-8 mx-auto mb-2 animate-pulse bg-muted rounded-full"></div>
+          <p className="text-sm">Loading 3D view...</p>
+        </div>
       </div>
-    </div>
-  )
-});
+    ),
+  }
+);
 
 interface ReportCardProps {
   card: DemoCard;

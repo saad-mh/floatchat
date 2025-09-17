@@ -160,7 +160,7 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
                       if (!plotlyDiv._fullLayout._scrollZoom) {
                         plotlyDiv._fullLayout._scrollZoom = {
                           xaxis: {},
-                          yaxis: {}
+                          yaxis: {},
                         };
                       }
                       // Ensure scroll zoom components exist
@@ -172,7 +172,10 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
                       }
                     }
                   } catch (e) {
-                    console.warn("ScrollZoom delayed initialization handled:", e);
+                    console.warn(
+                      "ScrollZoom delayed initialization handled:",
+                      e
+                    );
                   }
                 }, 100);
               }
@@ -184,10 +187,14 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
             // Handle updates safely to prevent scroll zoom errors
             try {
               const plotlyDiv = graphDiv as any;
-              if (plotlyDiv && plotlyDiv._fullLayout && !plotlyDiv._fullLayout._scrollZoom) {
+              if (
+                plotlyDiv &&
+                plotlyDiv._fullLayout &&
+                !plotlyDiv._fullLayout._scrollZoom
+              ) {
                 plotlyDiv._fullLayout._scrollZoom = {
                   xaxis: {},
-                  yaxis: {}
+                  yaxis: {},
                 };
               }
             } catch (e) {
