@@ -4,6 +4,7 @@ export interface DemoQuestion {
   primaryContentType: "flat-map" | "map" | "chart" | "table" | "summary" | "globe"
   cards: DemoCard[]
   querieGenerated?: string
+  detailedDescription?: string
 }
 
 export interface DemoCard {
