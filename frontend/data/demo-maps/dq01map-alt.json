@@ -1,5 +1,10 @@
-[
-  { "lat": 1.2, "lng": 0.5, "label": "Float A", "color": "#eab308" },
-  { "lat": -2.1, "lng": 3.4, "label": "Float B", "color": "#ef4444" },
-  { "lat": 0.7, "lng": -1.8, "label": "Float C", "color": "#22d3ee" }
-]
+{
+  "type": "floatLocations",
+  "title": "Equatorial ARGO Floats - March 2023", 
+  "region": "Equatorial Arabian Sea",
+  "markers": [
+    { "lat": 1.2, "lng": 0.5, "label": "Float A", "color": "#eab308" },
+    { "lat": -2.1, "lng": 3.4, "label": "Float B", "color": "#ef4444" },
+    { "lat": 0.7, "lng": -1.8, "label": "Float C", "color": "#22d3ee" }
+  ]
+}

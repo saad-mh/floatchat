@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Globe } from "lucide-react";
+import { Globe, Download } from "lucide-react";
 import dynamic from "next/dynamic";
 import type { MapData } from "@/types/demo";
 import { fetchDemoData } from "@/lib/demo-data";
+import { Button } from "@/components/ui/button";
 
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
@@ -23,6 +24,34 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
   const [mapData, setMapData] = useState<MapData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const downloadCSV = () => {
+    if (!mapData?.markers || mapData.markers.length === 0) return;
+
+    const headers = ["ID", "Latitude", "Longitude", "Label", "Popup"];
+    const csvContent = [
+      headers.join(","),
+      ...mapData.markers.map((marker) =>
+        [
+          marker.id,
+          marker.lat,
+          marker.lon,
+          `"${marker.label.replace(/"/g, '""')}"`,
+          `"${marker.popup.replace(/"/g, '""')}"`,
+        ].join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "map_locations.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     const loadMapData = async () => {
@@ -140,72 +169,83 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
   };
 
   return (
-    <div className="h-48 sm:h-56 md:h-64 lg:h-72 w-full rounded-lg overflow-hidden border border-border bg-background">
-      <div className="w-full h-full">
-        <Plot
-          data={plotData}
-          layout={layout}
-          config={config}
-          style={{ width: "100%", height: "100%" }}
-          onInitialized={(figure, graphDiv) => {
-            // Prevent scroll zoom errors by ensuring proper initialization
-            try {
-              const plotlyDiv = graphDiv as any;
-              if (plotlyDiv) {
-                // Wait for plotly to fully initialize
-                setTimeout(() => {
-                  try {
-                    if (plotlyDiv._fullLayout) {
-                      // Safely initialize scroll zoom components
-                      if (!plotlyDiv._fullLayout._scrollZoom) {
-                        plotlyDiv._fullLayout._scrollZoom = {
-                          xaxis: {},
-                          yaxis: {},
-                        };
+    <div className="w-full rounded-lg overflow-hidden border border-border bg-background">
+      <div className="flex justify-between items-center p-3 border-b border-border bg-muted/20">
+        <h3 className="text-sm font-medium text-foreground">
+          ARGO Float Locations
+        </h3>
+        <Button onClick={downloadCSV} size="sm" variant="outline">
+          <Download className="w-4 h-4 mr-2" />
+          CSV
+        </Button>
+      </div>
+      <div className="h-48 sm:h-56 md:h-64 lg:h-72 w-full">
+        <div className="w-full h-full">
+          <Plot
+            data={plotData}
+            layout={layout}
+            config={config}
+            style={{ width: "100%", height: "100%" }}
+            onInitialized={(figure, graphDiv) => {
+              // Prevent scroll zoom errors by ensuring proper initialization
+              try {
+                const plotlyDiv = graphDiv as any;
+                if (plotlyDiv) {
+                  // Wait for plotly to fully initialize
+                  setTimeout(() => {
+                    try {
+                      if (plotlyDiv._fullLayout) {
+                        // Safely initialize scroll zoom components
+                        if (!plotlyDiv._fullLayout._scrollZoom) {
+                          plotlyDiv._fullLayout._scrollZoom = {
+                            xaxis: {},
+                            yaxis: {},
+                          };
+                        }
+                        // Ensure scroll zoom components exist
+                        if (!plotlyDiv._fullLayout._scrollZoom.xaxis) {
+                          plotlyDiv._fullLayout._scrollZoom.xaxis = {};
+                        }
+                        if (!plotlyDiv._fullLayout._scrollZoom.yaxis) {
+                          plotlyDiv._fullLayout._scrollZoom.yaxis = {};
+                        }
                       }
-                      // Ensure scroll zoom components exist
-                      if (!plotlyDiv._fullLayout._scrollZoom.xaxis) {
-                        plotlyDiv._fullLayout._scrollZoom.xaxis = {};
-                      }
-                      if (!plotlyDiv._fullLayout._scrollZoom.yaxis) {
-                        plotlyDiv._fullLayout._scrollZoom.yaxis = {};
-                      }
+                    } catch (e) {
+                      console.warn(
+                        "ScrollZoom delayed initialization handled:",
+                        e
+                      );
                     }
-                  } catch (e) {
-                    console.warn(
-                      "ScrollZoom delayed initialization handled:",
-                      e
-                    );
-                  }
-                }, 100);
+                  }, 100);
+                }
+              } catch (e) {
+                console.warn("ScrollZoom initialization handled:", e);
               }
-            } catch (e) {
-              console.warn("ScrollZoom initialization handled:", e);
-            }
-          }}
-          onUpdate={(figure, graphDiv) => {
-            // Handle updates safely to prevent scroll zoom errors
-            try {
-              const plotlyDiv = graphDiv as any;
-              if (
-                plotlyDiv &&
-                plotlyDiv._fullLayout &&
-                !plotlyDiv._fullLayout._scrollZoom
-              ) {
-                plotlyDiv._fullLayout._scrollZoom = {
-                  xaxis: {},
-                  yaxis: {},
-                };
+            }}
+            onUpdate={(figure, graphDiv) => {
+              // Handle updates safely to prevent scroll zoom errors
+              try {
+                const plotlyDiv = graphDiv as any;
+                if (
+                  plotlyDiv &&
+                  plotlyDiv._fullLayout &&
+                  !plotlyDiv._fullLayout._scrollZoom
+                ) {
+                  plotlyDiv._fullLayout._scrollZoom = {
+                    xaxis: {},
+                    yaxis: {},
+                  };
+                }
+              } catch (e) {
+                console.warn("ScrollZoom update handled:", e);
               }
-            } catch (e) {
-              console.warn("ScrollZoom update handled:", e);
-            }
-          }}
-          onError={(error) => {
-            console.warn("Plotly error in 2D flat map:", error);
-            // Don't throw, just log the error
-          }}
-        />
+            }}
+            onError={(error) => {
+              console.warn("Plotly error in 2D flat map:", error);
+              // Don't throw, just log the error
+            }}
+          />
+        </div>
       </div>
     </div>
   );

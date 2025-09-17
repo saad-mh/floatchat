@@ -1,5 +1,10 @@
-[
-  { "lat": 15.5, "lng": 72.1, "label": "Arabian Float 1", "color": "#10b981" },
-  { "lat": 16.2, "lng": 70.8, "label": "Arabian Float 2", "color": "#6366f1" },
-  { "lat": 14.9, "lng": 71.3, "label": "Arabian Float 3", "color": "#f59e42" }
-]
+{
+  "type": "floatLocations",
+  "title": "Arabian Sea BGC Floats",
+  "region": "Arabian Sea (15°N-25°N, 60°E-75°E)",
+  "markers": [
+    { "lat": 15.5, "lng": 72.1, "label": "Arabian Float 1", "color": "#10b981" },
+    { "lat": 16.2, "lng": 70.8, "label": "Arabian Float 2", "color": "#6366f1" },
+    { "lat": 14.9, "lng": 71.3, "label": "Arabian Float 3", "color": "#f59e42" }
+  ]
+}

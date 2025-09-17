@@ -55,11 +55,11 @@ export function ReportCard({ card }: ReportCardProps) {
         setGlobeError(null);
         try {
           // Extract questionId and dataType from dataUri
-          // e.g. /demo/maps/dq01map.json, /demo/charts/dq01salinityprofiles.json
-          const match = card.dataUri.match(
-            /\/([a-zA-Z0-9]+)(map|chart|table|summary)[^/]*\.json$/
-          );
-          const questionId = match ? match[1] : null;
+          // e.g. /demo/maps/dq01map.json, /demo/charts/dq01salinityprofiles.json, /demo-maps/dq02_map_alt.json
+          const filename =
+            card.dataUri.split("/").pop()?.replace(".json", "") || "";
+          const questionMatch = filename.match(/^(dq\d+)/);
+          const questionId = questionMatch ? questionMatch[1] : null;
           let dataType = null;
           if (card.type === "globe" || card.type === "map") dataType = "map";
           else if (card.type === "chart") dataType = "chart";

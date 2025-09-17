@@ -219,6 +219,45 @@ export function TableCard({ dataUri }: TableCardProps) {
 
   const totalPages = Math.ceil(filteredAndSortedData().length / rowsPerPage);
 
+  const exportToCSV = () => {
+    if (!tableData) return;
+
+    // Combine headers and rows for CSV
+    const csvData = [tableData.headers, ...filteredAndSortedData()];
+
+    // Convert to CSV format
+    const csvContent = csvData
+      .map((row) =>
+        row
+          .map((cell) =>
+            // Escape quotes and wrap in quotes if contains comma, quote, or newline
+            typeof cell === "string" &&
+            (cell.includes(",") || cell.includes('"') || cell.includes("\n"))
+              ? `"${cell.replace(/"/g, '""')}"`
+              : cell
+          )
+          .join(",")
+      )
+      .join("\n");
+
+    // Create and trigger download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `table-data-${new Date().toISOString().split("T")[0]}.csv`
+    );
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
@@ -281,6 +320,8 @@ export function TableCard({ dataUri }: TableCardProps) {
             variant="outline"
             size="sm"
             className="text-xs bg-transparent px-2 md:px-3"
+            onClick={exportToCSV}
+            title="Download table data as CSV"
           >
             <Download className="w-3 h-3 md:mr-1" />
             <span className="hidden md:inline">Export</span>

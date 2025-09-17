@@ -1,0 +1,30 @@
+{
+  "title": "Quality Control Details",
+  "subtitle": "QC flags and corrections applied to Float 1900054 data",
+  "headers": ["Parameter", "Total Measurements", "Good (QC=1)", "Probably Good (QC=2)", "Correctable (QC=3)", "Bad (QC=4)", "Missing (QC=9)", "Pass Rate (%)"],
+  "rows": [
+    ["Pressure", "2048", "2048", "0", "0", "0", "0", "100.0"],
+    ["Temperature", "2048", "2035", "13", "0", "0", "0", "99.4"],
+    ["Salinity", "2048", "1987", "45", "12", "4", "0", "99.2"],
+    ["Dissolved Oxygen", "1876", "1823", "38", "9", "6", "0", "99.2"],
+    ["Chlorophyll-a", "1876", "1745", "89", "28", "14", "0", "97.8"],
+    ["Backscatter 700nm", "1876", "1798", "56", "15", "7", "0", "98.8"],
+    ["pH", "1876", "1834", "32", "8", "2", "0", "99.5"],
+    ["Nitrate", "1876", "1756", "78", "24", "18", "0", "97.8"],
+    ["BBP470", "1876", "1801", "52", "16", "7", "0", "98.8"],
+    ["CDOM", "1876", "1689", "134", "35", "18", "0", "97.2"]
+  ],
+  "metadata": {
+    "floatWMO": "1900054",
+    "totalCycles": "204",
+    "dataProcessingDate": "2023-04-15",
+    "qcVersion": "3.2",
+    "rtqcApplied": true,
+    "dmqcStatus": "In progress",
+    "notes": [
+      "Real-time QC tests applied include: impossible date, impossible location, global range test",
+      "Profile tests include: global range, regional range, spike test, gradient test",
+      "Delayed mode QC in progress for salinity data"
+    ]
+  }
+}

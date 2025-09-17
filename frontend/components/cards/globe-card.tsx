@@ -1,5 +1,7 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface GlobeCardProps {
   points?: Array<{ lat: number; lng: number; label?: string; color?: string }>;
@@ -12,6 +14,33 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
   const [containerWidth, setContainerWidth] = useState<number>(100);
   const [isClient, setIsClient] = useState(false);
   const [globeLoaded, setGlobeLoaded] = useState(false);
+
+  const downloadCSV = () => {
+    if (points.length === 0) return;
+
+    const headers = ["Latitude", "Longitude", "Label", "Color"];
+    const csvContent = [
+      headers.join(","),
+      ...points.map((point) =>
+        [
+          point.lat,
+          point.lng,
+          point.label ? `"${point.label.replace(/"/g, '""')}"` : "",
+          point.color || "#4A90E2",
+        ].join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "globe_locations.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -121,6 +150,17 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
       className="bg-card rounded-lg shadow-lg overflow-hidden w-full relative"
       style={{ height }}
     >
+      <div className="absolute top-2 right-2 z-10">
+        <Button
+          onClick={downloadCSV}
+          size="sm"
+          variant="outline"
+          className="bg-background/80 backdrop-blur-sm"
+        >
+          <Download className="w-4 h-4 mr-2" />
+          CSV
+        </Button>
+      </div>
       <div ref={globeRef} style={{ width: "100%", height: "100%" }} />
       {(!isClient || !globeLoaded) && (
         <div className="absolute inset-0 flex items-center justify-center bg-card">
