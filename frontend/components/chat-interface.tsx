@@ -15,6 +15,7 @@ import demoData from "@/data/demo-questions.json";
 interface ChatInterfaceProps {
   onQuestionSubmit: (question: DemoQuestion) => void;
   isCompact: boolean;
+  onReset?: () => void;
 }
 
 interface ChatMessage {
@@ -29,6 +30,7 @@ interface ChatMessage {
 export function ChatInterface({
   onQuestionSubmit,
   isCompact,
+  onReset,
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -54,6 +56,20 @@ export function ChatInterface({
       setSuggestionIndices([0, 1]);
     }
   }, [demoData.demo_questions.length, suggestionIndices]);
+
+  const handleReset = () => {
+    // Clear all chat state
+    setMessages([]);
+    setInputValue("");
+    setShowQueryId(null);
+    setUsedSuggestions([]);
+    setSuggestionIndices([0, 1]);
+
+    // Call parent reset function to clear activeQuestion
+    if (onReset) {
+      onReset();
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,7 +168,11 @@ export function ChatInterface({
       {/* Header */}
       <div className="p-4 md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-3">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-2 md:gap-3 focus:outline-none rounded-lg p-1 -m-1 cursor-pointer"
+            title="Reset FloatChat"
+          >
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
               <img
                 src="/logo.svg"
@@ -160,15 +180,15 @@ export function ChatInterface({
                 className="w-5 h-5 md:w-6 md:h-6"
               />
             </div>
-            <div>
-              <h1 className="text-lg md:text-xl font-bold text-foreground">
+            <div className="text-left">
+              <h1 className="text-lg md:text-xl font-bold text-foreground text-left">
                 FloatChat
               </h1>
-              <p className="text-xs md:text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground text-left">
                 AI Ocean Data Interface
               </p>
             </div>
-          </div>
+          </button>
           <ThemeToggle />
         </div>
       </div>
@@ -181,16 +201,22 @@ export function ChatInterface({
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-6 md:py-12"
           >
-            <div className="w-20 h-20 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
-              <img
-                src="/logo.svg"
-                alt="FloatChat Logo"
-                className="w-10 h-10 md:w-10 md:h-10"
-              />
-            </div>
-            <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2 md:mb-3">
-              Welcome to FloatChat
-            </h2>
+            <button
+              onClick={handleReset}
+              className="focus:outline-none rounded-2xl p-2 -m-2 cursor-pointer"
+              title="Reset FloatChat"
+            >
+              <div className="w-20 h-20 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+                <img
+                  src="/logo.svg"
+                  alt="FloatChat Logo"
+                  className="w-10 h-10 md:w-10 md:h-10"
+                />
+              </div>
+              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2 md:mb-3">
+                Welcome to FloatChat
+              </h2>
+            </button>
             <p className="text-muted-foreground mb-6 md:mb-8 max-w-md mx-auto px-4 text-sm md:text-base">
               Ask questions about Argo ocean float data and get interactive
               visualizations and analysis.

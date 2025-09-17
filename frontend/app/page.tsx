@@ -26,6 +26,12 @@ export default function FloatChatPage() {
     setShowMobileReport(false);
   };
 
+  const handleReset = () => {
+    setActiveQuestion(null);
+    setIsGenerating(false);
+    setShowMobileReport(false);
+  };
+
   return (
     <div className="h-screen bg-background overflow-hidden">
       {/* Desktop Layout (Large screens) */}
@@ -43,6 +49,7 @@ export default function FloatChatPage() {
             <ChatInterface
               onQuestionSubmit={handleQuestionSubmit}
               isCompact={!!activeQuestion}
+              onReset={handleReset}
             />
           </motion.div>
 
@@ -82,6 +89,7 @@ export default function FloatChatPage() {
                 <ChatInterface
                   onQuestionSubmit={handleQuestionSubmit}
                   isCompact={false}
+                  onReset={handleReset}
                 />
               </div>
             </motion.div>
@@ -121,6 +129,7 @@ export default function FloatChatPage() {
               <ChatInterface
                 onQuestionSubmit={handleQuestionSubmit}
                 isCompact={false}
+                onReset={handleReset}
               />
             </motion.div>
           ) : (
