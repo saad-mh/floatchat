@@ -35,7 +35,7 @@ export default function FloatChatPage() {
           <motion.div
             initial={{ width: "100%" }}
             animate={{
-              width: activeQuestion ? "33.333%" : "100%",
+              width: activeQuestion ? "25%" : "100%",
             }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className="flex-shrink-0 border-r border-border"
