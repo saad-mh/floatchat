@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { fetchDemoData } from "@/lib/demo-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +11,25 @@ import { FlatMapCard } from "@/components/cards/flat-map-card";
 import { ChartCard } from "@/components/cards/chart-card";
 import { TableCard } from "@/components/cards/table-card";
 import { SummaryCard } from "@/components/cards/summary-card";
-import { GlobeCard } from "@/components/cards/globe-card";
+
+// Dynamically import GlobeCard to prevent SSR issues
+const GlobeCard = dynamic(
+  () =>
+    import("@/components/cards/globe-card").then((mod) => ({
+      default: mod.GlobeCard,
+    })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full flex items-center justify-center h-96">
+        <div className="text-center text-muted-foreground">
+          <div className="w-8 h-8 mx-auto mb-2 animate-pulse bg-muted rounded-full"></div>
+          <p className="text-sm">Loading 3D view...</p>
+        </div>
+      </div>
+    ),
+  }
+);
 
 interface ReportCardProps {
   card: DemoCard;
@@ -36,11 +55,11 @@ export function ReportCard({ card }: ReportCardProps) {
         setGlobeError(null);
         try {
           // Extract questionId and dataType from dataUri
-          // e.g. /demo/maps/dq01map.json, /demo/charts/dq01salinityprofiles.json
-          const match = card.dataUri.match(
-            /\/([a-zA-Z0-9]+)(map|chart|table|summary)[^/]*\.json$/
-          );
-          const questionId = match ? match[1] : null;
+          // e.g. /demo/maps/dq01map.json, /demo/charts/dq01salinityprofiles.json, /demo-maps/dq02_map_alt.json
+          const filename =
+            card.dataUri.split("/").pop()?.replace(".json", "") || "";
+          const questionMatch = filename.match(/^(dq\d+)/);
+          const questionId = questionMatch ? questionMatch[1] : null;
           let dataType = null;
           if (card.type === "globe" || card.type === "map") dataType = "map";
           else if (card.type === "chart") dataType = "chart";

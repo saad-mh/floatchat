@@ -1,0 +1,28 @@
+{
+  "type": "timeseries",
+  "variables": ["chlorophyll", "oxygen", "nitrate"],
+  "title": "BGC Time Series - Arabian Sea",
+  "data": {
+    "dates": ["2023-01-15", "2023-02-01", "2023-02-15", "2023-03-01", "2023-03-15", "2023-03-31", "2023-04-15", "2023-05-01"],
+    "chlorophyll": {
+      "values": [0.32, 0.28, 0.35, 0.45, 0.52, 0.48, 0.38, 0.29],
+      "units": "mg/m³",
+      "color": "#22c55e"
+    },
+    "oxygen": {
+      "values": [185.2, 192.1, 198.5, 205.3, 198.7, 189.4, 178.9, 172.6],
+      "units": "μmol/kg",
+      "color": "#3b82f6"
+    },
+    "nitrate": {
+      "values": [8.5, 7.2, 6.8, 5.9, 6.4, 7.8, 9.1, 10.3],
+      "units": "μmol/kg",
+      "color": "#ef4444"
+    }
+  },
+  "metadata": {
+    "region": "Arabian Sea (15°N-25°N, 60°E-75°E)",
+    "depth": "Surface mixed layer (0-50m)",
+    "floatsContributing": 23
+  }
+}

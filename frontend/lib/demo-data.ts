@@ -169,6 +169,54 @@ const demoDataSets = {
       ],
     },
   },
+  dq03: {
+    map: {
+      center: { lat: 15.5, lon: 70.2, zoom: 8 },
+      markers: [
+        { id: "target", lat: 15.5, lon: 70.2, label: "Query Point", popup: "Target location", color: "#f43f5e" },
+        { id: "WMO_5906428", lat: 15.6, lon: 70.3, label: "WMO_5906428", popup: "Distance: 12.3 km", color: "#3b82f6" },
+        { id: "WMO_5907123", lat: 15.4, lon: 70.1, label: "WMO_5907123", popup: "Distance: 15.8 km", color: "#f59e0b" },
+      ],
+    },
+  },
+  dq05: {
+    map: {
+      center: { lat: -10.0, lon: 80.0, zoom: 6 },
+      markers: [
+        { id: "WMO_5901111", lat: -10.0, lon: 80.0, label: "WMO_5901111", popup: "O2: 185.2 μmol/kg", color: "#22d3ee" },
+        { id: "WMO_5902222", lat: -9.8, lon: 80.2, label: "WMO_5902222", popup: "O2: 192.1 μmol/kg", color: "#eab308" },
+        { id: "WMO_5903333", lat: -10.2, lon: 79.9, label: "WMO_5903333", popup: "O2: 178.5 μmol/kg", color: "#ef4444" },
+      ],
+    },
+  },
+  dq07: {
+    map: {
+      center: { lat: 18.5, lon: 66.0, zoom: 6 },
+      markers: [
+        { id: "WMO_5906428", lat: 18.45, lon: 65.23, label: "WMO_5906428", popup: "Chl-a: 0.78 mg/m³", color: "#22c55e" },
+        { id: "WMO_5904859", lat: 20.12, lon: 68.77, label: "WMO_5904859", popup: "Chl-a: 0.65 mg/m³", color: "#16a34a" },
+        { id: "WMO_5906329", lat: 16.89, lon: 62.45, label: "WMO_5906329", popup: "Chl-a: 0.93 mg/m³", color: "#15803d" },
+        { id: "WMO_5905784", lat: 22.33, lon: 71.56, label: "WMO_5905784", popup: "Chl-a: 0.54 mg/m³", color: "#166534" },
+        { id: "WMO_5907123", lat: 19.67, lon: 66.89, label: "WMO_5907123", popup: "Chl-a: 0.76 mg/m³", color: "#14532d" },
+        { id: "WMO_5906551", lat: 15.78, lon: 70.12, label: "WMO_5906551", popup: "Chl-a: 0.58 mg/m³", color: "#052e16" },
+      ],
+    },
+  },
+  dq08: {
+    map: {
+      center: { lat: 18.0, lon: 67.0, zoom: 5 },
+      markers: [
+        { id: "deployment", lat: 12.3, lon: 62.1, label: "Deployment", popup: "April 12, 2020", color: "#ef4444", size: 10 },
+        { id: "month1", lat: 12.8, lon: 62.5, label: "Month 1", popup: "May 15, 2020", color: "#f97316" },
+        { id: "month6", lat: 14.2, lon: 63.8, label: "Month 6", popup: "Oct 20, 2020", color: "#eab308" },
+        { id: "year1", lat: 16.1, lon: 65.2, label: "Year 1", popup: "Apr 18, 2021", color: "#84cc16" },
+        { id: "year2", lat: 18.7, lon: 67.4, label: "Year 2", popup: "Apr 25, 2022", color: "#22c55e" },
+        { id: "year3", lat: 20.3, lon: 69.1, label: "Year 3", popup: "May 2, 2023", color: "#06b6d4" },
+        { id: "year4", lat: 22.1, lon: 70.8, label: "Year 4", popup: "May 10, 2024", color: "#3b82f6" },
+        { id: "current", lat: 23.5, lon: 71.9, label: "Current", popup: "Aug 15, 2025", color: "#8b5cf6", size: 8 },
+      ],
+    },
+  },
 }
 
 export async function fetchDemoData(questionId: string, dataType: string): Promise<any> {

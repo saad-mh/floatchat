@@ -15,6 +15,7 @@ import demoData from "@/data/demo-questions.json";
 interface ChatInterfaceProps {
   onQuestionSubmit: (question: DemoQuestion) => void;
   isCompact: boolean;
+  onReset?: () => void;
 }
 
 interface ChatMessage {
@@ -22,12 +23,14 @@ interface ChatMessage {
   type: "user" | "assistant";
   content: string;
   timestamp: Date;
+  isDetailedDescription?: boolean;
+  questionId?: string;
 }
-
 
 export function ChatInterface({
   onQuestionSubmit,
   isCompact,
+  onReset,
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -47,10 +50,26 @@ export function ChatInterface({
 
   useEffect(() => {
     // Reset indices if demo questions change or out of bounds
-    if (suggestionIndices.some(idx => idx >= demoData.demo_questions.length)) {
+    if (
+      suggestionIndices.some((idx) => idx >= demoData.demo_questions.length)
+    ) {
       setSuggestionIndices([0, 1]);
     }
   }, [demoData.demo_questions.length, suggestionIndices]);
+
+  const handleReset = () => {
+    // Clear all chat state
+    setMessages([]);
+    setInputValue("");
+    setShowQueryId(null);
+    setUsedSuggestions([]);
+    setSuggestionIndices([0, 1]);
+
+    // Call parent reset function to clear activeQuestion
+    if (onReset) {
+      onReset();
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,9 +103,25 @@ export function ChatInterface({
           content:
             "I found relevant data for your query. Check the report panel for detailed analysis.",
           timestamp: new Date(),
+          questionId: matchedQuestion.id,
         };
         setMessages((prev) => [...prev, assistantMessage]);
         setShowQueryId(null);
+
+        // Add detailed description after another delay if available
+        if (matchedQuestion.detailedDescription) {
+          setTimeout(() => {
+            const descriptionMessage: ChatMessage = {
+              id: (Date.now() + 2).toString(),
+              type: "assistant",
+              content: matchedQuestion.detailedDescription!,
+              timestamp: new Date(),
+              isDetailedDescription: true,
+              questionId: matchedQuestion.id,
+            };
+            setMessages((prev) => [...prev, descriptionMessage]);
+          }, 2500);
+        }
       }, 1500);
     } else {
       // Handle unrecognized question
@@ -117,11 +152,15 @@ export function ChatInterface({
 
   // Compact suggestion click handler
   const handleCompactSuggestionClick = (idx: number) => {
-    handleSuggestionClick(demoData.demo_questions[suggestionIndices[idx]] as DemoQuestion);
+    handleSuggestionClick(
+      demoData.demo_questions[suggestionIndices[idx]] as DemoQuestion
+    );
     // Find next unused index
     let nextIdx = Math.max(...suggestionIndices) + 1;
     if (nextIdx >= demoData.demo_questions.length) nextIdx = 0;
-    setSuggestionIndices(prev => prev.map((v, i) => i === idx ? nextIdx : v));
+    setSuggestionIndices((prev) =>
+      prev.map((v, i) => (i === idx ? nextIdx : v))
+    );
   };
 
   return (
@@ -129,7 +168,11 @@ export function ChatInterface({
       {/* Header */}
       <div className="p-4 md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-3">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-2 md:gap-3 focus:outline-none rounded-lg p-1 -m-1 cursor-pointer"
+            title="Reset FloatChat"
+          >
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
               <img
                 src="/logo.svg"
@@ -137,15 +180,15 @@ export function ChatInterface({
                 className="w-5 h-5 md:w-6 md:h-6"
               />
             </div>
-            <div>
-              <h1 className="text-lg md:text-xl font-bold text-foreground">
+            <div className="text-left">
+              <h1 className="text-lg md:text-xl font-bold text-foreground text-left">
                 FloatChat
               </h1>
-              <p className="text-xs md:text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground text-left">
                 AI Ocean Data Interface
               </p>
             </div>
-          </div>
+          </button>
           <ThemeToggle />
         </div>
       </div>
@@ -158,16 +201,22 @@ export function ChatInterface({
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-6 md:py-12"
           >
-            <div className="w-20 h-20 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
-              <img
-                src="/logo.svg"
-                alt="FloatChat Logo"
-                className="w-10 h-10 md:w-10 md:h-10"
-              />
-            </div>
-            <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2 md:mb-3">
-              Welcome to FloatChat
-            </h2>
+            <button
+              onClick={handleReset}
+              className="focus:outline-none rounded-2xl p-2 -m-2 cursor-pointer"
+              title="Reset FloatChat"
+            >
+              <div className="w-20 h-20 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+                <img
+                  src="/logo.svg"
+                  alt="FloatChat Logo"
+                  className="w-10 h-10 md:w-10 md:h-10"
+                />
+              </div>
+              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2 md:mb-3">
+                Welcome to FloatChat
+              </h2>
+            </button>
             <p className="text-muted-foreground mb-6 md:mb-8 max-w-md mx-auto px-4 text-sm md:text-base">
               Ask questions about Argo ocean float data and get interactive
               visualizations and analysis.
@@ -182,8 +231,12 @@ export function ChatInterface({
                 {(() => {
                   const suggestions: DemoQuestion[] = [];
                   const usedSet = new Set(usedSuggestions);
-                  let i = 0, j = 0;
-                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
+                  let i = 0,
+                    j = 0;
+                  while (
+                    suggestions.length < 4 &&
+                    j < demoData.demo_questions.length
+                  ) {
                     const q = demoData.demo_questions[j];
                     if (!usedSet.has(q.id)) {
                       suggestions.push(q as DemoQuestion);
@@ -191,7 +244,10 @@ export function ChatInterface({
                     j++;
                   }
                   j = 0;
-                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
+                  while (
+                    suggestions.length < 4 &&
+                    j < demoData.demo_questions.length
+                  ) {
                     const q = demoData.demo_questions[j];
                     if (usedSet.has(q.id)) {
                       suggestions.push(q as DemoQuestion);
@@ -202,7 +258,9 @@ export function ChatInterface({
                     <Card
                       key={question.id}
                       className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
-                      onClick={() => handleSuggestionClick(question as DemoQuestion)}
+                      onClick={() =>
+                        handleSuggestionClick(question as DemoQuestion)
+                      }
                     >
                       <p className="text-xs md:text-sm text-foreground leading-relaxed">
                         {question.prompt}
@@ -219,17 +277,18 @@ export function ChatInterface({
         {messages.map((message, idx) => {
           const isAssistant = message.type === "assistant";
           let matchedQuestion: DemoQuestion | undefined = undefined;
-          const isLastAssistant = isAssistant && idx === messages.length - 1;
-          let lastUserPrompt = "";
-          for (let i = messages.length - 1; i >= 0; i--) {
-            if (messages[i].type === "user") {
-              lastUserPrompt = messages[i].content;
-              break;
-            }
-          }
-          if (isLastAssistant) {
+          const isLastNonDescriptionAssistant =
+            isAssistant &&
+            !message.isDetailedDescription &&
+            idx ===
+              messages.findLastIndex(
+                (m) => m.type === "assistant" && !m.isDetailedDescription
+              );
+
+          // Find the matched question for query display
+          if (message.questionId) {
             matchedQuestion = demoData.demo_questions.find(
-              (q) => q.prompt.toLowerCase() === lastUserPrompt.toLowerCase()
+              (q) => q.id === message.questionId
             ) as DemoQuestion | undefined;
           }
           return (
@@ -242,45 +301,82 @@ export function ChatInterface({
               }`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                className={`${
+                  message.isDetailedDescription ? "max-w-[95%]" : "max-w-[80%]"
+                } rounded-2xl px-4 py-3 ${
                   message.type === "user"
                     ? "bg-primary text-primary-foreground"
+                    : message.isDetailedDescription
+                    ? "bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 text-card-foreground border border-blue-200 dark:border-blue-800"
                     : "bg-card text-card-foreground border border-border"
                 }`}
               >
-                <p className="text-sm">{message.content}</p>
+                {message.isDetailedDescription ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <h3 className="text-sm font-semibold text-blue-700 dark:text-blue-300">
+                        Detailed Analysis & Context
+                      </h3>
+                    </div>
+                    <div
+                      className="text-sm leading-relaxed space-y-2 prose prose-sm dark:prose-invert max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: message.content
+                          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                          .replace(
+                            /📍|📊|📈|🗺️|📋|🔥|🌍|⚡|🌡️|🔬|🔍|📏|🎯|🛰️|🌱|📍/g,
+                            '<span class="text-lg">$&</span>'
+                          )
+                          .replace(/\n\n/g, "</p><p>")
+                          .replace(
+                            /^\*\*([^:]+):\*\*/gm,
+                            '<h4 class="font-semibold text-blue-600 dark:text-blue-400 mt-3 mb-1">$1:</h4>'
+                          )
+                          .replace(
+                            /^- \*\*([^:]+):\*\*/gm,
+                            "<strong>• $1:</strong>"
+                          ),
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <p className="text-sm">{message.content}</p>
+                )}
                 <p className="text-xs opacity-70 mt-1">
                   {message.timestamp.toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
                 </p>
-                {/* Query toggle for the last assistant message */}
-                {isLastAssistant && matchedQuestion && (
-                  <div className="mt-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-xs border-border"
-                      onClick={() =>
-                        setShowQueryId(
-                          showQueryId === matchedQuestion.id
-                            ? null
-                            : matchedQuestion.id
-                        )
-                      }
-                    >
-                      {showQueryId === matchedQuestion.id
-                        ? "Hide Query"
-                        : "Show Query"}
-                    </Button>
-                    {showQueryId === matchedQuestion.id && (
-                      <div className="mt-2 p-2 rounded bg-muted text-xs font-mono whitespace-pre-wrap border border-border">
-                        {matchedQuestion.querieGenerated}
-                      </div>
-                    )}
-                  </div>
-                )}
+                {/* Query toggle for the last non-description assistant message */}
+                {isLastNonDescriptionAssistant &&
+                  matchedQuestion &&
+                  !message.isDetailedDescription && (
+                    <div className="mt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs border-border"
+                        onClick={() =>
+                          setShowQueryId(
+                            showQueryId === matchedQuestion.id
+                              ? null
+                              : matchedQuestion.id
+                          )
+                        }
+                      >
+                        {showQueryId === matchedQuestion.id
+                          ? "Hide Query"
+                          : "Show Query"}
+                      </Button>
+                      {showQueryId === matchedQuestion.id && (
+                        <div className="mt-2 p-2 rounded bg-muted text-xs font-mono whitespace-pre-wrap border border-border">
+                          {matchedQuestion.querieGenerated}
+                        </div>
+                      )}
+                    </div>
+                  )}
               </div>
             </motion.div>
           );

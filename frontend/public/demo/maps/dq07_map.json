@@ -1,0 +1,93 @@
+{
+  "type": "chlorophyllObservations",
+  "title": "High Chlorophyll Observation Locations",
+  "threshold": "0.5 mg/m³",
+  "region": "Arabian Sea",
+  "timeRange": "March 2023",
+  "markers": [
+    { 
+      "lat": 18.45, 
+      "lng": 65.23, 
+      "label": "Float WMO_5906428 - High Chl-a (0.78 mg/m³)", 
+      "color": "#22c55e",
+      "size": 8,
+      "metadata": {
+        "floatWMO": "5906428",
+        "cycle": 203,
+        "date": "2023-03-05",
+        "chlorophyll": 0.78,
+        "quality": "Good"
+      }
+    },
+  { 
+    "lat": 20.12, 
+    "lon": 68.77, 
+    "label": "Float WMO_5904859 - High Chl-a (0.65 mg/m³)", 
+    "color": "#16a34a",
+    "size": 7,
+    "metadata": {
+      "floatWMO": "5904859",
+      "cycle": 156,
+      "date": "2023-03-12",
+      "chlorophyll": 0.65,
+      "quality": "Good"
+    }
+  },
+  { 
+    "lat": 16.89, 
+    "lon": 62.45, 
+    "label": "Float WMO_5906329 - High Chl-a (0.93 mg/m³)", 
+    "color": "#15803d",
+    "size": 9,
+    "metadata": {
+      "floatWMO": "5906329",
+      "cycle": 189,
+      "date": "2023-03-18",
+      "chlorophyll": 0.93,
+      "quality": "Probably good"
+    }
+  },
+  { 
+    "lat": 22.33, 
+    "lon": 71.56, 
+    "label": "Float WMO_5905784 - High Chl-a (0.54 mg/m³)", 
+    "color": "#166534",
+    "size": 6,
+    "metadata": {
+      "floatWMO": "5905784",
+      "cycle": 234,
+      "date": "2023-03-25",
+      "chlorophyll": 0.54,
+      "quality": "Good"
+    }
+  },
+  { 
+    "lat": 19.67, 
+    "lon": 66.89, 
+    "label": "Float WMO_5907123 - High Chl-a (0.76 mg/m³)", 
+    "color": "#14532d",
+    "size": 8,
+    "metadata": {
+      "floatWMO": "5907123",
+      "cycle": 98,
+      "date": "2023-03-28",
+      "chlorophyll": 0.76,
+      "quality": "Probably good"
+    }
+  },
+  { 
+    "lat": 15.78, 
+    "lon": 70.12, 
+    "label": "Float WMO_5906551 - High Chl-a (0.58 mg/m³)", 
+    "color": "#052e16",
+    "size": 6,
+    "metadata": {
+      "floatWMO": "5906551",
+      "cycle": 177,
+      "date": "2023-03-30",
+      "chlorophyll": 0.58,
+      "quality": "Good"
+    }
+  }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "BGC Stats (Mean, Median, Std Dev)",
+  "subtitle": "Arabian Sea Biogeochemical Parameters - March 2023",
+  "headers": ["Parameter", "Mean", "Median", "Std Dev", "Min", "Max", "Units"],
+  "rows": [
+    ["Chlorophyll-a", "0.45", "0.42", "0.18", "0.12", "0.89", "mg/m³"],
+    ["Dissolved Oxygen", "195.2", "198.1", "25.4", "142.3", "245.7", "μmol/kg"],
+    ["Nitrate", "12.8", "11.9", "6.2", "3.1", "28.5", "μmol/kg"],
+    ["pH", "8.02", "8.05", "0.15", "7.68", "8.31", "pH units"],
+    ["Backscatter (700nm)", "0.0014", "0.0012", "0.0008", "0.0003", "0.0035", "m⁻¹"],
+    ["Fluorescence", "0.38", "0.35", "0.16", "0.08", "0.72", "mg/m³"],
+    ["Particulate Carbon", "85.6", "82.3", "34.2", "28.9", "156.8", "mg/m³"]
+  ],
+  "metadata": {
+    "totalProfiles": 847,
+    "timeRange": "2023-03-01 to 2023-03-31",
+    "region": "Arabian Sea (10°N-25°N, 55°E-75°E)",
+    "depthRange": "0-2000m"
+  }
+}
