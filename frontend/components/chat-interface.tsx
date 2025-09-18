@@ -171,7 +171,7 @@ export function ChatInterface({
   return (
     <div className={containerClass}>
       {/* Header */}
-      <div className=" md:p-6 border-b border-border">
+      <div className="p-4 md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
           <button
             onClick={handleReset}
