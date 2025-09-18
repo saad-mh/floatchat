@@ -1,14 +1,14 @@
 export interface DemoQuestion {
   id: string
   prompt: string
-  primaryContentType: "flat-map" | "map" | "chart" | "table" | "summary" | "globe"
+  primaryContentType: "flat-map" | "map" | "chart" | "table" | "summary" | "globe" | "mapglobe"
   cards: DemoCard[]
   querieGenerated?: string
   detailedDescription?: string
 }
 
 export interface DemoCard {
-  type: "flat-map" | "map" | "chart" | "table" | "summary" | "globe"
+  type: "flat-map" | "map" | "chart" | "table" | "summary" | "globe" | "mapglobe"
   title: string
   dataUri?: string
   text?: string

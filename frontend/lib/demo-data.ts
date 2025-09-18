@@ -5,6 +5,7 @@ export interface DemoDataResponse {
   chart?: any
   table?: any
   summary?: any
+  mapglobe?: any
 }
 
 // Sample data for different question types
@@ -220,7 +221,6 @@ const demoDataSets = {
 }
 
 export async function fetchDemoData(questionId: string, dataType: string): Promise<any> {
-  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 300))
 
   const dataset = demoDataSets[questionId as keyof typeof demoDataSets]

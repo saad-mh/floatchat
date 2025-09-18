@@ -7,12 +7,7 @@
       "detailedDescription": "This analysis examines ocean salinity measurements from autonomous ARGO floats positioned near the equatorial region during March 2023. The query specifically targets profiles within a 5-degree radius of the equator (0°N, 0°E), providing insights into the oceanographic conditions during this critical period.\n\n**Visualizations Explained:**\n\n 📍 **Geographic Distribution (2D & 3D Maps):** These interactive maps display the precise locations of ARGO floats that collected salinity data. The 2D flat map provides a traditional overhead view, while the 3D globe offers an immersive perspective of global float distribution. Each marker represents a float's position, color-coded by data quality and measurement frequency.\n\n 📊 **Salinity vs Depth Profiles:** This scientific chart shows how salinity varies with ocean depth across different measurement stations. Each colored line represents a different float's vertical profile, revealing the ocean's stratified structure. Higher salinity values typically indicate different water masses, evaporation effects, or mixing processes.\n\n 📋 **Data Summary:** The analysis covers 6 comprehensive profiles from 3 active ARGO floats, with near-surface salinity readings ranging from 34.8 to 35.2 PSU (Practical Salinity Units). All measurements have undergone rigorous quality control procedures.\n\n**Scientific Context:** Equatorial salinity patterns are crucial for understanding ocean circulation, climate dynamics, and the global water cycle. These measurements help researchers track changes in ocean density, which drives deep water formation and global thermohaline circulation patterns that influence weather and climate worldwide.",
       "cards": [
         {
-          "type": "flat-map",
-          "title": "Geographic Distribution : 2D Flat Map",
-          "dataUri": "/demo-maps/dq01map-alt.json"
-        },
-        {
-          "type": "globe",
+          "type": "mapglobe",
           "title": "Floats within 100 km of (0°N, 0°E) : Globe View",
           "dataUri": "/demo-maps/dq01map-alt.json"
         },
