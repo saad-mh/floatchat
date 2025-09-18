@@ -17,8 +17,12 @@ export function ReportPanel({
   isGenerating,
   onBack,
 }: ReportPanelProps) {
+  // Detect mobile viewport
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  // Only show rounded corners when not mobile and not maximized
+  const containerClass = `h-full flex flex-col bg-background ${!isMobile ? 'rounded-xl shadow-xl border border-border' : ''}`;
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className={containerClass}>
       {/* Header */}
       <div className="p-3 md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
