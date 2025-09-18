@@ -44,7 +44,7 @@ export default function FloatChatPage() {
               width: activeQuestion ? "25%" : "100%",
             }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="flex-shrink-0 border-r border-border"
+            className="p-4 flex-shrink-0 border-r border-border"
           >
             <ChatInterface
               onQuestionSubmit={handleQuestionSubmit}
@@ -57,11 +57,11 @@ export default function FloatChatPage() {
           <AnimatePresence>
             {activeQuestion && (
               <motion.div
-                initial={{ x: "100%", opacity: 0 }}
+                initial={{ x: "10%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "100%", opacity: 0 }}
+                exit={{ x: "90%", opacity: 0 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="flex-1 bg-secondary/20"
+                className="p-4 flex-1 bg-secondary/20"
               >
                 <ReportPanel
                   question={activeQuestion}
