@@ -40,6 +40,9 @@ export function ChatInterface({
   // Compact suggestion indices state
   const [suggestionIndices, setSuggestionIndices] = useState([0, 1]);
 
+  // Detect mobile viewport
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -163,10 +166,12 @@ export function ChatInterface({
     );
   };
 
+  // Only show rounded corners, border, and shadow when isCompact and not mobile (no extra padding)
+  const containerClass = `h-full flex flex-col bg-background ${isCompact && !isMobile ? 'rounded-xl shadow-xl border border-border' : ''}`;
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className={containerClass}>
       {/* Header */}
-      <div className="p-4 md:p-6 border-b border-border">
+      <div className=" md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
           <button
             onClick={handleReset}
