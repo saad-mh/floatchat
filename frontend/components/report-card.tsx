@@ -85,7 +85,6 @@ export function ReportCard({ card }: ReportCardProps) {
               setGlobeError("No markers found in map data.");
             }
           }
-          // For other types, you could set state here as needed
         } catch (e) {
           setGlobePoints([]);
           setGlobeError("Failed to load demo data.");
@@ -97,6 +96,51 @@ export function ReportCard({ card }: ReportCardProps) {
   }, [card.type, card.dataUri]);
 
   const renderCardContent = () => {
+    // Only render side by side if this is a container card and both flat-map and globe are present
+    if (
+      card &&
+      Array.isArray((card as any).cards) &&
+      ((card as any).type === "container" || (card as any).type === "multi")
+    ) {
+      const cardsArr = (card as any).cards;
+      const flatMapCard = cardsArr.find((c: any) => c.type === "flat-map");
+      const globeCard = cardsArr.find((c: any) => c.type === "globe");
+      if (flatMapCard && globeCard) {
+        return (
+          <div className="flex flex-row gap-4 w-full">
+            <div className="flex-1 aspect-square">
+              <FlatMapCard dataUri={flatMapCard.dataUri} />
+            </div>
+            <div className="flex-1 aspect-square">
+              <GlobeCard points={globePoints} height={400} />
+            </div>
+          </div>
+        );
+      }
+      // If only one is present, render all cards in rows
+      return cardsArr.map((c: any, idx: number) => {
+        if (c.type === "flat-map") {
+          return <FlatMapCard key={idx} dataUri={c.dataUri} />;
+        }
+        if (c.type === "globe") {
+          return <GlobeCard key={idx} points={globePoints} height={400} />;
+        }
+        if (c.type === "map") {
+          return <MapCard key={idx} dataUri={c.dataUri} />;
+        }
+        if (c.type === "chart") {
+          return <ChartCard key={idx} dataUri={c.dataUri} />;
+        }
+        if (c.type === "table") {
+          return <TableCard key={idx} dataUri={c.dataUri} />;
+        }
+        if (c.type === "summary") {
+          return <SummaryCard key={idx} text={c.text} provenance={c.provenance} />;
+        }
+        return <div key={idx} className="p-4 text-muted-foreground">Unsupported card type</div>;
+      });
+    }
+    // Fallback: single card rendering
     switch (card.type) {
       case "flat-map":
         return <FlatMapCard dataUri={card.dataUri} />;

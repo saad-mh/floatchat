@@ -24,7 +24,7 @@ export function ReportPanel({
   return (
     <div className={containerClass}>
       {/* Header */}
-      <div className="p-3 md:p-6 border-b border-border">
+      <div className="p-4 md:p-6 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {onBack && (

@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 interface GlobeCardProps {
   points?: Array<{ lat: number; lng: number; label?: string; color?: string }>;
   height?: number;
+  center?: { lat: number; lng: number; altitude?: number };
 }
 
-export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
+export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps) {
   const globeRef = useRef<HTMLDivElement>(null);
   const globeInstance = useRef<any>(null);
   const [containerWidth, setContainerWidth] = useState<number>(100);
@@ -80,6 +81,7 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
           .width(containerWidth)
           .backgroundColor("#101624")
           .globeImageUrl("/earth-blue-marble.jpg")
+          .backgroundImageUrl('/night-sky.png')
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
           .pointColor((d: any) => d.color || "#4A90E2")
@@ -121,14 +123,8 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
   useEffect(() => {
     if (!globeInstance.current || !globeLoaded) return;
 
-    let center = { lat: 0, lng: 0, altitude: 1.5 };
-    if (points.length > 0) {
-      const sumLat = points.reduce((acc, p) => acc + p.lat, 0);
-      const sumLng = points.reduce((acc, p) => acc + p.lng, 0);
-      center.lat = sumLat / points.length;
-      center.lng = sumLng / points.length;
-      center.altitude = 0.4;
-    }
+    // Use provided center for zoom, otherwise show whole globe
+    const pov = center || { lat: 0, lng: 0, altitude: 1.5 };
 
     const ringsData = points.map((p) => ({
       lat: p.lat,
@@ -142,8 +138,8 @@ export function GlobeCard({ points = [], height = 400 }: GlobeCardProps) {
     globeInstance.current
       .pointsData(points)
       .ringsData(ringsData)
-      .pointOfView(center, points.length > 0 ? 100 : 2000);
-  }, [points, globeLoaded]);
+      .pointOfView(pov, 0); // Use center if provided
+  }, [points, globeLoaded, center]);
 
   return (
     <div
