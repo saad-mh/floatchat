@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChatInterface } from "@/components/chat-interface";
 import { ReportPanel } from "@/components/report-panel";
 import type { DemoQuestion } from "@/types/demo";
+import { Button } from "@/components/ui/button";
 
 export default function FloatChatPage() {
   const [activeQuestion, setActiveQuestion] = useState<DemoQuestion | null>(
@@ -133,20 +134,23 @@ export default function FloatChatPage() {
               />
             </motion.div>
           ) : (
-            <motion.div
-              key="report"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.3 }}
-              className="h-full"
-            >
-              <ReportPanel
-                question={activeQuestion!}
-                isGenerating={isGenerating}
-                onBack={handleMobileBack}
-              />
-            </motion.div>
+            <>
+              <Button className="bg-red-500 text-white">Go to chat</Button>
+              <motion.div
+                key="report"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3 }}
+                className="h-full"
+              >
+                <ReportPanel
+                  question={activeQuestion!}
+                  isGenerating={isGenerating}
+                  onBack={handleMobileBack}
+                />
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
