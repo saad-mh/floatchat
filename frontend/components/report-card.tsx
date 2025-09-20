@@ -24,7 +24,7 @@ const GlobeCard = dynamic(
       <div className="bg-card rounded-lg shadow-lg overflow-hidden w-full flex items-center justify-center h-96">
         <div className="text-center text-muted-foreground">
           <div className="w-8 h-8 mx-auto mb-2 animate-pulse bg-muted rounded-full"></div>
-          <p className="text-sm">Loading 3D view...</p>
+          <p className="text-sm">3D viewport loading</p>
         </div>
       </div>
     ),
@@ -36,8 +36,6 @@ interface ReportCardProps {
 }
 
 export function ReportCard({ card }: ReportCardProps) {
-  // Helper to get demo points for dq01
-  // Helper to fetch points from card.dataUri.map
   const [globePoints, setGlobePoints] = useState<
     Array<{ lat: number; lng: number; label?: string; color?: string }>
   >([]);
@@ -46,7 +44,6 @@ export function ReportCard({ card }: ReportCardProps) {
   const [globeError, setGlobeError] = useState<string | null>(null);
   useEffect(() => {
     async function fetchDemoCardData() {
-      // Only run for supported types with a dataUri
       if (
         ["globe", "map", "chart", "table", "summary", "mapglobe"].includes(card.type) &&
         card.dataUri
@@ -55,13 +52,12 @@ export function ReportCard({ card }: ReportCardProps) {
         setGlobeError(null);
         try {
           // Extract questionId and dataType from dataUri
-          // e.g. /demo/maps/dq01map.json, /demo/charts/dq01salinityprofiles.json, /demo-maps/dq02_map_alt.json
           const filename =
             card.dataUri.split("/").pop()?.replace(".json", "") || "";
           const questionMatch = filename.match(/^(dq\d+)/);
           const questionId = questionMatch ? questionMatch[1] : null;
           let dataType = null;
-          if (card.type === "globe" || card.type === "map") dataType = "map";
+          if (card.type === "globe" || card.type === "map" || card.type === "mapglobe") dataType = "map";
           else if (card.type === "chart") dataType = "chart";
           else if (card.type === "table") dataType = "table";
           else if (card.type === "summary") dataType = "summary";
@@ -70,7 +66,7 @@ export function ReportCard({ card }: ReportCardProps) {
               "Could not determine questionId or dataType from dataUri"
             );
           const data = await fetchDemoData(questionId, dataType);
-          if (card.type === "globe") {
+          if (card.type === "globe" || card.type === "mapglobe") {
             if (data && Array.isArray(data.markers)) {
               setGlobePoints(
                 data.markers.map((m: any) => ({
@@ -87,7 +83,7 @@ export function ReportCard({ card }: ReportCardProps) {
           }
         } catch (e) {
           setGlobePoints([]);
-          setGlobeError("Failed to load demo data.");
+          setGlobeError("Failed to load data.");
         }
         setLoadingGlobe(false);
       }
@@ -100,7 +96,7 @@ export function ReportCard({ card }: ReportCardProps) {
       return (
         <div className="flex flex-row gap-4 w-full">
           <div style={{ width: '40%' }} className="aspect-square">
-            <GlobeCard points={globePoints} height={349} />
+              <GlobeCard points={globePoints} height={349} />
           </div>
           <div style={{ width: '60%' }}>
             <FlatMapCard dataUri={card.dataUri} />

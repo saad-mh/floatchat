@@ -52,7 +52,7 @@
         },
         {
           "type": "globe",
-          "title": "Profile Locations (Arabian Sea)",
+          "title": "Profile Locations (Arabian Sea) : Globe View",
           "dataUri": "/demo-maps/dq02_map_alt.json"
         },
         {

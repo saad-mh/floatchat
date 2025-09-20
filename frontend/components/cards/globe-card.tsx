@@ -16,8 +16,7 @@ interface GlobeCardProps {
 export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps) {
 
   const { theme } = useTheme();
-  // Update globe background image when theme changes
-  useEffect(() => {
+  useEffect(() => { //update bg when theme changes
     if (!globeInstance.current) return;
     const bgImage = theme === "light" ? "/day-sky.jpeg" : "/night-sky.png";
     const bgColor = theme === "light" ? "#ffffff" : "#111827";
@@ -177,7 +176,7 @@ export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps)
         <div className="absolute inset-0 flex items-center justify-center bg-card">
           <div className="text-center text-muted-foreground">
             <div className="w-8 h-8 mx-auto mb-2 animate-pulse bg-muted rounded-full"></div>
-            <p className="text-sm">Loading 3D view...</p>
+            <p className="text-sm">3D view</p>
           </div>
         </div>
       )}
