@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
 import { Send, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -168,104 +168,121 @@ export function ChatInterface({
 
   // Only show rounded corners, border, and shadow when isCompact and not mobile (no extra padding)
   const containerClass = `h-full flex flex-col bg-background ${isCompact && !isMobile ? ' rounded-xl shadow-xl border border-border' : ''}`;
+  const isLanding = messages.length === 0 && !isCompact;
   return (
     <div className={containerClass}>
+      <LayoutGroup>
       {/* Header */}
-      <div className="p-4 md:p-6 border-b border-border">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={handleReset}
-            className="flex items-center gap-2 md:gap-3 focus:outline-none rounded-lg p-1 -m-1 cursor-pointer"
-            title="Reset FloatChat"
-          >
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-              <img
-                src="/logo.svg"
-                alt="FloatChat Logo"
-                className="w-5 h-5 md:w-6 md:h-6"
-              />
-            </div>
-            <div className="text-left">
-              <h1 className="text-lg md:text-xl font-bold text-foreground text-left">
-                FloatChat
-              </h1>
-              <p className="text-xs md:text-sm text-muted-foreground text-left">
-                AI Ocean Data Interface
-              </p>
-            </div>
-          </button>
-          <ThemeToggle />
-        </div>
-      </div>
+      {!isLanding && (
+        <motion.div
+          className="p-4 md:p-6 border-b border-border"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="flex items-center justify-between">
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-2 md:gap-3 focus:outline-none rounded-lg p-1 -m-1 cursor-pointer"
+              title="Reset FloatChat"
+            >
+              <motion.div
+                layoutId="brand-logo"
+                className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center"
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <img src="/logo.svg" alt="FloatChat Logo" className="w-5 h-5 md:w-6 md:h-6" />
+              </motion.div>
+              <div className="text-left">
+                <motion.h1
+                  layoutId="brand-title"
+                  className="text-lg md:text-xl font-bold text-foreground text-left"
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  FloatChat
+                </motion.h1>
+                <motion.p
+                  layoutId="brand-tagline"
+                  className="text-xs md:text-sm text-muted-foreground text-left"
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  AI Ocean Data Interface
+                </motion.p>
+              </div>
+            </button>
+            <ThemeToggle />
+          </div>
+        </motion.div>
+      )}
 
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
-        {messages.length === 0 && !isCompact && (
+        {isLanding && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-6 md:py-12"
+            className="h-full flex items-center justify-center"
           >
-            <button
-              onClick={handleReset}
-              className="focus:outline-none rounded-2xl p-2 -m-2 cursor-pointer"
-              title="Reset FloatChat"
-            >
-              <div className="w-20 h-20 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
-                <img
-                  src="/logo.svg"
-                  alt="FloatChat Logo"
-                  className="w-10 h-10 md:w-10 md:h-10"
-                />
+            <div className="w-full md:w-1/3 max-w-xl mx-auto px-4">
+              <div className="flex flex-col items-center text-center">
+                <motion.div
+                  layoutId="brand-logo"
+                  className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-4"
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <img src="/logo.svg" alt="FloatChat Logo" className="w-9 h-9" />
+                </motion.div>
+                <motion.h1
+                  layoutId="brand-title"
+                  className="text-2xl font-bold text-foreground mb-2"
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  FloatChat
+                </motion.h1>
+                <motion.p
+                  layoutId="brand-tagline"
+                  className="text-sm text-muted-foreground mb-6"
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  Ask questions about oceanographic data and get interactive visualizations and analysis.
+                </motion.p>
               </div>
-              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2 md:mb-3">
-                Welcome to FloatChat
-              </h2>
-            </button>
-            <p className="text-muted-foreground mb-6 md:mb-8 max-w-md mx-auto px-4 text-sm md:text-base">
-              Ask questions about oceoanographic data <br/> and get interactive
-              visualizations and analysis.
-            </p>
-
-            {/* Demo Question Suggestions */}
-            <div className="space-y-3 max-w-2xl mx-auto px-4">
-              <p className="text-sm font-medium text-foreground mb-3 md:mb-4">
-                Try these questions:
-              </p>
-              <div className="grid gap-2 md:gap-3">
+              <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
+                <Input
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Ask about ocean data..."
+                  className="flex-1 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm md:text-base"
+                />
+                <Button
+                  type="submit"
+                  size="default"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 md:px-6 whitespace-nowrap"
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </form>
+              <div className="mt-4 grid gap-2">
                 {(() => {
                   const suggestions: DemoQuestion[] = [];
                   const usedSet = new Set(usedSuggestions);
-                  let i = 0,
-                    j = 0;
-                  while (
-                    suggestions.length < 4 &&
-                    j < demoData.demo_questions.length
-                  ) {
+                  let j = 0;
+                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
                     const q = demoData.demo_questions[j];
-                    if (!usedSet.has(q.id)) {
-                      suggestions.push(q as DemoQuestion);
-                    }
+                    if (!usedSet.has(q.id)) suggestions.push(q as DemoQuestion);
                     j++;
                   }
                   j = 0;
-                  while (
-                    suggestions.length < 4 &&
-                    j < demoData.demo_questions.length
-                  ) {
+                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
                     const q = demoData.demo_questions[j];
-                    if (usedSet.has(q.id)) {
-                      suggestions.push(q as DemoQuestion);
-                    }
+                    if (usedSet.has(q.id)) suggestions.push(q as DemoQuestion);
                     j++;
                   }
                   return suggestions.map((question) => (
                     <Card
                       key={question.id}
                       className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
-                      onClick={() =>
-                        handleSuggestionClick(question as DemoQuestion)
-                      }
+                      onClick={() => handleSuggestionClick(question as DemoQuestion)}
                     >
                       <p className="text-xs md:text-sm text-foreground leading-relaxed">
                         {question.prompt}
@@ -389,76 +406,79 @@ export function ChatInterface({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
-      <div className="p-4 md:p-6 border-t border-border">
-        <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
-          <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask about ocean data..."
-            className="flex-1 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm md:text-base"
-          />
-          <Button
-            type="submit"
-            size="default"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 md:px-6 whitespace-nowrap"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
-        </form>
+      {/* Input Area (hidden during landing) */}
+      {!isLanding && (
+        <div className="p-4 md:p-6 border-t border-border">
+          <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Ask about ocean data..."
+              className="flex-1 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm md:text-base"
+            />
+            <Button
+              type="submit"
+              size="default"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 md:px-6 whitespace-nowrap"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
+          </form>
 
-        {isCompact && (
-          <div className="mt-3 flex flex-wrap gap-1 md:gap-2">
-            {/* Show a random follow-up question for the active question */}
-            {(() => {
-              // Find the currently active question (last assistant message with questionId)
-              const lastAssistantMsg = messages
-                .slice()
-                .reverse()
-                .find((m) => m.type === "assistant" && m.questionId);
-              if (lastAssistantMsg && lastAssistantMsg.questionId) {
-                const activeQuestion = demoData.demo_questions.find(
-                  (q) => q.id === lastAssistantMsg.questionId
-                );
-                if (
-                  activeQuestion &&
-                  Array.isArray(activeQuestion.followUpQuestions) &&
-                  activeQuestion.followUpQuestions.length > 0
-                ) {
-                  // Pick a random follow-up question
-                  const randIdx = Math.floor(
-                    Math.random() * activeQuestion.followUpQuestions.length
+          {isCompact && (
+            <div className="mt-3 flex flex-wrap gap-1 md:gap-2">
+              {/* Show a random follow-up question for the active question */}
+              {(() => {
+                // Find the currently active question (last assistant message with questionId)
+                const lastAssistantMsg = messages
+                  .slice()
+                  .reverse()
+                  .find((m) => m.type === "assistant" && m.questionId);
+                if (lastAssistantMsg && lastAssistantMsg.questionId) {
+                  const activeQuestion = demoData.demo_questions.find(
+                    (q) => q.id === lastAssistantMsg.questionId
                   );
-                  const followUp = activeQuestion.followUpQuestions[randIdx];
-                  return (
-                    <Button
-                      key={followUp.prompt}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setInputValue(followUp.prompt)}
-                      className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
-                    >
-                      {followUp.prompt.slice(0, 40)}
-                    </Button>
-                  );
+                  if (
+                    activeQuestion &&
+                    Array.isArray(activeQuestion.followUpQuestions) &&
+                    activeQuestion.followUpQuestions.length > 0
+                  ) {
+                    // Pick a random follow-up question
+                    const randIdx = Math.floor(
+                      Math.random() * activeQuestion.followUpQuestions.length
+                    );
+                    const followUp = activeQuestion.followUpQuestions[randIdx];
+                    return (
+                      <Button
+                        key={followUp.prompt}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setInputValue(followUp.prompt)}
+                        className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
+                      >
+                        {followUp.prompt.slice(0, 40)}
+                      </Button>
+                    );
+                  }
                 }
-              }
-              // Fallback: show default suggestions
-              return suggestionIndices.map((sIdx, i) => (
-                <Button
-                  key={demoData.demo_questions[sIdx].id}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleCompactSuggestionClick(i)}
-                  className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
-                >
-                  {demoData.demo_questions[sIdx].prompt.slice(0, 20)}...
-                </Button>
-              ));
-            })()}
-          </div>
-        )}
-      </div>
+                // Fallback: show default suggestions
+                return suggestionIndices.map((sIdx, i) => (
+                  <Button
+                    key={demoData.demo_questions[sIdx].id}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleCompactSuggestionClick(i)}
+                    className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
+                  >
+                    {demoData.demo_questions[sIdx].prompt.slice(0, 20)}...
+                  </Button>
+                ));
+              })()}
+            </div>
+          )}
+        </div>
+      )}
+      </LayoutGroup>
     </div>
   );
 }
