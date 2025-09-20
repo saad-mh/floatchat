@@ -9,7 +9,7 @@
         {
           "type": "mapglobe",
           "title": "Floats within 100 km of (0°N, 0°E) : Globe View",
-          "dataUri": "/demo-maps/dq01map-alt.json"
+          "dataUri": "/demo-maps/dq01_map_alt.json"
         },
         {
           "type": "chart",
@@ -46,13 +46,8 @@
           "dataUri": "/demo/charts/dq02_bgc_timeseries.json"
         },
         {
-          "type": "flat-map",
-          "title": "Geographic Distribution : 2D Flat Map",
-          "dataUri": "/demo-maps/dq02_map_alt.json"
-        },
-        {
-          "type": "globe",
-          "title": "Profile Locations (Arabian Sea) : Globe View",
+          "type": "mapglobe",
+          "title": "Floats within 100 km of (0°N, 0°E) : Globe View",
           "dataUri": "/demo-maps/dq02_map_alt.json"
         },
         {
@@ -76,13 +71,8 @@
       "detailedDescription": "This spatial analysis identifies the closest ARGO floats to a specific geographical coordinate (15.5°N, 70.2°E) in the Arabian Sea region. This type of proximity search is essential for researchers studying localized oceanographic phenomena, validating satellite observations, or planning field research campaigns.\n\n**Visualizations Explained:**\n\n 🎯 **Proximity Mapping:** The maps display ARGO floats arranged by their distance from the target coordinates, with the nearest floats prominently highlighted. Distance rings or gradients show the spatial relationship between floats and the point of interest. The 3D globe provides an enhanced perspective of the regional context within the Indian Ocean basin.\n\n 📏 **Distance-Ranked Results:** The summary presents the top 5 nearest floats with precise distance calculations in kilometers. Each float entry includes its World Meteorological Organization (WMO) identifier, current coordinates, and operational status.\n\n**Technical Implementation:** The search uses the Haversine formula to calculate great-circle distances between coordinates, accounting for the Earth's spherical geometry. This ensures accurate distance measurements across the curved surface of our planet.\n\n**Research Applications:** Proximity searches are crucial for:\n- **Oceanographic Studies:** Investigating local phenomena like eddies, upwelling events, or temperature anomalies\n- **Climate Research:** Correlating in-situ measurements with satellite data or atmospheric observations\n- **Navigation Planning:** Optimizing research vessel routes for float recovery or deployment\n- **Data Validation:** Cross-referencing measurements from multiple nearby instruments\n- **Emergency Response:** Rapidly identifying available monitoring assets during environmental events\n\n**Regional Context:** The coordinates 15.5°N, 70.2°E fall within the Arabian Sea, a region characterized by strong seasonal monsoons, intense upwelling, and significant maritime traffic, making continuous monitoring essential for both scientific and operational purposes.",
       "cards": [
         {
-          "type": "flat-map",
-          "title": "Geographic Distribution : 2D Flat Map",
-          "dataUri": "/demo-maps/dq03_nearest_alt.json"
-        },
-        {
-          "type": "globe",
-          "title": "Nearest floats to (15.5N, 70.2E)",
+          "type": "mapglobe",
+          "title": "Floats within 100 km of (0°N, 0°E) : Globe View",
           "dataUri": "/demo-maps/dq03_nearest_alt.json"
         },
         {
@@ -110,7 +100,7 @@
       "cards": [
         {
           "type": "chart",
-          "title": "Temperature vs Depth — WMO_5901234 (last 3 cycles)",
+          "title": "Temperature vs Depth - WMO_5901234 (last 3 cycles)",
           "dataUri": "/demo/charts/dq04_temp_profiles.json"
         },
         {
@@ -142,13 +132,8 @@
           "dataUri": "/demo/charts/dq05_o2_heatmap.json"
         },
         {
-          "type": "flat-map",
+          "type": "mapglobe",
           "title": "Geographic Distribution : 2D Flat Map",
-          "dataUri": "/demo-maps/dq05_map_alt.json"
-        },
-        {
-          "type": "globe",
-          "title": "Sampling locations contributing to heatmap",
           "dataUri": "/demo-maps/dq05_map_alt.json"
         }
       ],
@@ -225,12 +210,7 @@
       "detailedDescription": "This comprehensive analysis traces the complete lifecycle and movement history of ARGO float WMO_5902345, providing insights into ocean circulation patterns, float performance, and long-term oceanographic monitoring capabilities. Individual float tracking reveals the complex pathways of ocean currents and their temporal variability.\n\n**Visualizations Explained:**\n\n 🛰️ **Trajectory Mapping:** The detailed path visualization shows:\n- **Deployment Location:** Initial release point on April 12, 2020, at coordinates 12.3°N, 62.1°E in the Arabian Sea\n- **Drift Pattern:** Complete trajectory showing how ocean currents have transported the float over 5+ years\n- **Measurement Points:** Locations where the float surfaced to collect and transmit data\n- **Current Systems:** Visual evidence of major circulation features like eddies, jets, and gyre boundaries\n\n 📍 **Geographic Context:** Both 2D and 3D maps provide regional perspective within the Indian Ocean basin, showing relationships to:\n- **Monsoon Circulation:** Seasonal current reversals driven by atmospheric patterns\n- **Bathymetric Features:** How underwater topography influences float trajectories\n- **Regional Boundaries:** Movement across different oceanographic provinces\n\n**Operational History:**\n\n⚡ **Performance Metrics:**\n- **Mission Duration:** 5+ years of continuous operation (deployed April 2020, last contact August 2025)\n- **Data Quality:** Consistent high-quality measurements throughout deployment\n- **Communication Status:** Regular satellite transmissions confirming active status\n- **Cycle Completion:** Successful completion of hundreds of measurement cycles\n\n**Scientific Value:**\n- **Lagrangian Observations:** Following water masses as they move, providing unique perspective on ocean dynamics\n- **Long-term Monitoring:** Multi-year records essential for climate research and variability studies\n- **Circulation Validation:** Real-world data to test and improve ocean circulation models\n- **Seasonal Documentation:** Capturing monsoon-driven changes in regional circulation patterns\n\n**Technical Achievement:** WMO_5902345 represents the remarkable success of ARGO technology - autonomous instruments operating for years in harsh ocean conditions while providing consistent, high-quality scientific data. The float's longevity and extensive coverage demonstrate the program's effectiveness in global ocean monitoring.\n\n**Research Impact:** This single float's data contributes to climate research, weather prediction, ocean modeling, and our understanding of Indian Ocean circulation - showcasing how individual instruments contribute to global scientific knowledge.",
       "cards": [
         {
-          "type": "flat-map",
-          "title": "Geographic Distribution : 2D Flat Map",
-          "dataUri": "/demo/maps/dq08_trajectory.json"
-        },
-        {
-          "type": "globe",
+          "type": "mapglobe",
           "title": "Trajectory & Deployment History — WMO_5902345",
           "dataUri": "/demo/maps/dq08_trajectory.json"
         },
@@ -284,7 +264,7 @@
       "cards": [
         {
           "type": "summary",
-          "title": "QC Overview — WMO_5905678 (2024)",
+          "title": "QC Overview - WMO_5905678 (2024)",
           "text": "Total profiles: 12. QC pass: 10, flagged: 2 (pressure anomalies). See detailed QC table.",
           "provenance": [
             "WMO_5905678_qc_report_2024.json"
@@ -311,7 +291,7 @@
       "cards": [
         {
           "type": "chart",
-          "title": "Mixed Layer Depth vs Time — Bay of Bengal (Jun–Sep 2023)",
+          "title": "Mixed Layer Depth vs Time — Bay of Bengal (Jun-Sep 2023)",
           "dataUri": "/demo/charts/dq11_mld_timeseries.json"
         },
         {
@@ -322,7 +302,7 @@
         {
           "type": "summary",
           "title": "Quick Summary",
-          "text": "MLD ranged 20–60 m with strong deepening events linked to wind-driven mixing during July–August."
+          "text": "MLD ranged 20-60 m with strong deepening events linked to wind-driven mixing during July-August."
         }
       ],
       "querieGenerated": "SELECT * FROM profiles WHERE region = 'Bay of Bengal' AND parameter = 'mixed_layer_depth' AND date BETWEEN '2023-06-01' AND '2023-09-30';",

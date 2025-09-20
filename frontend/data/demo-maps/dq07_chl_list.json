@@ -1,0 +1,14 @@
+{
+  "type": "proximitySearch",
+  "title": "BGC Floats with Chlorophyll > 1.5 mg/m³ — July 2024",
+  "targetCoords": {"lat": 16.0, "lng": 68.5},
+  "searchRadius": "200 km",
+  "markers": [
+    { "lat": 16.0, "lng": 68.5, "label": "Query Region Center", "color": "#f43f5e" },
+    { "lat": 16.2, "lng": 68.7, "label": "Float WMO_5903456", "color": "#3b82f6" },
+    { "lat": 15.8, "lng": 68.4, "label": "Float WMO_5907890", "color": "#f59e42" },
+    { "lat": 16.3, "lng": 68.9, "label": "Float WMO_5904567", "color": "#10b981" },
+    { "lat": 15.7, "lng": 68.2, "label": "Float WMO_5906789", "color": "#8b5cf6" },
+    { "lat": 16.1, "lng": 68.6, "label": "Float WMO_5908123", "color": "#eab308" }
+  ]
+}
