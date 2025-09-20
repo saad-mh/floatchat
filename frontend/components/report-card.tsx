@@ -96,12 +96,11 @@ export function ReportCard({ card }: ReportCardProps) {
   }, [card.type, card.dataUri]);
 
   const renderCardContent = () => {
-    // Render globe and flat map side by side only for 'map-globe' type
     if (card.type === "mapglobe") {
       return (
         <div className="flex flex-row gap-4 w-full">
           <div style={{ width: '40%' }} className="aspect-square">
-            <GlobeCard points={globePoints} height={400} />
+            <GlobeCard points={globePoints} height={349} />
           </div>
           <div style={{ width: '60%' }}>
             <FlatMapCard dataUri={card.dataUri} />

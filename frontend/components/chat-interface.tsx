@@ -223,14 +223,14 @@ export function ChatInterface({
               </h2>
             </button>
             <p className="text-muted-foreground mb-6 md:mb-8 max-w-md mx-auto px-4 text-sm md:text-base">
-              Ask questions about Argo ocean float data and get interactive
+              Ask questions about oceoanographic data <br/> and get interactive
               visualizations and analysis.
             </p>
 
             {/* Demo Question Suggestions */}
             <div className="space-y-3 max-w-2xl mx-auto px-4">
               <p className="text-sm font-medium text-foreground mb-3 md:mb-4">
-                Try these demo questions:
+                Try these questions:
               </p>
               <div className="grid gap-2 md:gap-3">
                 {(() => {

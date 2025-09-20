@@ -1,7 +1,11 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "../theme-toggle";
+import { bg } from "date-fns/locale";
 
 interface GlobeCardProps {
   points?: Array<{ lat: number; lng: number; label?: string; color?: string }>;
@@ -10,6 +14,16 @@ interface GlobeCardProps {
 }
 
 export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps) {
+
+  const { theme } = useTheme();
+  // Update globe background image when theme changes
+  useEffect(() => {
+    if (!globeInstance.current) return;
+    const bgImage = theme === "light" ? "/day-sky.jpeg" : "/night-sky.png";
+    const bgColor = theme === "light" ? "#ffffff" : "#111827";
+    // globeInstance.current.backgroundImageUrl(bgImage);
+    globeInstance.current.backgroundColor(bgColor);
+  }, [theme]);
   const globeRef = useRef<HTMLDivElement>(null);
   const globeInstance = useRef<any>(null);
   const [containerWidth, setContainerWidth] = useState<number>(100);
@@ -76,15 +90,19 @@ export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps)
 
         if (!globeRef.current || globeInstance.current) return;
 
+        // Choose background image based on theme
+        const bgImage = theme === "light" ? "/day-sky.jpeg" : "/night-sky.png";
+        const bgColor = theme === "light" ? "#ffffff" : "#111827";
+
         globeInstance.current = new Globe(globeRef.current)
           .height(height)
           .width(containerWidth)
-          .backgroundColor("#101624")
+          .backgroundColor(bgColor)
           .globeImageUrl("/earth-blue-marble.jpg")
-          .backgroundImageUrl('/night-sky.png')
+          // .backgroundImageUrl(bgImage)
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
-          .pointColor((d: any) => d.color || "#4A90E2")
+          .pointColor((d: any) => d.color || "#1e2a3a")
           .pointAltitude(0.01)
           .pointRadius(0.5)
           .pointsData([]) // Initialize with empty data
@@ -119,11 +137,8 @@ export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps)
     };
   }, [isClient, height, containerWidth]);
 
-  // Update globe data when props change
   useEffect(() => {
     if (!globeInstance.current || !globeLoaded) return;
-
-    // Use provided center for zoom, otherwise show whole globe
     const pov = center || { lat: 0, lng: 0, altitude: 1.5 };
 
     const ringsData = points.map((p) => ({
@@ -138,12 +153,12 @@ export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps)
     globeInstance.current
       .pointsData(points)
       .ringsData(ringsData)
-      .pointOfView(pov, 0); // Use center if provided
+      .pointOfView(pov, 0);
   }, [points, globeLoaded, center]);
 
   return (
     <div
-      className="bg-card rounded-lg shadow-lg overflow-hidden w-full relative"
+      className="bg-card rounded-lg overflow-hidden w-full relative"
       style={{ height }}
     >
       <div className="absolute top-2 right-2 z-10">
