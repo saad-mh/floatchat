@@ -26,6 +26,12 @@
           ]
         }
       ],
+      "followUpQuestions": [
+        {
+          "id": "dq01a",
+          "prompt": "Compare salinity near the equator between March 2022 and March 2023."
+        }
+      ],
       "querieGenerated": "SELECT * FROM profiles WHERE ABS(latitude) < 5 AND ABS(longitude) < 5 AND EXTRACT(MONTH FROM date) = 3 AND EXTRACT(YEAR FROM date) = 2023 AND parameter = 'salinity';"
     },
     {
@@ -55,6 +61,12 @@
           "dataUri": "/demo/tables/dq02_bgc_stats.json"
         }
       ],
+      "followUpQuestions": [
+        {
+          "id": "dq02a",
+          "prompt": "Show anomalies of oxygen and chlorophyll in the Arabian Sea compared to 5-year averages."
+        }
+      ],
       "querieGenerated": "SELECT * FROM bgc_profiles WHERE region = 'Arabian Sea' AND date >= DATE_SUB(CURRENT_DATE, INTERVAL 6 MONTH);"
     },
     {
@@ -63,12 +75,12 @@
       "primaryContentType": "map",
       "detailedDescription": "This spatial analysis identifies the closest ARGO floats to a specific geographical coordinate (15.5°N, 70.2°E) in the Arabian Sea region. This type of proximity search is essential for researchers studying localized oceanographic phenomena, validating satellite observations, or planning field research campaigns.\n\n**Visualizations Explained:**\n\n 🎯 **Proximity Mapping:** The maps display ARGO floats arranged by their distance from the target coordinates, with the nearest floats prominently highlighted. Distance rings or gradients show the spatial relationship between floats and the point of interest. The 3D globe provides an enhanced perspective of the regional context within the Indian Ocean basin.\n\n 📏 **Distance-Ranked Results:** The summary presents the top 5 nearest floats with precise distance calculations in kilometers. Each float entry includes its World Meteorological Organization (WMO) identifier, current coordinates, and operational status.\n\n**Technical Implementation:** The search uses the Haversine formula to calculate great-circle distances between coordinates, accounting for the Earth's spherical geometry. This ensures accurate distance measurements across the curved surface of our planet.\n\n**Research Applications:** Proximity searches are crucial for:\n- **Oceanographic Studies:** Investigating local phenomena like eddies, upwelling events, or temperature anomalies\n- **Climate Research:** Correlating in-situ measurements with satellite data or atmospheric observations\n- **Navigation Planning:** Optimizing research vessel routes for float recovery or deployment\n- **Data Validation:** Cross-referencing measurements from multiple nearby instruments\n- **Emergency Response:** Rapidly identifying available monitoring assets during environmental events\n\n**Regional Context:** The coordinates 15.5°N, 70.2°E fall within the Arabian Sea, a region characterized by strong seasonal monsoons, intense upwelling, and significant maritime traffic, making continuous monitoring essential for both scientific and operational purposes.",
       "cards": [
-              {
+        {
           "type": "flat-map",
           "title": "Geographic Distribution : 2D Flat Map",
           "dataUri": "/demo-maps/dq03_nearest_alt.json"
         },
-              {
+        {
           "type": "globe",
           "title": "Nearest floats to (15.5N, 70.2E)",
           "dataUri": "/demo-maps/dq03_nearest_alt.json"
@@ -80,6 +92,12 @@
           "provenance": [
             "WMO_5901234.nc"
           ]
+        }
+      ],
+      "followUpQuestions": [
+        {
+          "id": "dq03a",
+          "prompt": "Show trajectories of the 5 nearest floats over the past year."
         }
       ],
       "querieGenerated": "SELECT *, SQRT(POW(latitude-15.5,2)+POW(longitude-70.2,2)) AS distance FROM floats ORDER BY distance ASC LIMIT 5;"
@@ -102,6 +120,12 @@
           "provenance": [
             "WMO_5901234_cycle182.nc"
           ]
+        }
+      ],
+      "followUpQuestions": [
+        {
+          "id": "dq04a",
+          "prompt": "Compare salinity and temperature profiles for the same 3 cycles."
         }
       ],
       "querieGenerated": "SELECT * FROM profiles WHERE float_id = 'WMO_5901234' AND cycle BETWEEN 182 AND 184 AND parameter = 'temperature';"
@@ -128,6 +152,12 @@
           "dataUri": "/demo-maps/dq05_map_alt.json"
         }
       ],
+      "followUpQuestions": [
+        {
+          "id": "dq05a",
+          "prompt": "Show correlation between oxygen and temperature at (10S,80E) over last year."
+        }
+      ],
       "querieGenerated": "SELECT * FROM profiles WHERE latitude = -10 AND longitude = 80 AND parameter = 'oxygen' AND date >= DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR);"
     },
     {
@@ -148,6 +178,12 @@
           "provenance": [
             "aggregated_stats_2024_q3.json"
           ]
+        }
+      ],
+      "followUpQuestions": [
+        {
+          "id": "dq06a",
+          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
         }
       ],
       "querieGenerated": "SELECT salinity, temperature FROM profiles WHERE region = 'Southern Indian Ocean' AND depth > 200;"
@@ -172,6 +208,12 @@
           "type": "globe",
           "title": "Locations of these observations",
           "dataUri": "/demo/maps/dq07_map.json"
+        }
+      ],
+      "followUpQuestions": [
+        {
+          "id": "dq06a",
+          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
         }
       ],
       "querieGenerated": "SELECT * FROM bgc_profiles WHERE parameter = 'chlorophyll' AND value > 1.5 AND EXTRACT(MONTH FROM date) = 7 AND EXTRACT(YEAR FROM date) = 2024;"
@@ -201,6 +243,12 @@
           ]
         }
       ],
+      "followUpQuestions": [
+        {
+          "id": "dq06a",
+          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
+        }
+      ],
       "querieGenerated": "SELECT * FROM deployments WHERE float_id = 'WMO_5902345'; SELECT * FROM trajectories WHERE float_id = 'WMO_5902345';"
     },
     {
@@ -218,6 +266,12 @@
           "type": "summary",
           "title": "File",
           "text": "Original NetCDF: WMO_5901234_cycle184.nc"
+        }
+      ],
+      "followUpQuestions": [
+        {
+          "id": "dq06a",
+          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
         }
       ],
       "querieGenerated": "SELECT * FROM profiles WHERE profile_id = 'P_5901234_184';"
@@ -240,6 +294,12 @@
           "type": "table",
           "title": "QC Details",
           "dataUri": "/demo/tables/dq10_qc_details.json"
+        }
+      ],
+      "followUpQuestions": [
+        {
+          "id": "dq06a",
+          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
         }
       ],
       "querieGenerated": "SELECT * FROM qc_reports WHERE float_id = 'WMO_5905678' AND EXTRACT(YEAR FROM date) = 2024;"

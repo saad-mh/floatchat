@@ -21,7 +21,7 @@ export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps)
     if (!globeInstance.current) return;
     const bgImage = theme === "light" ? "/day-sky.jpeg" : "/night-sky.png";
     const bgColor = theme === "light" ? "#ffffff" : "#111827";
-    // globeInstance.current.backgroundImageUrl(bgImage);
+    globeInstance.current.backgroundImageUrl(bgImage);
     globeInstance.current.backgroundColor(bgColor);
   }, [theme]);
   const globeRef = useRef<HTMLDivElement>(null);
@@ -99,7 +99,7 @@ export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps)
           .width(containerWidth)
           .backgroundColor(bgColor)
           .globeImageUrl("/earth-blue-marble.jpg")
-          // .backgroundImageUrl(bgImage)
+          .backgroundImageUrl(bgImage)
           .pointLat((d: any) => d.lat)
           .pointLng((d: any) => d.lng)
           .pointColor((d: any) => d.color || "#1e2a3a")
