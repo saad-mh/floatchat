@@ -212,8 +212,8 @@
       ],
       "followUpQuestions": [
         {
-          "id": "dq06a",
-          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
+          "id": "dq07a",
+          "prompt": "Compare chlorophyll levels of these floats with concurrent oxygen values."
         }
       ],
       "querieGenerated": "SELECT * FROM bgc_profiles WHERE parameter = 'chlorophyll' AND value > 1.5 AND EXTRACT(MONTH FROM date) = 7 AND EXTRACT(YEAR FROM date) = 2024;"
@@ -245,8 +245,8 @@
       ],
       "followUpQuestions": [
         {
-          "id": "dq06a",
-          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
+          "id": "dq08a",
+          "prompt": "Show depth cycling pattern of WMO_5902345 during its deployment."
         }
       ],
       "querieGenerated": "SELECT * FROM deployments WHERE float_id = 'WMO_5902345'; SELECT * FROM trajectories WHERE float_id = 'WMO_5902345';"
@@ -270,8 +270,8 @@
       ],
       "followUpQuestions": [
         {
-          "id": "dq06a",
-          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
+          "id": "dq09a",
+          "prompt": "Show quality control flags for profile P_5901234_184."
         }
       ],
       "querieGenerated": "SELECT * FROM profiles WHERE profile_id = 'P_5901234_184';"
@@ -298,8 +298,8 @@
       ],
       "followUpQuestions": [
         {
-          "id": "dq06a",
-          "prompt": "Plot correlation by season to see variability in salinity-temperature relationship."
+          "id": "dq10a",
+          "prompt": "Show comparison of QC status across all years since deployment for WMO_5905678."
         }
       ],
       "querieGenerated": "SELECT * FROM qc_reports WHERE float_id = 'WMO_5905678' AND EXTRACT(YEAR FROM date) = 2024;"

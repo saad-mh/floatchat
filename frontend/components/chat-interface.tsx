@@ -409,17 +409,53 @@ export function ChatInterface({
 
         {isCompact && (
           <div className="mt-3 flex flex-wrap gap-1 md:gap-2">
-            {suggestionIndices.map((sIdx, i) => (
-              <Button
-                key={demoData.demo_questions[sIdx].id}
-                variant="outline"
-                size="sm"
-                onClick={() => handleCompactSuggestionClick(i)}
-                className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
-              >
-                {demoData.demo_questions[sIdx].prompt.slice(0, 20)}...
-              </Button>
-            ))}
+            {/* Show a random follow-up question for the active question */}
+            {(() => {
+              // Find the currently active question (last assistant message with questionId)
+              const lastAssistantMsg = messages
+                .slice()
+                .reverse()
+                .find((m) => m.type === "assistant" && m.questionId);
+              if (lastAssistantMsg && lastAssistantMsg.questionId) {
+                const activeQuestion = demoData.demo_questions.find(
+                  (q) => q.id === lastAssistantMsg.questionId
+                );
+                if (
+                  activeQuestion &&
+                  Array.isArray(activeQuestion.followUpQuestions) &&
+                  activeQuestion.followUpQuestions.length > 0
+                ) {
+                  // Pick a random follow-up question
+                  const randIdx = Math.floor(
+                    Math.random() * activeQuestion.followUpQuestions.length
+                  );
+                  const followUp = activeQuestion.followUpQuestions[randIdx];
+                  return (
+                    <Button
+                      key={followUp.prompt}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setInputValue(followUp.prompt)}
+                      className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
+                    >
+                      {followUp.prompt.slice(0, 40)}
+                    </Button>
+                  );
+                }
+              }
+              // Fallback: show default suggestions
+              return suggestionIndices.map((sIdx, i) => (
+                <Button
+                  key={demoData.demo_questions[sIdx].id}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleCompactSuggestionClick(i)}
+                  className="text-xs border-border hover:bg-accent/50 px-2 md:px-3"
+                >
+                  {demoData.demo_questions[sIdx].prompt.slice(0, 20)}...
+                </Button>
+              ));
+            })()}
           </div>
         )}
       </div>
