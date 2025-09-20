@@ -11,109 +11,122 @@ import { Button } from "@/components/ui/button";
 import "leaflet/dist/leaflet.css";
 
 // Leaflet Map Component
-const LeafletMapComponent = dynamic(() => {
-  return import("react-leaflet").then((mod) => {
-    const { MapContainer, TileLayer, Marker, Popup, useMap } = mod;
-    
-    return Promise.resolve().then(() => {
-      // Import Leaflet for icons
-      return import("leaflet").then((L) => {
-        // Fix for default markers in react-leaflet
-        delete (L.default.Icon.Default.prototype as any)._getIconUrl;
-        L.default.Icon.Default.mergeOptions({
-          iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-          iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-          shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-        });
+const LeafletMapComponent = dynamic(
+  () => {
+    return import("react-leaflet").then((mod) => {
+      const { MapContainer, TileLayer, Marker, Popup, useMap } = mod;
 
-        // Custom ARGO float icon
-        const argoIcon = new L.default.Icon({
-          iconUrl: "data:image/svg+xml;base64," + btoa(`
+      return Promise.resolve().then(() => {
+        // Import Leaflet for icons
+        return import("leaflet").then((L) => {
+          // Fix for default markers in react-leaflet
+          delete (L.default.Icon.Default.prototype as any)._getIconUrl;
+          L.default.Icon.Default.mergeOptions({
+            iconRetinaUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+            iconUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+          });
+
+          // Custom ARGO float icon
+          const argoIcon = new L.default.Icon({
+            iconUrl:
+              "data:image/svg+xml;base64," +
+              btoa(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3b82f6" width="24" height="24">
               <circle cx="12" cy="12" r="8" stroke="#1e40af" stroke-width="2" fill="#3b82f6" opacity="0.8"/>
               <circle cx="12" cy="12" r="3" fill="#1e40af"/>
             </svg>
           `),
-          iconSize: [24, 24],
-          iconAnchor: [12, 12],
-          popupAnchor: [0, -12],
-        });
+            iconSize: [24, 24],
+            iconAnchor: [12, 12],
+            popupAnchor: [0, -12],
+          });
 
-        function MapFitBounds({ bounds }: { bounds: any }) {
-          const map = useMap();
-          
-          useEffect(() => {
-            if (bounds && map) {
-              map.fitBounds(bounds, { padding: [20, 20] });
-            }
-          }, [map, bounds]);
+          function MapFitBounds({ bounds }: { bounds: any }) {
+            const map = useMap();
 
-          return null;
-        }
+            useEffect(() => {
+              if (bounds && map) {
+                map.fitBounds(bounds, { padding: [20, 20] });
+              }
+            }, [map, bounds]);
 
-        // Return the actual component
-        return function LeafletMap({ mapData }: { mapData: MapData }) {
-          if (!mapData?.markers || mapData.markers.length === 0) {
-            return (
-              <div className="flex items-center justify-center h-full bg-muted/20 rounded-lg">
-                <p className="text-muted-foreground">No location data available</p>
-              </div>
-            );
+            return null;
           }
 
-          // Calculate bounds for all markers
-          const bounds = L.default.latLngBounds(
-            mapData.markers.map(marker => [marker.lat, marker.lon] as [number, number])
-          );
+          // Return the actual component
+          return function LeafletMap({ mapData }: { mapData: MapData }) {
+            if (!mapData?.markers || mapData.markers.length === 0) {
+              return (
+                <div className="flex items-center justify-center h-full bg-muted/20 rounded-lg">
+                  <p className="text-muted-foreground">
+                    No location data available
+                  </p>
+                </div>
+              );
+            }
 
-          return (
-            <MapContainer
-              bounds={bounds}
-              scrollWheelZoom={true}
-              className="h-full w-full rounded-lg"
-              style={{ height: "100%", width: "100%" }}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-                maxZoom={19}
-              />
-              
-              <MapFitBounds bounds={bounds} />
-              
-              {mapData.markers.map((marker) => (
-                <Marker
-                  key={marker.id}
-                  position={[marker.lat, marker.lon]}
-                  icon={argoIcon}
-                >
-                  <Popup>
-                    <div className="text-sm">
-                      <strong>{marker.label}</strong>
-                      <br />
-                      {marker.popup}
-                      <br />
-                      <span className="text-xs text-muted-foreground">
-                        Lat: {marker.lat.toFixed(4)}, Lon: {marker.lon.toFixed(4)}
-                      </span>
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
-          );
-        };
+            // Calculate bounds for all markers
+            const bounds = L.default.latLngBounds(
+              mapData.markers.map(
+                (marker) => [marker.lat, marker.lon] as [number, number]
+              )
+            );
+
+            return (
+              <MapContainer
+                bounds={bounds}
+                scrollWheelZoom={true}
+                className="h-full w-full rounded-lg"
+                style={{ height: "100%", width: "100%" }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  maxZoom={19}
+                />
+
+                <MapFitBounds bounds={bounds} />
+
+                {mapData.markers.map((marker) => (
+                  <Marker
+                    key={marker.id}
+                    position={[marker.lat, marker.lon]}
+                    icon={argoIcon}
+                  >
+                    <Popup>
+                      <div className="text-sm">
+                        <strong>{marker.label}</strong>
+                        <br />
+                        {marker.popup}
+                        <br />
+                        <span className="text-xs text-muted-foreground">
+                          Lat: {marker.lat.toFixed(4)}, Lon:{" "}
+                          {marker.lon.toFixed(4)}
+                        </span>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
+            );
+          };
+        });
       });
     });
-  });
-}, {
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center h-48 sm:h-56 md:h-64 lg:h-72 bg-muted/20 rounded-lg">
-      <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground animate-pulse" />
-    </div>
-  ),
-});
+  },
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-48 sm:h-56 md:h-64 lg:h-72 bg-muted/20 rounded-lg">
+        <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground animate-pulse" />
+      </div>
+    ),
+  }
+);
 
 interface FlatMapCardProps {
   dataUri?: string;
