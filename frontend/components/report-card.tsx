@@ -39,7 +39,7 @@ export function ReportCard({ card }: ReportCardProps) {
   const [globePoints, setGlobePoints] = useState<
     Array<{ lat: number; lng: number; label?: string; color?: string }>
   >([]);
-
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const [loadingGlobe, setLoadingGlobe] = useState(false);
   const [globeError, setGlobeError] = useState<string | null>(null);
   useEffect(() => {
@@ -93,12 +93,21 @@ export function ReportCard({ card }: ReportCardProps) {
 
   const renderCardContent = () => {
     if (card.type === "mapglobe") {
-      return (
+      return !isMobile ? (
         <div className="flex flex-row gap-4 w-full">
           <div style={{ width: '40%' }} className="aspect-square">
-              <GlobeCard points={globePoints} height={349} />
+            <GlobeCard points={globePoints} height={349} />
           </div>
           <div style={{ width: '60%' }}>
+            <FlatMapCard dataUri={card.dataUri} />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-4 w-full">
+          <div className="w-full">
+            <GlobeCard points={globePoints} height={220} />
+          </div>
+          <div className="w-full">
             <FlatMapCard dataUri={card.dataUri} />
           </div>
         </div>
