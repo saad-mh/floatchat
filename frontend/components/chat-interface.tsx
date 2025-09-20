@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, LayoutGroup } from "framer-motion";
+import { motion } from "framer-motion";
 import { Send, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,7 +41,7 @@ export function ChatInterface({
   const [suggestionIndices, setSuggestionIndices] = useState([0, 1]);
 
   // Detect mobile viewport
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -167,11 +167,13 @@ export function ChatInterface({
   };
 
   // Only show rounded corners, border, and shadow when isCompact and not mobile (no extra padding)
-  const containerClass = `h-full flex flex-col bg-background ${isCompact && !isMobile ? ' rounded-xl shadow-xl border border-border' : ''}`;
+  const containerClass = `h-full flex flex-col bg-background ${
+    isCompact && !isMobile ? " rounded-xl shadow-xl border border-border" : ""
+  }`;
   const isLanding = messages.length === 0 && !isCompact;
+
   return (
     <div className={containerClass}>
-      <LayoutGroup>
       {/* Header */}
       {!isLanding && (
         <motion.div
@@ -186,28 +188,20 @@ export function ChatInterface({
               className="flex items-center gap-2 md:gap-3 focus:outline-none rounded-lg p-1 -m-1 cursor-pointer"
               title="Reset FloatChat"
             >
-              <motion.div
-                layoutId="brand-logo"
-                className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center"
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <img src="/logo.svg" alt="FloatChat Logo" className="w-5 h-5 md:w-6 md:h-6" />
-              </motion.div>
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                <img
+                  src="/logo.svg"
+                  alt="FloatChat Logo"
+                  className="w-5 h-5 md:w-6 md:h-6"
+                />
+              </div>
               <div className="text-left">
-                <motion.h1
-                  layoutId="brand-title"
-                  className="text-lg md:text-xl font-bold text-foreground text-left"
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                >
+                <h1 className="text-lg md:text-xl font-bold text-foreground text-left">
                   FloatChat
-                </motion.h1>
-                <motion.p
-                  layoutId="brand-tagline"
-                  className="text-xs md:text-sm text-muted-foreground text-left"
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                >
+                </h1>
+                <p className="text-xs md:text-sm text-muted-foreground text-left">
                   AI Ocean Data Interface
-                </motion.p>
+                </p>
               </div>
             </button>
             <ThemeToggle />
@@ -218,34 +212,23 @@ export function ChatInterface({
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
         {isLanding && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="h-full flex items-center justify-center"
-          >
+          <div className="h-full flex items-center justify-center">
             <div className="w-full md:w-1/3 max-w-xl mx-auto px-4">
               <div className="flex flex-col items-center text-center">
-                <motion.div
-                  layoutId="brand-logo"
-                  className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-4"
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <img src="/logo.svg" alt="FloatChat Logo" className="w-9 h-9" />
-                </motion.div>
-                <motion.h1
-                  layoutId="brand-title"
-                  className="text-2xl font-bold text-foreground mb-2"
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                >
+                <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-4">
+                  <img
+                    src="/logo.svg"
+                    alt="FloatChat Logo"
+                    className="w-9 h-9"
+                  />
+                </div>
+                <h1 className="text-2xl font-bold text-foreground mb-2">
                   FloatChat
-                </motion.h1>
-                <motion.p
-                  layoutId="brand-tagline"
-                  className="text-sm text-muted-foreground mb-6"
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  Ask questions about oceanographic data and get interactive visualizations and analysis.
-                </motion.p>
+                </h1>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Ask questions about oceanographic data and get interactive
+                  visualizations and analysis.
+                </p>
               </div>
               <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
                 <Input
@@ -267,13 +250,19 @@ export function ChatInterface({
                   const suggestions: DemoQuestion[] = [];
                   const usedSet = new Set(usedSuggestions);
                   let j = 0;
-                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
+                  while (
+                    suggestions.length < 4 &&
+                    j < demoData.demo_questions.length
+                  ) {
                     const q = demoData.demo_questions[j];
                     if (!usedSet.has(q.id)) suggestions.push(q as DemoQuestion);
                     j++;
                   }
                   j = 0;
-                  while (suggestions.length < 4 && j < demoData.demo_questions.length) {
+                  while (
+                    suggestions.length < 4 &&
+                    j < demoData.demo_questions.length
+                  ) {
                     const q = demoData.demo_questions[j];
                     if (usedSet.has(q.id)) suggestions.push(q as DemoQuestion);
                     j++;
@@ -282,7 +271,9 @@ export function ChatInterface({
                     <Card
                       key={question.id}
                       className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
-                      onClick={() => handleSuggestionClick(question as DemoQuestion)}
+                      onClick={() =>
+                        handleSuggestionClick(question as DemoQuestion)
+                      }
                     >
                       <p className="text-xs md:text-sm text-foreground leading-relaxed">
                         {question.prompt}
@@ -292,7 +283,7 @@ export function ChatInterface({
                 })()}
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Chat Messages */}
@@ -478,7 +469,6 @@ export function ChatInterface({
           )}
         </div>
       )}
-      </LayoutGroup>
     </div>
   );
 }

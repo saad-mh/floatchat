@@ -50,7 +50,7 @@ const LeafletMapComponent = dynamic(
 
             useEffect(() => {
               if (bounds && map) {
-                map.fitBounds(bounds, { padding: [20, 20] });
+                map.fitBounds(bounds, { padding: [-10, 10], maxZoom: 4.6 });
               }
             }, [map, bounds]);
 

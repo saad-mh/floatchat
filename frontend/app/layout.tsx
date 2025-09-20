@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SplashProvider } from "@/components/splash-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -38,7 +39,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense fallback={null}>{children}</Suspense>
+          <SplashProvider>
+            <Suspense fallback={null}>{children}</Suspense>
+          </SplashProvider>
         </ThemeProvider>
       </body>
     </html>

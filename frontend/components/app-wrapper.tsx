@@ -1,0 +1,62 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { SplashScreen } from "@/components/splash-screen";
+import { useSplash } from "@/components/splash-provider";
+
+interface AppWrapperProps {
+  children: React.ReactNode;
+}
+
+export function AppWrapper({ children }: AppWrapperProps) {
+  const { isVisible, setIsVisible } = useSplash();
+  const [showContent, setShowContent] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // Ensure we're on the client side
+    setIsClient(true);
+
+    // Always show splash screen on every reload
+    setIsVisible(true);
+  }, [setIsVisible]);
+
+  const handleSplashComplete = () => {
+    // Show content first, then hide splash for seamless transition
+    setShowContent(true);
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 50);
+  };
+
+  // Show a simple loading state during SSR
+  if (!isClient) {
+    return (
+      <div className="h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {isVisible && (
+        <SplashScreen onComplete={handleSplashComplete} duration={2800} />
+      )}
+
+      <div
+        className={`transition-opacity duration-500 ${
+          showContent && !isVisible ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          pointerEvents: showContent && !isVisible ? "auto" : "none",
+          position: isVisible ? "absolute" : "relative",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {children}
+      </div>
+    </>
+  );
+}

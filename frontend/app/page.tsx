@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChatInterface } from "@/components/chat-interface";
 import { ReportPanel } from "@/components/report-panel";
+import { AppWrapper } from "@/components/app-wrapper";
 import type { DemoQuestion } from "@/types/demo";
 import { Button } from "@/components/ui/button";
 
@@ -34,126 +35,128 @@ export default function FloatChatPage() {
   };
 
   return (
-    <div className="h-screen bg-background overflow-hidden">
-      {/* Desktop Layout (Large screens) */}
-      <div className="hidden lg:block h-full">
-        <div className="flex h-full">
-          {/* Chat Interface */}
-          <motion.div
-            initial={{ width: "100%" }}
-            animate={{
-              width: activeQuestion ? "30%" : "100%",
-            }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="p-4 flex-shrink-0 border-r border-border"
-          >
-            <ChatInterface
-              onQuestionSubmit={handleQuestionSubmit}
-              isCompact={!!activeQuestion}
-              onReset={handleReset}
-            />
-          </motion.div>
+    <AppWrapper>
+      <div className="h-screen bg-background overflow-hidden">
+        {/* Desktop Layout (Large screens) */}
+        <div className="hidden lg:block h-full">
+          <div className="flex h-full">
+            {/* Chat Interface */}
+            <motion.div
+              initial={{ width: "100%" }}
+              animate={{
+                width: activeQuestion ? "30%" : "100%",
+              }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="p-4 flex-shrink-0 border-r border-border"
+            >
+              <ChatInterface
+                onQuestionSubmit={handleQuestionSubmit}
+                isCompact={!!activeQuestion}
+                onReset={handleReset}
+              />
+            </motion.div>
 
-          {/* Report Panel */}
-          <AnimatePresence>
-            {activeQuestion && (
+            {/* Report Panel */}
+            <AnimatePresence>
+              {activeQuestion && (
+                <motion.div
+                  initial={{ x: "10%", opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: "90%", opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  className="p-4 flex-1 bg-secondary/20"
+                >
+                  <ReportPanel
+                    question={activeQuestion}
+                    isGenerating={isGenerating}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Tablet Layout (Medium screens) */}
+        <div className="hidden md:block lg:hidden h-full">
+          <AnimatePresence mode="wait">
+            {!showMobileReport ? (
               <motion.div
-                initial={{ x: "10%", opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "90%", opacity: 0 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="p-4 flex-1 bg-secondary/20"
+                key="chat"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                className="h-full p-3"
               >
-                <ReportPanel
-                  question={activeQuestion}
-                  isGenerating={isGenerating}
-                />
+                <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
+                  <ChatInterface
+                    onQuestionSubmit={handleQuestionSubmit}
+                    isCompact={false}
+                    onReset={handleReset}
+                  />
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="report"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                className="h-full p-3"
+              >
+                <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
+                  <ReportPanel
+                    question={activeQuestion!}
+                    isGenerating={isGenerating}
+                    onBack={handleMobileBack}
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
-      </div>
 
-      {/* Tablet Layout (Medium screens) */}
-      <div className="hidden md:block lg:hidden h-full">
-        <AnimatePresence mode="wait">
-          {!showMobileReport ? (
-            <motion.div
-              key="chat"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className="h-full p-3"
-            >
-              <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
+        {/* Mobile Layout (Small screens) */}
+        <div className="md:hidden h-full">
+          <AnimatePresence mode="wait">
+            {!showMobileReport ? (
+              <motion.div
+                key="chat"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="h-full"
+              >
                 <ChatInterface
                   onQuestionSubmit={handleQuestionSubmit}
                   isCompact={false}
                   onReset={handleReset}
                 />
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="report"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className="h-full p-3"
-            >
-              <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
-                <ReportPanel
-                  question={activeQuestion!}
-                  isGenerating={isGenerating}
-                  onBack={handleMobileBack}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Mobile Layout (Small screens) */}
-      <div className="md:hidden h-full">
-        <AnimatePresence mode="wait">
-          {!showMobileReport ? (
-            <motion.div
-              key="chat"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="h-full"
-            >
-              <ChatInterface
-                onQuestionSubmit={handleQuestionSubmit}
-                isCompact={false}
-                onReset={handleReset}
-              />
-            </motion.div>
-          ) : (
-            <>
-              <Button className="bg-red-500 text-white">Go to chat</Button>
-              <motion.div
-                key="report"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-                className="h-full"
-              >
-                <ReportPanel
-                  question={activeQuestion!}
-                  isGenerating={isGenerating}
-                  onBack={handleMobileBack}
-                />
               </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+            ) : (
+              <>
+                <Button className="bg-red-500 text-white">Go to chat</Button>
+                <motion.div
+                  key="report"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="h-full"
+                >
+                  <ReportPanel
+                    question={activeQuestion!}
+                    isGenerating={isGenerating}
+                    onBack={handleMobileBack}
+                  />
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
-    </div>
+    </AppWrapper>
   );
 }
