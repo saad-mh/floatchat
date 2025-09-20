@@ -45,7 +45,9 @@ export function ReportCard({ card }: ReportCardProps) {
   useEffect(() => {
     async function fetchDemoCardData() {
       if (
-        ["globe", "map", "chart", "table", "summary", "mapglobe"].includes(card.type) &&
+        ["globe", "map", "chart", "table", "summary", "mapglobe"].includes(
+          card.type
+        ) &&
         card.dataUri
       ) {
         setLoadingGlobe(true);
@@ -95,10 +97,10 @@ export function ReportCard({ card }: ReportCardProps) {
     if (card.type === "mapglobe") {
       return !isMobile ? (
         <div className="flex flex-row gap-4 w-full">
-          <div style={{ width: '40%' }} className="aspect-square">
+          <div style={{ width: "40%" }} className="aspect-square">
             <GlobeCard points={globePoints} height={349} />
           </div>
-          <div style={{ width: '60%' }}>
+          <div style={{ width: "60%" }}>
             <FlatMapCard dataUri={card.dataUri} />
           </div>
         </div>
