@@ -5,7 +5,7 @@ import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "../theme-toggle";
-import { bg } from "date-fns/locale";
+// import { bg } from "date-fns/locale";
 
 interface GlobeCardProps {
   points?: Array<{ lat: number; lng: number; label?: string; color?: string }>;
@@ -13,8 +13,11 @@ interface GlobeCardProps {
   center?: { lat: number; lng: number; altitude?: number };
 }
 
-export function GlobeCard({ points = [], height = 400, center }: GlobeCardProps) {
-
+export function GlobeCard({
+  points = [],
+  height = 400,
+  center,
+}: GlobeCardProps) {
   const { theme } = useTheme();
   // Update globe background image when theme changes
   useEffect(() => {
