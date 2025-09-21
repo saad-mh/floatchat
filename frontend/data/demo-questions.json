@@ -7,6 +7,11 @@
       "detailedDescription": "This analysis examines ocean salinity measurements from autonomous ARGO floats positioned near the equatorial region during March 2023. The query specifically targets profiles within a 5-degree radius of the equator (0°N, 0°E), providing insights into the oceanographic conditions during this critical period.\n\n**Visualizations Explained:**\n\n 📍 **Geographic Distribution (2D & 3D Maps):** These interactive maps display the precise locations of ARGO floats that collected salinity data. The 2D flat map provides a traditional overhead view, while the 3D globe offers an immersive perspective of global float distribution. Each marker represents a float's position, color-coded by data quality and measurement frequency.\n\n 📊 **Salinity vs Depth Profiles:** This scientific chart shows how salinity varies with ocean depth across different measurement stations. Each colored line represents a different float's vertical profile, revealing the ocean's stratified structure. Higher salinity values typically indicate different water masses, evaporation effects, or mixing processes.\n\n 📋 **Data Summary:** The analysis covers 6 comprehensive profiles from 3 active ARGO floats, with near-surface salinity readings ranging from 34.8 to 35.2 PSU (Practical Salinity Units). All measurements have undergone rigorous quality control procedures.\n\n**Scientific Context:** Equatorial salinity patterns are crucial for understanding ocean circulation, climate dynamics, and the global water cycle. These measurements help researchers track changes in ocean density, which drives deep water formation and global thermohaline circulation patterns that influence weather and climate worldwide.",
       "cards": [
         {
+          "type": "heatmap",
+          "title": "Salinity Heatmap — Time vs Depth",
+          "dataUri": "/demo/heatmaps/dq01_salinity_heatmap.json"
+        },
+        {
           "type": "mapglobe",
           "title": "Floats within 100 km of (0°N, 0°E) : Globe View",
           "dataUri": "/demo-maps/dq01_map_alt.json"
@@ -40,6 +45,11 @@
       "primaryContentType": "chart",
       "detailedDescription": "This comprehensive analysis examines biogeochemical (BGC) parameters in the Arabian Sea over the past six months, providing critical insights into marine ecosystem health and productivity. BGC-ARGO floats equipped with specialized sensors measure key biological and chemical variables that indicate ocean health and climate change impacts.\n\n**Visualizations Explained:**\n\n 📈 **Time-Series Analysis:** This dynamic chart tracks multiple BGC parameters over time, including dissolved oxygen, pH, nitrate, chlorophyll-a, and backscatter coefficients. Each parameter is color-coded and shows seasonal trends, biological cycles, and potential environmental changes. Trend lines reveal patterns like phytoplankton blooms, oxygen depletion events, and nutrient cycling.\n\n 🗺️ **Spatial Distribution Maps:** Both 2D and 3D geographical representations show where BGC measurements were collected across the Arabian Sea. The distribution reveals sampling density, float trajectories, and regional variations in data availability.\n\n 📊 **Statistical Summary Table:** Comprehensive statistics including mean, median, standard deviation, and percentile ranges for each BGC parameter. This quantitative analysis enables researchers to identify anomalies, establish baselines, and compare regional conditions.\n\n**Scientific Significance:** The Arabian Sea is a unique marine ecosystem characterized by intense seasonal monsoons, upwelling events, and one of the world's largest oxygen minimum zones. BGC parameters help scientists understand:\n- Marine productivity and food web dynamics\n- Carbon cycle and CO₂ absorption capacity\n- Ocean acidification trends\n- Hypoxic zone expansion\n- Climate change impacts on marine ecosystems\n\n**Data Quality:** All BGC measurements undergo rigorous calibration and quality control procedures, ensuring scientific accuracy for research and environmental monitoring applications.",
       "cards": [
+        {
+          "type": "heatmap",
+          "title": "Oxygen Heatmap — Arabian Sea (6 months)",
+          "dataUri": "/demo/heatmaps/dq02_oxygen_heatmap.json"
+        },
         {
           "type": "chart",
           "title": "BGC Time-Series : Arabian Sea (6 months)",
@@ -126,6 +136,11 @@
       "primaryContentType": "chart",
       "detailedDescription": "This advanced visualization presents dissolved oxygen concentrations as a time-depth heatmap for the coordinates 10°S, 80°E in the Indian Ocean over the past 12 months. Oxygen distribution is a critical indicator of marine ecosystem health, ocean circulation patterns, and climate change impacts.\n\n**Visualizations Explained:**\n\n🔥 **Time-Depth Heatmap:** This sophisticated chart uses color intensity to represent oxygen concentrations across two dimensions - time (horizontal axis) and depth (vertical axis). The visualization reveals:\n- **Seasonal Patterns:** Cyclical changes in oxygen levels driven by monsoons, productivity cycles, and thermal stratification\n- **Oxygen Minimum Zones (OMZ):** Regions of extremely low oxygen, typically occurring at intermediate depths (200-1000m)\n- **Ventilation Events:** Periods when oxygen-rich surface waters mix to greater depths\n- **Biological Signals:** Oxygen consumption patterns indicating marine productivity and respiration cycles\n\n 🌍 **Spatial Context Maps:** The accompanying maps show the precise sampling locations and regional oceanographic context within the Indian Ocean, highlighting the broader environmental setting of this critical monitoring point.\n\n**Scientific Significance:** The location 10°S, 80°E sits within the Indian Ocean's complex circulation system, where:\n- **Monsoon Dynamics:** Seasonal wind patterns drive upwelling and mixing processes\n- **Water Mass Interactions:** Different ocean layers with distinct oxygen signatures interact\n- **Marine Ecosystem Impacts:** Oxygen levels directly affect fish habitats, coral reef health, and biodiversity\n- **Climate Indicators:** Long-term oxygen trends reveal climate change effects on ocean chemistry\n\n**Research Applications:**\n- **Marine Biology:** Understanding habitat suitability and species distribution patterns\n- **Fisheries Management:** Identifying optimal fishing zones and predicting stock movements\n- **Climate Science:** Tracking ocean deoxygenation and carbon cycle changes\n- **Environmental Monitoring:** Assessing ecosystem health and pollution impacts\n\n**Data Integration:** This analysis combines measurements from multiple BGC-ARGO floats passing through the region, creating a comprehensive temporal record of oxygen variability at this strategically important location in the Indian Ocean circulation system.",
       "cards": [
+        {
+          "type": "heatmap",
+          "title": "Oxygen Heatmap — Time vs Depth (10°S, 80°E)",
+          "dataUri": "/demo/heatmaps/dq05_oxygen_heatmap.json"
+        },
         {
           "type": "chart",
           "title": "Oxygen Time-Depth Heatmap — (10S,80E)",

@@ -66,6 +66,30 @@ const demoDataSets = {
         }
       ],
     },
+    heatmap: {
+      type: "heatmap",
+      variable: "salinity",
+      units: "PSU",
+      location: { lat: 0, lon: 0 },
+      timeRange: { start: "2023-01", end: "2023-12" },
+      times: ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12"],
+      depths: [0, 10, 25, 50, 100, 200, 500, 1000],
+      values: [
+        [35.1, 35.0, 34.98, 34.95, 34.90, 34.85, 34.78, 34.72],
+        [35.15, 35.05, 35.02, 34.99, 34.94, 34.89, 34.82, 34.76],
+        [35.2, 35.1, 35.07, 35.04, 34.99, 34.94, 34.87, 34.81],
+        [35.18, 35.08, 35.05, 35.02, 34.97, 34.92, 34.85, 34.79],
+        [35.12, 35.02, 34.99, 34.96, 34.91, 34.86, 34.79, 34.73],
+        [35.08, 34.98, 34.95, 34.92, 34.87, 34.82, 34.75, 34.69],
+        [35.06, 34.96, 34.93, 34.90, 34.85, 34.80, 34.73, 34.67],
+        [35.07, 34.97, 34.94, 34.91, 34.86, 34.81, 34.74, 34.68],
+        [35.09, 34.99, 34.96, 34.93, 34.88, 34.83, 34.76, 34.70],
+        [35.13, 35.03, 35.00, 34.97, 34.92, 34.87, 34.80, 34.74],
+        [35.18, 35.08, 35.05, 35.02, 34.97, 34.92, 34.85, 34.79],
+        [35.16, 35.06, 35.03, 35.00, 34.95, 34.90, 34.83, 34.77]
+      ],
+      data: []
+    },
   },
   dq02: {
     chart: {
@@ -117,6 +141,24 @@ const demoDataSets = {
         { id: "WMO_5907890", lat: 15.8, lon: 66.1, label: "WMO_5907890", popup: "BGC Float — Active" },
       ],
       bbox: null,
+    },
+    heatmap: {
+      type: "heatmap",
+      variable: "oxygen",
+      units: "mg/L",
+      location: { lat: 15, lon: 65 },
+      timeRange: { start: "2024-07", end: "2024-12" },
+      times: ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"],
+      depths: [0, 10, 25, 50, 100, 200, 500, 1000],
+      values: [
+        [7.2, 6.9, 6.5, 6.0, 5.2, 3.8, 1.5, 0.8],
+        [7.0, 6.7, 6.3, 5.8, 5.0, 3.6, 1.3, 0.6],
+        [6.8, 6.5, 6.1, 5.6, 4.8, 3.4, 1.1, 0.4],
+        [6.9, 6.6, 6.2, 5.7, 4.9, 3.5, 1.2, 0.5],
+        [7.1, 6.8, 6.4, 5.9, 5.1, 3.7, 1.4, 0.7],
+        [7.3, 7.0, 6.6, 6.1, 5.3, 3.9, 1.6, 0.9]
+      ],
+      data: []
     },
   },
   dq04: {
@@ -189,6 +231,30 @@ const demoDataSets = {
         { id: "WMO_5903333", lat: -10.2, lon: 79.9, label: "WMO_5903333", popup: "O2: 178.5 μmol/kg", color: "#ef4444" },
       ],
     },
+    heatmap: {
+      type: "heatmap",
+      variable: "oxygen",
+      units: "μmol/kg",
+      location: { lat: -10, lon: 80 },
+      timeRange: { start: "2024-01", end: "2024-12" },
+      times: ["2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"],
+      depths: [0, 10, 25, 50, 100, 200, 500, 1000],
+      values: [
+        [220.5, 218.2, 215.8, 210.2, 195.5, 165.8, 95.2, 45.1],
+        [225.7, 223.4, 220.0, 215.4, 200.7, 170.0, 98.4, 47.3],
+        [230.9, 228.6, 225.2, 220.6, 205.9, 175.2, 102.6, 50.5],
+        [228.8, 226.5, 223.1, 218.5, 203.8, 173.1, 100.5, 48.4],
+        [224.4, 222.1, 218.7, 214.1, 199.4, 168.7, 96.1, 44.0],
+        [220.2, 217.9, 214.5, 209.9, 195.2, 164.5, 92.9, 41.8],
+        [218.0, 215.7, 212.3, 207.7, 193.0, 162.3, 90.7, 39.6],
+        [219.1, 216.8, 213.4, 208.8, 194.1, 163.4, 91.8, 40.7],
+        [221.3, 219.0, 215.6, 211.0, 196.3, 165.6, 94.0, 42.9],
+        [224.6, 222.3, 218.9, 214.3, 199.6, 168.9, 97.3, 46.2],
+        [228.8, 226.5, 223.1, 218.5, 203.8, 173.1, 100.5, 48.4],
+        [227.7, 225.4, 222.0, 217.4, 202.7, 172.0, 99.4, 47.3]
+      ],
+      data: []
+    },
   },
   dq07: {
     map: {
@@ -238,6 +304,11 @@ export function getDemoQuestionById(questionId: string) {
       prompt: "Show me salinity profiles near the equator in March 2023.",
       primaryContentType: "map",
       cards: [
+        {
+          type: "heatmap",
+          title: "Salinity Heatmap — Time vs Depth",
+          dataUri: "/demo/heatmaps/dq01_salinity_heatmap.json",
+        },
         { type: "map", title: "Floats within 100 km of (0°N, 0°E) — March 2023", dataUri: "/demo/maps/dq01map.json" },
         {
           type: "chart",
@@ -257,6 +328,11 @@ export function getDemoQuestionById(questionId: string) {
       prompt: "Compare BGC parameters in the Arabian Sea for the last 6 months.",
       primaryContentType: "chart",
       cards: [
+        {
+          type: "heatmap",
+          title: "Oxygen Heatmap — Arabian Sea (6 months)",
+          dataUri: "/demo/heatmaps/dq02_oxygen_heatmap.json",
+        },
         {
           type: "chart",
           title: "BGC Time-Series — Arabian Sea (6 months)",
@@ -295,6 +371,34 @@ export function getDemoQuestionById(questionId: string) {
           title: "Profile Metadata",
           text: "Cycles: 182 to 184. Deployment date: 2021-06-10. QC: majority good.",
           provenance: ["WMO_5901234_cycle182.nc"],
+        },
+      ],
+    },
+    {
+      id: "dq05",
+      prompt: "Show time-depth heatmap of oxygen at 10°S, 80°E over the last year.",
+      primaryContentType: "heatmap",
+      cards: [
+        {
+          type: "heatmap",
+          title: "Oxygen Heatmap — Time vs Depth (10°S, 80°E)",
+          dataUri: "/demo/heatmaps/dq05_oxygen_heatmap.json",
+        },
+        {
+          type: "chart",
+          title: "Oxygen Time-Depth Chart — (10S,80E)",
+          dataUri: "/demo/charts/dq05_o2_heatmap.json",
+        },
+        {
+          type: "map",
+          title: "Location Context — Indian Ocean (10°S, 80°E)",
+          dataUri: "/demo/maps/dq05_map_alt.json",
+        },
+        {
+          type: "summary",
+          title: "Oxygen Analysis Summary",
+          text: "Time-depth oxygen analysis at 10°S, 80°E shows seasonal oxygen minimum zone variations. Depth range 0-1000m over 12 months.",
+          provenance: ["BGC_floats_Indian_Ocean.nc"],
         },
       ],
     },

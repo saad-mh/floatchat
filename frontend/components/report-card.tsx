@@ -11,6 +11,7 @@ import { FlatMapCard } from "@/components/cards/flat-map-card";
 import { ChartCard } from "@/components/cards/chart-card";
 import { TableCard } from "@/components/cards/table-card";
 import { SummaryCard } from "@/components/cards/summary-card";
+import { HeatmapCard } from "@/components/cards/heatmap-card";
 
 // Dynamically import GlobeCard to prevent SSR issues
 const GlobeCard = dynamic(
@@ -39,7 +40,7 @@ export function ReportCard({ card }: ReportCardProps) {
   const [globePoints, setGlobePoints] = useState<
     Array<{ lat: number; lng: number; label?: string; color?: string }>
   >([]);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const [loadingGlobe, setLoadingGlobe] = useState(false);
   const [globeError, setGlobeError] = useState<string | null>(null);
   useEffect(() => {
@@ -59,7 +60,12 @@ export function ReportCard({ card }: ReportCardProps) {
           const questionMatch = filename.match(/^(dq\d+)/);
           const questionId = questionMatch ? questionMatch[1] : null;
           let dataType = null;
-          if (card.type === "globe" || card.type === "map" || card.type === "mapglobe") dataType = "map";
+          if (
+            card.type === "globe" ||
+            card.type === "map" ||
+            card.type === "mapglobe"
+          )
+            dataType = "map";
           else if (card.type === "chart") dataType = "chart";
           else if (card.type === "table") dataType = "table";
           else if (card.type === "summary") dataType = "summary";
@@ -142,6 +148,8 @@ export function ReportCard({ card }: ReportCardProps) {
         return <TableCard dataUri={card.dataUri} />;
       case "summary":
         return <SummaryCard text={card.text} provenance={card.provenance} />;
+      case "heatmap":
+        return <HeatmapCard dataUri={card.dataUri} />;
       default:
         return (
           <div className="p-4 text-muted-foreground">Unsupported card type</div>

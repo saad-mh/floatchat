@@ -1,14 +1,14 @@
 export interface DemoQuestion {
   id: string
   prompt: string
-  primaryContentType: "flat-map" | "map" | "chart" | "table" | "summary" | "globe" | "mapglobe"
+  primaryContentType: "flat-map" | "map" | "chart" | "table" | "summary" | "globe" | "mapglobe" | "heatmap"
   cards: DemoCard[]
   querieGenerated?: string
   detailedDescription?: string
 }
 
 export interface DemoCard {
-  type: "flat-map" | "map" | "chart" | "table" | "summary" | "globe" | "mapglobe"
+  type: "flat-map" | "map" | "chart" | "table" | "summary" | "globe" | "mapglobe" | "heatmap"
   title: string
   dataUri?: string
   text?: string
@@ -38,4 +38,20 @@ export interface ChartData {
     depths: number[]
     values: number[]
   }>
+}
+
+export interface HeatmapData {
+  type: string
+  variable: string
+  units: string
+  location: { lat: number; lon: number }
+  timeRange: { start: string; end: string }
+  data: Array<{
+    time: string
+    depth: number
+    value: number
+  }>
+  depths: number[]
+  times: string[]
+  values: number[][]
 }
