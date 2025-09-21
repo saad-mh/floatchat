@@ -212,7 +212,12 @@ export function ChatInterface({
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
         {isLanding && (
-          <div className="h-full flex items-center justify-center">
+          <div className="h-full flex items-center justify-center relative">
+            {/* Theme Toggle in upper right corner */}
+            <div className="absolute top-4 right-4 z-10">
+              <ThemeToggle />
+            </div>
+
             <div className="w-full md:w-1/3 max-w-xl mx-auto px-4">
               <div className="flex flex-col items-center text-center">
                 <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-4">
