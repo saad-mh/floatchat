@@ -359,7 +359,7 @@ const LeafletHeatmapComponent = dynamic(
                 </span>
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                Hover for details
+                Click for details
               </div>
             </div>
           </>
@@ -387,7 +387,7 @@ const LeafletHeatmapComponent = dynamic(
         return (
           <MapContainer
             center={center}
-            zoom={7}
+            zoom={3}
             scrollWheelZoom={true}
             className="h-full w-full rounded-lg"
             style={{ height: "100%", width: "100%" }}
