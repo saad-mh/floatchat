@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { DemoQuestion } from "@/types/demo";
 import { ReportCard } from "@/components/report-card";
@@ -18,9 +18,11 @@ export function ReportPanel({
   onBack,
 }: ReportPanelProps) {
   // Detect mobile viewport
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   // Only show rounded corners when not mobile and not maximized
-  const containerClass = `h-full flex flex-col bg-background ${!isMobile ? 'rounded-xl shadow-xl border border-border' : ''}`;
+  const containerClass = `h-full flex flex-col bg-background ${
+    !isMobile ? "rounded-xl shadow-xl border border-border" : ""
+  }`;
   return (
     <div className={containerClass}>
       {/* Header */}
@@ -32,9 +34,10 @@ export function ReportPanel({
                 variant="ghost"
                 size="sm"
                 onClick={onBack}
-                className="md:hidden"
+                className="md:hidden flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
+                <span className="text-sm font-medium">Chat</span>
               </Button>
             )}
             <div>

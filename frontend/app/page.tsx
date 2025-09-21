@@ -28,6 +28,10 @@ export default function FloatChatPage() {
     setShowMobileReport(false);
   };
 
+  const handleGoToReport = () => {
+    setShowMobileReport(true);
+  };
+
   const handleReset = () => {
     setActiveQuestion(null);
     setIsGenerating(false);
@@ -53,6 +57,8 @@ export default function FloatChatPage() {
                 onQuestionSubmit={handleQuestionSubmit}
                 isCompact={!!activeQuestion}
                 onReset={handleReset}
+                showReportButton={!!activeQuestion}
+                onGoToReport={handleGoToReport}
               />
             </motion.div>
 
@@ -93,6 +99,8 @@ export default function FloatChatPage() {
                     onQuestionSubmit={handleQuestionSubmit}
                     isCompact={false}
                     onReset={handleReset}
+                    showReportButton={!!activeQuestion}
+                    onGoToReport={handleGoToReport}
                   />
                 </div>
               </motion.div>
@@ -118,41 +126,47 @@ export default function FloatChatPage() {
         </div>
 
         {/* Mobile Layout (Small screens) */}
-        <div className="md:hidden h-full">
-          <AnimatePresence mode="wait">
-            {!showMobileReport ? (
+        <div className="md:hidden h-full relative">
+          {/* Chat Interface - Always mounted but conditionally visible */}
+          <motion.div
+            className={`absolute inset-0 h-full ${
+              !showMobileReport ? "z-10" : "z-0"
+            }`}
+            initial={{ x: -20, opacity: 0 }}
+            animate={{
+              x: !showMobileReport ? 0 : -20,
+              opacity: !showMobileReport ? 1 : 0,
+            }}
+            transition={{ duration: 0.3 }}
+            style={{
+              pointerEvents: !showMobileReport ? "auto" : "none",
+            }}
+          >
+            <ChatInterface
+              onQuestionSubmit={handleQuestionSubmit}
+              isCompact={false}
+              onReset={handleReset}
+              showReportButton={!!activeQuestion}
+              onGoToReport={handleGoToReport}
+            />
+          </motion.div>
+
+          {/* Report Panel - Conditionally rendered */}
+          <AnimatePresence>
+            {showMobileReport && (
               <motion.div
-                key="chat"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
+                className="absolute inset-0 h-full z-10"
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 20, opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="h-full"
               >
-                <ChatInterface
-                  onQuestionSubmit={handleQuestionSubmit}
-                  isCompact={false}
-                  onReset={handleReset}
+                <ReportPanel
+                  question={activeQuestion!}
+                  isGenerating={isGenerating}
+                  onBack={handleMobileBack}
                 />
               </motion.div>
-            ) : (
-              <>
-                <Button className="bg-red-500 text-white">Go to chat</Button>
-                <motion.div
-                  key="report"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.3 }}
-                  className="h-full"
-                >
-                  <ReportPanel
-                    question={activeQuestion!}
-                    isGenerating={isGenerating}
-                    onBack={handleMobileBack}
-                  />
-                </motion.div>
-              </>
             )}
           </AnimatePresence>
         </div>

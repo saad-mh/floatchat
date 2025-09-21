@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Send, MessageCircle } from "lucide-react";
+import { Send, MessageCircle, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -16,6 +16,8 @@ interface ChatInterfaceProps {
   onQuestionSubmit: (question: DemoQuestion) => void;
   isCompact: boolean;
   onReset?: () => void;
+  showReportButton?: boolean;
+  onGoToReport?: () => void;
 }
 
 interface ChatMessage {
@@ -31,6 +33,8 @@ export function ChatInterface({
   onQuestionSubmit,
   isCompact,
   onReset,
+  showReportButton = false,
+  onGoToReport,
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -204,7 +208,19 @@ export function ChatInterface({
                 </p>
               </div>
             </button>
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+              {showReportButton && onGoToReport && (
+                <Button
+                  onClick={onGoToReport}
+                  size="sm"
+                  className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary md:hidden"
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  <span className="text-sm font-medium">Report</span>
+                </Button>
+              )}
+              <ThemeToggle />
+            </div>
           </div>
         </motion.div>
       )}
@@ -421,7 +437,7 @@ export function ChatInterface({
             </Button>
           </form>
 
-          {isCompact && (
+          {(isCompact || (isMobile && messages.length > 0)) && (
             <div className="mt-3 flex flex-wrap gap-1 md:gap-2">
               {/* Show a random follow-up question for the active question */}
               {(() => {
