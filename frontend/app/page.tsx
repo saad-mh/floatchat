@@ -83,42 +83,53 @@ export default function FloatChatPage() {
         </div>
 
         {/* Tablet Layout (Medium screens) */}
-        <div className="hidden md:block lg:hidden h-full">
-          <AnimatePresence mode="wait">
-            {!showMobileReport ? (
+        <div className="hidden md:block lg:hidden h-full relative">
+          {/* Chat Interface - Always mounted but conditionally visible */}
+          <motion.div
+            className={`absolute inset-0 h-full ${
+              !showMobileReport ? "z-10" : "z-0"
+            }`}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{
+              opacity: !showMobileReport ? 1 : 0,
+              scale: !showMobileReport ? 1 : 0.95,
+            }}
+            transition={{ duration: 0.3 }}
+            style={{
+              pointerEvents: !showMobileReport ? "auto" : "none",
+            }}
+          >
+            <div className="h-full p-3">
+              <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
+                <ChatInterface
+                  onQuestionSubmit={handleQuestionSubmit}
+                  isCompact={false}
+                  onReset={handleReset}
+                  showReportButton={!!activeQuestion}
+                  onGoToReport={handleGoToReport}
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Report Panel - Conditionally rendered */}
+          <AnimatePresence>
+            {showMobileReport && (
               <motion.div
-                key="chat"
+                className="absolute inset-0 h-full z-10"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                className="h-full p-3"
               >
-                <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
-                  <ChatInterface
-                    onQuestionSubmit={handleQuestionSubmit}
-                    isCompact={false}
-                    onReset={handleReset}
-                    showReportButton={!!activeQuestion}
-                    onGoToReport={handleGoToReport}
-                  />
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="report"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="h-full p-3"
-              >
-                <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
-                  <ReportPanel
-                    question={activeQuestion!}
-                    isGenerating={isGenerating}
-                    onBack={handleMobileBack}
-                  />
+                <div className="h-full p-3">
+                  <div className="h-full border border-border rounded-xl bg-card/95 overflow-hidden shadow-lg">
+                    <ReportPanel
+                      question={activeQuestion!}
+                      isGenerating={isGenerating}
+                      onBack={handleMobileBack}
+                    />
+                  </div>
                 </div>
               </motion.div>
             )}

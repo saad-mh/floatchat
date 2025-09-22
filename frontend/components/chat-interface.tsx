@@ -209,14 +209,14 @@ export function ChatInterface({
                 </p>
               </div>
             </button>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               {showReportButton && onGoToReport && (
                 <Button
                   onClick={onGoToReport}
                   size="sm"
-                  className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary md:hidden"
+                  className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary lg:hidden whitespace-nowrap"
                 >
-                  <BarChart3 className="w-4 h-4" />
+                  <BarChart3 className="w-4 h-4 flex-shrink-0" />
                   <span className="text-sm font-medium">Report</span>
                 </Button>
               )}

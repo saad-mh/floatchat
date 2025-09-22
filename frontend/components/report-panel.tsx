@@ -34,9 +34,9 @@ export function ReportPanel({
                 variant="ghost"
                 size="sm"
                 onClick={onBack}
-                className="md:hidden flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary"
+                className="lg:hidden flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary whitespace-nowrap"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 flex-shrink-0" />
                 <span className="text-sm font-medium">Chat</span>
               </Button>
             )}
