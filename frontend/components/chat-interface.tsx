@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { OceanographicNews } from "@/components/oceanographic-news";
 import type { DemoQuestion } from "@/types/demo";
 import demoData from "@/data/demo-questions.json";
 
@@ -228,80 +229,92 @@ export function ChatInterface({
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
         {isLanding && (
-          <div className="h-full flex items-center justify-center relative">
+          <div className="min-h-full flex flex-col relative">
             {/* Theme Toggle in upper right corner */}
             <div className="absolute top-4 right-4 z-10">
               <ThemeToggle />
             </div>
 
-            <div className="w-full md:w-1/3 max-w-xl mx-auto px-4">
-              <div className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-4">
-                  <img
-                    src="/logo.svg"
-                    alt="FloatChat Logo"
-                    className="w-9 h-9"
-                  />
-                </div>
-                <h1 className="text-2xl font-bold text-foreground mb-2">
-                  FloatChat
-                </h1>
-                <p className="text-sm text-muted-foreground mb-6">
-                  Ask questions about oceanographic data and get interactive
-                  visualizations and analysis.
-                </p>
-              </div>
-              <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
-                <Input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Ask about ocean data..."
-                  className="flex-1 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm md:text-base"
-                />
-                <Button
-                  type="submit"
-                  size="default"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 md:px-6 whitespace-nowrap"
-                >
-                  <Send className="w-4 h-4" />
-                </Button>
-              </form>
-              <div className="mt-4 grid gap-2">
-                {(() => {
-                  const suggestions: DemoQuestion[] = [];
-                  const usedSet = new Set(usedSuggestions);
-                  let j = 0;
-                  while (
-                    suggestions.length < 4 &&
-                    j < demoData.demo_questions.length
-                  ) {
-                    const q = demoData.demo_questions[j];
-                    if (!usedSet.has(q.id)) suggestions.push(q as DemoQuestion);
-                    j++;
-                  }
-                  j = 0;
-                  while (
-                    suggestions.length < 4 &&
-                    j < demoData.demo_questions.length
-                  ) {
-                    const q = demoData.demo_questions[j];
-                    if (usedSet.has(q.id)) suggestions.push(q as DemoQuestion);
-                    j++;
-                  }
-                  return suggestions.map((question) => (
-                    <Card
-                      key={question.id}
-                      className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
-                      onClick={() =>
-                        handleSuggestionClick(question as DemoQuestion)
-                      }
+            <div className="flex-1 flex flex-col">
+              <div className="w-full max-w-6xl mx-auto px-4 py-8">
+                {/* Welcome Form - Centered */}
+                <div className="w-full md:w-2/3 lg:w-1/2 max-w-2xl mx-auto mb-12">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-4">
+                      <img
+                        src="/logo.svg"
+                        alt="FloatChat Logo"
+                        className="w-9 h-9"
+                      />
+                    </div>
+                    <h1 className="text-2xl font-bold text-foreground mb-2">
+                      FloatChat
+                    </h1>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      Ask questions about oceanographic data and get interactive
+                      visualizations and analysis.
+                    </p>
+                  </div>
+                  <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
+                    <Input
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      placeholder="Ask about ocean data..."
+                      className="flex-1 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm md:text-base"
+                    />
+                    <Button
+                      type="submit"
+                      size="default"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 md:px-6 whitespace-nowrap"
                     >
-                      <p className="text-xs md:text-sm text-foreground leading-relaxed">
-                        {question.prompt}
-                      </p>
-                    </Card>
-                  ));
-                })()}
+                      <Send className="w-4 h-4" />
+                    </Button>
+                  </form>
+                  <div className="mt-4 grid gap-2">
+                    {(() => {
+                      const suggestions: DemoQuestion[] = [];
+                      const usedSet = new Set(usedSuggestions);
+                      let j = 0;
+                      while (
+                        suggestions.length < 4 &&
+                        j < demoData.demo_questions.length
+                      ) {
+                        const q = demoData.demo_questions[j];
+                        if (!usedSet.has(q.id))
+                          suggestions.push(q as DemoQuestion);
+                        j++;
+                      }
+                      j = 0;
+                      while (
+                        suggestions.length < 4 &&
+                        j < demoData.demo_questions.length
+                      ) {
+                        const q = demoData.demo_questions[j];
+                        if (usedSet.has(q.id))
+                          suggestions.push(q as DemoQuestion);
+                        j++;
+                      }
+                      return suggestions.map((question) => (
+                        <Card
+                          key={question.id}
+                          className="p-3 md:p-4 cursor-pointer hover:bg-accent/50 transition-colors text-left"
+                          onClick={() =>
+                            handleSuggestionClick(question as DemoQuestion)
+                          }
+                        >
+                          <p className="text-xs md:text-sm text-foreground leading-relaxed">
+                            {question.prompt}
+                          </p>
+                        </Card>
+                      ));
+                    })()}
+                  </div>
+                </div>
+
+                {/* Oceanographic News Section - Full Width */}
+                <div className="w-full">
+                  <OceanographicNews />
+                </div>
               </div>
             </div>
           </div>
