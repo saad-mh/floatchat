@@ -27,8 +27,12 @@ export function OceanographicNews() {
         if (!response.ok) {
           throw new Error("Failed to fetch oceanographic news");
         }
-        const data = await response.json();
-        setNews(data.slice(0, 9)); // Limit to 9 items as requested
+        const result = await response.json();
+        if (result.success && result.data) {
+          setNews(result.data);
+        } else {
+          throw new Error("Invalid response format");
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load news");
         console.error("Error fetching oceanographic news:", err);
@@ -127,7 +131,7 @@ export function OceanographicNews() {
       {/* Mobile: Horizontal scroll cards - Meta.ai style */}
       <div className="md:hidden overflow-x-auto pb-2 scrollbar-hide px-4">
         <div className="flex gap-3" style={{ width: "max-content" }}>
-          {news.slice(0, 6).map((item, idx) => (
+          {news.slice(0, 8).map((item, idx) => (
             <Card
               key={idx}
               className="w-48 flex-shrink-0 group cursor-pointer border-border/50 hover:border-primary/20 transition-all duration-200 bg-card/50"
@@ -179,16 +183,19 @@ export function OceanographicNews() {
         </div>
       </div>
 
-      {/* Desktop: Grid layout */}
-      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto">
-        {news.map((item, idx) => (
-          <Card
-            key={idx}
-            className="group cursor-pointer border-border/50 hover:border-primary/20 hover:shadow-md transition-all duration-200 bg-card/50"
-            onClick={() =>
-              window.open(item.url, "_blank", "noopener,noreferrer")
-            }
-          >
+      {/* Desktop: Infinite Horizontal Scroll Container */}
+      <div className="hidden md:block">
+        <div className="relative group">
+          <div className="overflow-x-auto pb-4 scrollbar-hide hover:scrollbar-show transition-all duration-300">
+            <div className="flex gap-6 px-4" style={{ width: "max-content" }}>
+              {news.map((item, idx) => (
+                <Card
+                  key={idx}
+                  className="w-72 flex-shrink-0 group cursor-pointer border-border/50 hover:border-primary/20 hover:shadow-md transition-all duration-200 bg-card/50"
+                  onClick={() =>
+                    window.open(item.url, "_blank", "noopener,noreferrer")
+                  }
+                >
             <div className="relative overflow-hidden">
               <img
                 src={item.image}
@@ -228,8 +235,11 @@ export function OceanographicNews() {
                 </div>
               </div>
             </div>
-          </Card>
-        ))}
+            </Card>
+          ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="mt-4 text-center">

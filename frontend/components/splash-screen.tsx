@@ -95,14 +95,14 @@ export function SplashScreen({
 
           {/* Ocean Wave Animations - Multiple Layers */}
           <motion.div
-            className="absolute bottom-0 w-full h-40 opacity-20"
+            className="absolute bottom-0 w-full h-40 md:h-56 lg:h-72 xl:h-80 opacity-20"
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 0.2 }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
           >
             {/* Wave Layer 1 */}
             <motion.svg
-              className="absolute bottom-0 w-full h-32"
+              className="absolute bottom-0 w-full h-32 md:h-44 lg:h-56 xl:h-64"
               viewBox="0 0 1440 320"
               xmlns="http://www.w3.org/2000/svg"
               animate={{ x: [-20, 20, -20] }}
@@ -117,7 +117,7 @@ export function SplashScreen({
 
             {/* Wave Layer 2 */}
             <motion.svg
-              className="absolute bottom-0 w-full h-24"
+              className="absolute bottom-0 w-full h-24 md:h-32 lg:h-40 xl:h-48"
               viewBox="0 0 1440 320"
               xmlns="http://www.w3.org/2000/svg"
               animate={{ x: [20, -20, 20] }}
@@ -132,7 +132,7 @@ export function SplashScreen({
 
             {/* Wave Layer 3 */}
             <motion.svg
-              className="absolute bottom-0 w-full h-16"
+              className="absolute bottom-0 w-full h-16 md:h-20 lg:h-24 xl:h-32"
               viewBox="0 0 1440 320"
               xmlns="http://www.w3.org/2000/svg"
               animate={{ x: [-15, 15, -15] }}
