@@ -196,47 +196,47 @@ export function OceanographicNews() {
                     window.open(item.url, "_blank", "noopener,noreferrer")
                   }
                 >
-            <div className="relative overflow-hidden">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.src =
-                    "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop&crop=center";
-                }}
-              />
-              <div className="absolute top-3 right-3">
-                <ExternalLink className="w-4 h-4 text-white opacity-60 group-hover:opacity-90 transition-opacity" />
-              </div>
-            </div>
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop&crop=center";
+                      }}
+                    />
+                    <div className="absolute top-3 right-3">
+                      <ExternalLink className="w-4 h-4 text-white opacity-60 group-hover:opacity-90 transition-opacity" />
+                    </div>
+                  </div>
 
-            <div className="p-4">
-              <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
-                {item.title}
-              </h3>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
+                      {item.title}
+                    </h3>
 
-              <p className="text-xs text-muted-foreground mb-3 line-clamp-2 leading-relaxed">
-                {item.description}
-              </p>
+                    <p className="text-xs text-muted-foreground mb-3 line-clamp-2 leading-relaxed">
+                      {item.description}
+                    </p>
 
-              <div className="flex items-center justify-between">
-                <Badge
-                  variant="outline"
-                  className="text-xs px-2 py-1 bg-primary/5 border-primary/20 text-primary"
-                >
-                  {item.source.split(" ")[0]}
-                </Badge>
+                    <div className="flex items-center justify-between">
+                      <Badge
+                        variant="outline"
+                        className="text-xs px-2 py-1 bg-primary/5 border-primary/20 text-primary"
+                      >
+                        {item.source.split(" ")[0]}
+                      </Badge>
 
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Clock className="w-3 h-3" />
-                  {formatTimeAgo(item.publishedAt)}
-                </div>
-              </div>
-            </div>
-            </Card>
-          ))}
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="w-3 h-3" />
+                        {formatTimeAgo(item.publishedAt)}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </div>
         </div>

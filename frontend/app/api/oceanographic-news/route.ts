@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Redis } from '@upstash/redis';
 
 interface NewsItem {
   title: string;
@@ -16,8 +17,270 @@ interface AIFilterResponse {
   reasoning?: string;
 }
 
+interface DailyFetchState {
+  date: string;
+  successfulFetches: number;
+  maxFetches: number;
+  lastFetchTime: number;
+}
+
+interface CachedNewsData {
+  articles: NewsItem[];
+  fetchedAt: number;
+  wasSuccessful: boolean;
+  source: 'everything' | 'top-headlines' | 'fallback';
+}
+
 // Simple in-memory cache to avoid repeated AI calls
 const aiCache = new Map<string, boolean>();
+
+// Redis client singleton
+let redisClient: any = null;
+let isConnecting = false;
+
+// Rate limiting configuration
+const MAX_DAILY_FETCHES = 5;
+const CACHE_DURATION_HOURS = 24; // Cache news for 24 hours (matches daily API limit reset)
+
+// Upstash Redis configuration
+const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+// In-memory fallback cache when Redis is unavailable
+const memoryCache = new Map<string, any>();
+const memoryDailyState = new Map<string, DailyFetchState>();
+
+// Upstash Redis connection management
+async function getRedisClient() {
+  if (redisClient) {
+    return redisClient;
+  }
+
+  if (isConnecting) {
+    // Wait for existing connection attempt
+    while (isConnecting) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    return redisClient;
+  }
+
+  try {
+    isConnecting = true;
+    
+    if (!UPSTASH_REDIS_REST_URL || !UPSTASH_REDIS_REST_TOKEN) {
+      throw new Error('Upstash Redis credentials not configured');
+    }
+
+    redisClient = new Redis({
+      url: UPSTASH_REDIS_REST_URL,
+      token: UPSTASH_REDIS_REST_TOKEN,
+    });
+
+    // Test connection
+    await redisClient.ping();
+    
+    isConnecting = false;
+    console.log('Upstash Redis connected successfully - multi-user caching enabled');
+    return redisClient;
+  } catch (error) {
+    isConnecting = false;
+    console.warn('Upstash Redis unavailable, using in-memory cache (single-server only):', error instanceof Error ? error.message : 'Connection failed');
+    return null;
+  }
+}
+
+// Get today's date string for cache keys
+function getTodayKey(): string {
+  return new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+}
+
+// Cache management functions
+async function getDailyFetchState(): Promise<DailyFetchState> {
+  try {
+    const client = await getRedisClient();
+    const today = getTodayKey();
+
+    if (client) {
+      // Use Redis for multi-user sync
+      const key = `news:daily_state:${today}`;
+      const data = await client.get(key);
+      
+      if (data) {
+        console.log('Redis data type:', typeof data, 'Value:', data);
+        if (typeof data === 'string') {
+          try {
+            return JSON.parse(data);
+          } catch (parseError) {
+            console.warn('Failed to parse Redis data as JSON:', data, parseError);
+            throw parseError;
+          }
+        } else if (typeof data === 'object' && data !== null) {
+          // If it's already an object, return it directly
+          return data as DailyFetchState;
+        } else {
+          console.warn('Unexpected Redis data type:', typeof data, data);
+          throw new Error(`Unexpected data type: ${typeof data}`);
+        }
+      }
+    } else {
+      // Use memory fallback for single server
+      const existing = memoryDailyState.get(today);
+      if (existing) {
+        return existing;
+      }
+    }
+
+    // Initialize new day state
+    const newState: DailyFetchState = {
+      date: today,
+      successfulFetches: 0,
+      maxFetches: MAX_DAILY_FETCHES,
+      lastFetchTime: 0
+    };
+
+    if (client) {
+      await client.set(`news:daily_state:${today}`, JSON.stringify(newState), { ex: 24 * 60 * 60 });
+    } else {
+      memoryDailyState.set(today, newState);
+    }
+
+    return newState;
+  } catch (error) {
+    console.warn('Failed to get daily fetch state:', error);
+    // Fallback to safe state
+    return {
+      date: getTodayKey(),
+      successfulFetches: 0,
+      maxFetches: MAX_DAILY_FETCHES,
+      lastFetchTime: 0
+    };
+  }
+}
+
+async function updateDailyFetchState(wasSuccessful: boolean): Promise<void> {
+  try {
+    const client = await getRedisClient();
+    const today = getTodayKey();
+    const state = await getDailyFetchState();
+
+    if (wasSuccessful) {
+      state.successfulFetches++;
+      state.lastFetchTime = Date.now();
+    }
+
+    if (client) {
+      const key = `news:daily_state:${today}`;
+      await client.set(key, JSON.stringify(state), { ex: 24 * 60 * 60 });
+    } else {
+      memoryDailyState.set(today, state);
+    }
+
+    console.log(`Updated daily state: ${state.successfulFetches}/${state.maxFetches} successful fetches`);
+  } catch (error) {
+    console.warn('Failed to update daily fetch state:', error);
+  }
+}
+
+async function getCachedNews(): Promise<CachedNewsData | null> {
+  try {
+    const client = await getRedisClient();
+    const key = 'news:cached_articles';
+    let data = null;
+
+    if (client) {
+      data = await client.get(key);
+    } else {
+      data = memoryCache.get(key);
+    }
+    
+    if (data) {
+      let cached: CachedNewsData;
+      if (typeof data === 'string') {
+        try {
+          cached = JSON.parse(data);
+        } catch (parseError) {
+          console.warn('Failed to parse cached news data:', data, parseError);
+          return null;
+        }
+      } else if (typeof data === 'object' && data !== null) {
+        cached = data as CachedNewsData;
+      } else {
+        console.warn('Unexpected cached news data type:', typeof data, data);
+        return null;
+      }
+      
+      const ageHours = (Date.now() - cached.fetchedAt) / (1000 * 60 * 60);
+      
+      if (ageHours < CACHE_DURATION_HOURS) {
+        console.log(`Serving cached news (${ageHours.toFixed(1)}h old, source: ${cached.source})`);
+        return cached;
+      } else {
+        console.log('Cached news expired, will attempt fresh fetch');
+        if (client) {
+          await client.del(key);
+        } else {
+          memoryCache.delete(key);
+        }
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.warn('Failed to get cached news:', error);
+    return null;
+  }
+}
+
+async function setCachedNews(articles: NewsItem[], wasSuccessful: boolean, source: 'everything' | 'top-headlines' | 'fallback'): Promise<void> {
+  try {
+    const client = await getRedisClient();
+    const cacheData: CachedNewsData = {
+      articles,
+      fetchedAt: Date.now(),
+      wasSuccessful,
+      source
+    };
+
+    const key = 'news:cached_articles';
+    
+    if (client) {
+      // Cache for 24 hours in Redis (matches daily API limit reset)
+      await client.set(key, JSON.stringify(cacheData), { ex: 24 * 60 * 60 });
+    } else {
+      // Store in memory cache
+      memoryCache.set(key, cacheData);
+    }
+
+    console.log(`Cached ${articles.length} articles from ${source} (successful: ${wasSuccessful})`);
+  } catch (error) {
+    console.warn('Failed to cache news:', error);
+  }
+}
+
+// Distributed lock for concurrent request handling
+async function acquireLock(lockKey: string, ttlSeconds: number = 30): Promise<boolean> {
+  try {
+    const client = await getRedisClient();
+    if (!client) return true; // If Redis fails, allow the operation
+
+    const result = await client.set(lockKey, Date.now().toString(), { nx: true, ex: ttlSeconds });
+    return result === 'OK';
+  } catch (error) {
+    console.warn('Failed to acquire lock:', error);
+    return true; // Fail open - allow operation if lock fails
+  }
+}
+
+async function releaseLock(lockKey: string): Promise<void> {
+  try {
+    const client = await getRedisClient();
+    if (!client) return;
+
+    await client.del(lockKey);
+  } catch (error) {
+    console.warn('Failed to release lock:', error);
+  }
+}
 
 // AI-powered filtering function for ocean-centric content
 async function filterWithAI(articles: any[]): Promise<any[]> {
@@ -30,6 +293,7 @@ async function filterWithAI(articles: any[]): Promise<any[]> {
 
   try {
     const preFiltered = basicKeywordFilter(articles);
+    console.log(`Basic keyword filter: ${articles.length} -> ${preFiltered.length} articles`);
     if (preFiltered.length === 0) return preFiltered;
 
     const uncachedArticles = preFiltered.filter(article => {
@@ -140,7 +404,7 @@ JSON format: [{"index":1,"isOceanRelated":true,"relevanceScore":8},...]`;
 
   return articles.filter((_, index) => {
     const result = filterResults.find(r => r.index === index + 1);
-    return result && result.isOceanRelated && result.relevanceScore >= 7; // stricter threshold
+    return result && result.isOceanRelated && result.relevanceScore >= 9;
   });
 }
 
@@ -153,9 +417,15 @@ function basicKeywordFilter(articles: any[]): any[] {
     const oceanTerms = [
       'ocean', 'sea', 'marine', 'coral', 'whale', 'dolphin', 'shark', 
       'tide', 'current', 'wave', 'deep sea', 'underwater', 'salinity',
-      'plankton', 'reef', 'coast', 'maritime', 'aquatic', 'seawater',
-      'fish', 'algae', 'kelp', 'seabed', 'naval', 'shipping',
-      'polar ice', 'iceberg', 'tsunami', 'storm surge', 'sea level'
+      'plankton', 'reef', 'maritime', 'aquatic', 'seawater',
+      'algae', 'kelp', 'seabed', 'polar ice', 'iceberg', 'tsunami', 
+      'storm surge', 'sea level', 'pacific', 'atlantic', 'arctic', 'antarctic',
+      'bay', 'gulf', 'strait', 'channel', 'diving', 'scuba',
+      'acidification', 'oceanographic', 'marine life', 'sea ice',
+      'water', 'blue', 'coast', 'beach', 'port', 'harbor', 'fish', 
+      'naval', 'shipping', 'cruise', 'sailing', 'fishing', 'surfing',
+      'climate', 'weather', 'temperature', 'warming', 'cooling',
+      'ecosystem', 'biodiversity', 'conservation', 'environment'
     ];
     
     return oceanTerms.some(term => content.includes(term));
@@ -269,11 +539,48 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
     return fallbackNews.slice(0, 9);
   }
 
+  // Step 1: Check for cached data first
+  const cachedNews = await getCachedNews();
+  if (cachedNews) {
+    return cachedNews.articles;
+  }
+
+  // Step 2: Acquire distributed lock to prevent concurrent API calls
+  const lockKey = 'news:fetch_lock';
+  const lockAcquired = await acquireLock(lockKey, 60); // 60 second timeout
+
+  if (!lockAcquired) {
+    console.log('Another fetch is in progress, waiting for cached result...');
+    // Wait a bit and check cache again
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const newCachedNews = await getCachedNews();
+    if (newCachedNews) {
+      return newCachedNews.articles;
+    }
+    // If still no cache, return fallback
+    return fallbackNews.slice(0, 9);
+  }
+
+  let wasSuccessful = false;
+  let source: 'everything' | 'top-headlines' | 'fallback' = 'fallback';
+  
   try {
-    // ✅ Calculate date range (last 6 months)
+    // Step 3: Check daily fetch limits
+    const dailyState = await getDailyFetchState();
+    
+    if (dailyState.successfulFetches >= dailyState.maxFetches) {
+      console.log(`Daily fetch limit reached (${dailyState.successfulFetches}/${dailyState.maxFetches}). Using fallback data.`);
+      // DON'T cache fallback data when limit is reached - return directly
+      return fallbackNews.slice(0, 9);
+    }
+
+    console.log(`Attempting API fetch (${dailyState.successfulFetches}/${dailyState.maxFetches} daily fetches used)`);
+
+    // Step 4: Attempt API fetch
+    // ✅ Calculate date range (last 1 month for developer plan)
     const toDate = new Date();
     const fromDate = new Date(toDate);
-    fromDate.setMonth(fromDate.getMonth() - 6);
+    fromDate.setMonth(fromDate.getMonth() - 1);
 
     const searchQueries = ['ocean', 'marine', 'coral reef', 'sea level', 'deep sea'];
     const searchQuery = searchQueries.join(' OR ');
@@ -288,41 +595,23 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
 
     let response = await fetch(url, { method: 'GET', headers: { 'User-Agent': 'FloatChat/1.0' } });
     
-    // Handle 426 Upgrade Required with fallback strategies
-    if (response.status === 426) {
-      console.warn('NewsAPI returned 426 (Upgrade Required). Trying fallback strategies...');
+    // Check if we got a successful response from /everything
+    if (response.ok) {
+      source = 'everything';
+      wasSuccessful = true;
+    } else if (response.status === 426 || response.status === 429) {
+      console.warn(`NewsAPI returned ${response.status}. Trying top-headlines fallback...`);
       
-      // Strategy 1: Try top-headlines endpoint
+      // Try top-headlines endpoint as fallback with broader query
       const topHeadlinesUrl = `https://newsapi.org/v2/top-headlines?` +
-        `q=${encodeURIComponent('ocean OR marine')}&` +
+        `category=science&` +
         `language=en&pageSize=100&apiKey=${apiKey}`;
       
-      console.log('Trying top-headlines fallback...');
       response = await fetch(topHeadlinesUrl, { method: 'GET', headers: { 'User-Agent': 'FloatChat/1.0' } });
       
-      // Strategy 2: If still 426 or no results, try with shorter date range
-      if (response.status === 426 || (response.ok && (await response.clone().json()).articles?.length === 0)) {
-        const shortFromDate = new Date(toDate);
-        shortFromDate.setDate(shortFromDate.getDate() - 30); // Last 30 days only
-        
-        const shortRangeUrl = `https://newsapi.org/v2/everything?` +
-          `q=${encodeURIComponent('ocean')}&` +
-          `from=${shortFromDate.toISOString().split('T')[0]}&` +
-          `to=${toDate.toISOString().split('T')[0]}&` +
-          `language=en&sortBy=publishedAt&pageSize=50&apiKey=${apiKey}`;
-        
-        console.log('Trying shorter date range fallback (30 days)...');
-        response = await fetch(shortRangeUrl, { method: 'GET', headers: { 'User-Agent': 'FloatChat/1.0' } });
-        
-        // Strategy 3: If still issues, try category-based approach
-        if (response.status === 426 || (response.ok && (await response.clone().json()).articles?.length === 0)) {
-          const categoryUrl = `https://newsapi.org/v2/top-headlines?` +
-            `category=science&` +
-            `language=en&pageSize=100&apiKey=${apiKey}`;
-          
-          console.log('Trying science category fallback...');
-          response = await fetch(categoryUrl, { method: 'GET', headers: { 'User-Agent': 'FloatChat/1.0' } });
-        }
+      if (response.ok) {
+        source = 'top-headlines';
+        wasSuccessful = true;
       }
     }
     
@@ -340,11 +629,16 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
     const data = await response.json();
     if (data.status !== 'ok') throw new Error(data.message || 'NewsAPI returned error');
 
-    console.log(`NewsAPI returned ${data.articles?.length || 0} articles`);
+    console.log(`NewsAPI returned ${data.articles?.length || 0} articles from ${source}`);
     
     if (!data.articles || data.articles.length === 0) {
       console.warn('No articles found from NewsAPI, using fallback data');
-      return fallbackNews.slice(0, 9);
+      wasSuccessful = false;
+      source = 'fallback';
+      const results = fallbackNews.slice(0, 9);
+      // DON'T cache fallback articles - let them be fetched fresh each time
+      await updateDailyFetchState(wasSuccessful);
+      return results;
     }
 
     // First filter out invalid articles (require url + urlToImage)
@@ -357,7 +651,9 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
       article.description !== '[Removed]'
     );
 
+    console.log(`Found ${validArticles.length} valid articles, filtering with AI...`);
     const aiFilteredArticles = await filterWithAI(validArticles);
+    console.log(`AI filtering resulted in ${aiFilteredArticles.length} articles`);
 
     const transformedNews: NewsItem[] = aiFilteredArticles.map((article: any) => ({
       title: article.title,
@@ -373,11 +669,28 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
       ? [...transformedNews, ...fallbackNews].slice(0, 9)
       : transformedNews.slice(0, 9);
 
+    // Step 5: Cache ONLY successful API results and update daily state
+    if (wasSuccessful) {
+      await setCachedNews(results, wasSuccessful, source);
+      console.log(`Successfully cached real news from ${source}`);
+    } else {
+      console.log('Not caching fallback data - will retry API on next request');
+    }
+    await updateDailyFetchState(wasSuccessful);
+
     return results;
 
   } catch (error) {
     console.error('Error fetching news from API:', error);
-    return fallbackNews.slice(0, 9);
+    
+    // DON'T cache fallback data - return it directly so API will be retried
+    const results = fallbackNews.slice(0, 9);
+    await updateDailyFetchState(false);
+    
+    return results;
+  } finally {
+    // Always release the lock
+    await releaseLock(lockKey);
   }
 }
 

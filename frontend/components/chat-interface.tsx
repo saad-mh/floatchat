@@ -49,7 +49,10 @@ export function ChatInterface({
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Only scroll if we have actual messages to avoid unwanted initial scroll
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
@@ -176,6 +179,13 @@ export function ChatInterface({
     isCompact && !isMobile ? " rounded-xl shadow-xl border border-border" : ""
   }`;
   const isLanding = messages.length === 0 && !isCompact;
+
+  // Ensure page starts at top when in landing mode
+  useEffect(() => {
+    if (isLanding && typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [isLanding]);
 
   return (
     <div className={containerClass}>

@@ -26,6 +26,14 @@ export function AppWrapper({ children }: AppWrapperProps) {
     setShowContent(true);
     setTimeout(() => {
       setIsVisible(false);
+      // Ensure scroll position is reset after splash completes
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        // Additional scroll reset after content has time to render/load
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }, 100);
+      }
     }, 50);
   };
 
@@ -50,7 +58,7 @@ export function AppWrapper({ children }: AppWrapperProps) {
         }`}
         style={{
           pointerEvents: showContent && !isVisible ? "auto" : "none",
-          position: isVisible ? "absolute" : "relative",
+          visibility: showContent && !isVisible ? "visible" : "hidden",
           width: "100%",
           height: "100%",
         }}

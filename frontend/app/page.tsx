@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChatInterface } from "@/components/chat-interface";
 import { ReportPanel } from "@/components/report-panel";
@@ -14,6 +14,13 @@ export default function FloatChatPage() {
   );
   const [isGenerating, setIsGenerating] = useState(false);
   const [showMobileReport, setShowMobileReport] = useState(false);
+
+  // Ensure page starts at top
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, []);
 
   const handleQuestionSubmit = (question: DemoQuestion) => {
     setActiveQuestion(question);
