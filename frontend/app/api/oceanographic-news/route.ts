@@ -418,7 +418,7 @@ Example: [{"index":1,"isOceanRelated":true,"relevanceScore":8,"reasoning":"Discu
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-5', // ✅ using GPT-5
+      model: 'gpt-5', // Using GPT-5
       messages: [
         {
           role: 'system',
