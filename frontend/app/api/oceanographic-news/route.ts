@@ -217,7 +217,15 @@ async function getCachedNews(): Promise<CachedNewsData | null> {
         cached.articles.forEach((article, i) => {
           console.log(`Cached Article ${i+1}: "${article.title.substring(0, 30)}..." - Published: ${article.publishedAt}`);
         });
-        return cached;
+        
+        // Apply post-processing filter to remove entertainment/gaming content
+        const filteredCachedArticles = removeNonOceanographicContent(cached.articles);
+        console.log(`Post-filter: ${cached.articles.length} -> ${filteredCachedArticles.length} articles`);
+        
+        return {
+          ...cached,
+          articles: filteredCachedArticles
+        };
       } else {
         console.log('Cached news expired, will attempt fresh fetch');
         if (client) {
@@ -411,18 +419,7 @@ Return a JSON array with evaluations for each article. Each evaluation must incl
 
 Example: [{"index":1,"isOceanRelated":true,"relevanceScore":8,"reasoning":"Discusses ARGO float temperature measurements"},{"index":2,"isOceanRelated":false,"relevanceScore":2,"reasoning":"Focuses on terrestrial climate without ocean data"}]`;
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'gpt-5', // Using GPT-5
-      messages: [
-        {
-          role: 'system',
-          content: `You are Dr. Marina Rodriguez, a leading oceanographic data scientist and Principal Investigator at the Indian National Centre for Ocean Information Services (INCOIS). You have 15+ years of experience working with ARGO float data, CTD measurements, and marine biogeochemical sensors.
+const sysPrompt=`You are Dr. Marina Rodriguez, a leading oceanographic data scientist and Principal Investigator at the Indian National Centre for Ocean Information Services (INCOIS). You have 15+ years of experience working with ARGO float data, CTD measurements, and marine biogeochemical sensors.
 
 EXPERTISE AREAS:
 - ARGO Global Data Repository management and analysis
@@ -443,6 +440,18 @@ EVALUATION PHILOSOPHY:
 - Assess utility for decision-makers working with ocean data systems
 
 OUTPUT REQUIREMENT: Return ONLY a valid JSON array with precise evaluations. No additional text, explanations, or formatting outside the JSON structure.`
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'gpt-5', // Using GPT-5
+      messages: [
+        {
+          role: 'system',
+          content: sysPrompt
         },
         {
           role: 'user', 
@@ -484,46 +493,103 @@ function basicKeywordFilter(articles: any[]): any[] {
     
     const content = (article.title + ' ' + article.description).toLowerCase();
     
-    // High-priority oceanographic and ARGO-related terms
+    // EXCLUSION TERMS - immediately reject articles with these
+    const excludeTerms = [
+      'gaming', 'games', 'video game', 'mobile game', 'smartphone app', 'ios', 'android',
+      'entertainment', 'tv show', 'movie', 'film', 'anime', 'manga', 'series',
+      'romance', 'dating', 'couple', 'palace', 'celebrity', 'actor', 'actress',
+      'k-pop', 'korean', 'music', 'album', 'song', 'band', 'idol',
+      'awards', 'ceremony', 'trophy', 'winner', 'competition',
+      'streaming', 'netflix', 'disney', 'platform', 'channel',
+      'casino', 'gambling', 'betting', 'lottery', 'poker',
+      'fashion', 'beauty', 'cosmetics', 'makeup', 'skincare',
+      'restaurant', 'food', 'cuisine', 'chef', 'cooking',
+      'politics', 'election', 'government', 'policy', 'minister',
+      'business', 'company', 'stock', 'investment', 'market',
+      'sports', 'football', 'basketball', 'soccer', 'athlete'
+    ];
+    
+    // Check for exclusion terms first
+    if (excludeTerms.some(term => content.includes(term))) {
+      return false;
+    }
+    
+    // SPECIFIC OCEANOGRAPHIC TERMS - more targeted than generic 'ocean'/'sea'
     const coreOceanTerms = [
-      'argo', 'float', 'profiling float', 'autonomous float',
-      'ctd', 'conductivity temperature depth', 'salinity', 'temperature profile',
-      'ocean', 'sea', 'marine', 'oceanographic', 'deep sea', 'abyssal',
-      'thermohaline', 'circulation', 'current', 'upwelling', 'downwelling',
-      'bgc', 'biogeochemical', 'oxygen', 'nitrate', 'chlorophyll',
-      'sea level', 'ocean warming', 'ocean heat', 'heat content',
-      'acidification', 'ph', 'carbon cycle', 'co2', 'carbonate'
+      'argo float', 'profiling float', 'autonomous float', 'ocean float',
+      'ctd', 'conductivity temperature depth', 'salinity profile', 'temperature profile',
+      'oceanographic', 'deep sea research', 'abyssal', 'bathyal', 'pelagic',
+      'thermohaline circulation', 'ocean current', 'upwelling', 'downwelling',
+      'bgc argo', 'biogeochemical', 'dissolved oxygen', 'nitrate', 'chlorophyll-a',
+      'sea level rise', 'ocean warming', 'ocean heat content', 'marine heatwave',
+      'ocean acidification', 'ocean ph', 'carbon cycle', 'oceanic co2',
+      'cyclone', 'hurricane', 'typhoon', 'tsunami', 'storm surge'
     ];
     
-    // Secondary marine science terms
-    const marineTerms = [
-      'marine life', 'coral', 'reef', 'phytoplankton', 'zooplankton',
-      'whale', 'dolphin', 'marine mammals', 'fish', 'ecosystem',
-      'tide', 'tidal', 'wave', 'tsunami', 'storm surge',
-      'polar ice', 'sea ice', 'iceberg', 'arctic', 'antarctic',
-      'pacific', 'atlantic', 'indian ocean', 'southern ocean',
-      'underwater', 'seawater', 'maritime', 'aquatic', 'coastal'
+    // Marine ecosystem and life terms
+    const marineLifeTerms = [
+      'marine ecosystem', 'coral reef', 'coral bleaching', 'phytoplankton bloom',
+      'zooplankton', 'marine mammals', 'whale migration', 'dolphin', 'seal',
+      'marine protected area', 'fisheries', 'overfishing', 'marine biodiversity',
+      'kelp forest', 'seagrass', 'mangrove', 'coastal ecosystem'
     ];
     
-    // Climate and environmental terms with ocean context
+    // Climate and oceanography intersection
     const climateOceanTerms = [
-      'climate change', 'global warming', 'greenhouse gas',
-      'el niño', 'la niña', 'enso', 'monsoon',
-      'weather pattern', 'precipitation', 'evaporation',
-      'water cycle', 'hydrosphere', 'cryosphere'
+      'el niño', 'la niña', 'enso', 'pacific decadal oscillation',
+      'atlantic meridional overturning circulation', 'gulf stream',
+      'antarctic circumpolar current', 'ice sheet', 'sea ice extent',
+      'polar ice cap', 'glacier', 'ice shelf', 'permafrost'
     ];
     
-    // Geographic and technical terms
+    // Technical and geographic oceanography
     const technicalTerms = [
-      'satellite', 'remote sensing', 'altimetry', 'bathymetry',
-      'sonar', 'hydrophone', 'buoy', 'mooring', 'sensor',
-      'netcdf', 'data repository', 'incois', 'ifremer',
-      'bay', 'gulf', 'strait', 'channel', 'basin', 'trench'
+      'ocean monitoring', 'satellite altimetry', 'bathymetry', 'seafloor mapping',
+      'sonar', 'hydrophone', 'oceanographic buoy', 'mooring', 'ocean sensor',
+      'netcdf', 'ocean data', 'incois', 'ifremer', 'noaa', 'whoi',
+      'ocean basin', 'abyssal plain', 'mid-ocean ridge', 'ocean trench',
+      'continental shelf', 'hydrothermal vent', 'seamount'
     ];
     
-    const allTerms = [...coreOceanTerms, ...marineTerms, ...climateOceanTerms, ...technicalTerms];
+    const allTerms = [...coreOceanTerms, ...marineLifeTerms, ...climateOceanTerms, ...technicalTerms];
     
     return allTerms.some(term => content.includes(term));
+  });
+}
+
+// Post-processing filter to remove entertainment/gaming content from cached results
+function removeNonOceanographicContent(articles: NewsItem[]): NewsItem[] {
+  return articles.filter((article: NewsItem) => {
+    const content = (article.title + ' ' + article.description).toLowerCase();
+    
+    // Strong exclusion patterns that indicate non-scientific content
+    const strictExcludePatterns = [
+      /gaming|games|video game|mobile game|smartphone app/,
+      /entertainment|tv show|movie|film|anime|manga|series/,
+      /romance|dating|couple.*palace|celebrity|actor|actress/,
+      /k-pop|korean.*music|album|song|band|idol|mnet/,
+      /awards.*ceremony|trophy.*winner|competition.*winner/,
+      /streaming|netflix|disney|platform.*channel/,
+      /casino|gambling|betting|lottery|poker/,
+      /fashion|beauty|cosmetics|makeup|skincare/,
+      /restaurant|food|cuisine|chef|cooking/,
+      /politics.*election|government.*policy/,
+      /business.*stock|investment.*market/,
+      /sports|football|basketball|soccer|athlete/,
+      /haruka.*beyond.*stream|couple.*palace|romance.*games/,
+      /launches.*new.*smartphone|debuts.*ios.*android/,
+      /cj enm|mnet.*program|variety.*show|korean.*entertainment/
+    ];
+    
+    // Check if article matches any exclusion pattern
+    const shouldExclude = strictExcludePatterns.some(pattern => pattern.test(content));
+    
+    if (shouldExclude) {
+      console.log(`POST-FILTER: Removing non-oceanographic article: "${article.title.substring(0, 50)}..."`);
+      return false;
+    }
+    
+    return true;
   });
 }
 
@@ -677,7 +743,11 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
     const fromDate = new Date(toDate);
     fromDate.setMonth(fromDate.getMonth() - 1);
 
-    const searchQueries = ['ocean', 'marine', 'coral reef', 'sea level', 'deep sea'];
+    const searchQueries = [
+      'oceanographic research', 'ARGO float', 'ocean temperature', 'ocean acidification', 
+      'coral bleaching', 'sea level rise', 'ocean current', 'marine ecosystem',
+      'tsunami', 'cyclone', 'hurricane', 'climate change ocean', 'deep sea exploration'
+    ];
     const searchQuery = searchQueries.join(' OR ');
     
     const url = `https://newsapi.org/v2/everything?` +
@@ -762,10 +832,14 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
       };
     });
 
+    // Apply post-processing filter to remove entertainment/gaming content
+    const postFilteredNews = removeNonOceanographicContent(transformedNews);
+    console.log(`Post-processing filter: ${transformedNews.length} -> ${postFilteredNews.length} articles`);
+
     // Always return exactly 9 articles (fill with fallback if needed)
-    const results = transformedNews.length < 9
-      ? [...transformedNews, ...fallbackNews].slice(0, 9)
-      : transformedNews.slice(0, 9);
+    const results = postFilteredNews.length < 9
+      ? [...postFilteredNews, ...fallbackNews].slice(0, 9)
+      : postFilteredNews.slice(0, 9);
 
     // Step 5: Cache ONLY successful API results and update daily state
     if (wasSuccessful) {
