@@ -213,6 +213,10 @@ async function getCachedNews(): Promise<CachedNewsData | null> {
       
       if (ageHours < CACHE_DURATION_HOURS) {
         console.log(`Serving cached news (${ageHours.toFixed(1)}h old, source: ${cached.source})`);
+        // Log the dates of cached articles
+        cached.articles.forEach((article, i) => {
+          console.log(`Cached Article ${i+1}: "${article.title.substring(0, 30)}..." - Published: ${article.publishedAt}`);
+        });
         return cached;
       } else {
         console.log('Cached news expired, will attempt fresh fetch');
@@ -352,15 +356,60 @@ async function processBatchWithAI(articles: any[], apiKey: string): Promise<any[
     `${index + 1}. Title: "${article.title}"\nDescription: "${article.description}"\n`
   ).join('\n');
 
-  const prompt = `Analyze these ${articles.length} news articles for ocean/marine relevance. Return JSON array with: index, isOceanRelated (boolean), relevanceScore (0-10).
+  const prompt = `You are an expert oceanographic data analyst working with the FloatChat system - an AI-powered platform for ARGO ocean data discovery and visualization. Your task is to evaluate news articles for their relevance to oceanographic research, marine science, and ocean data systems like ARGO floats.
 
-Ocean topics: currents, marine life, coral reefs, sea level, ocean temp, deep sea, acidification, conservation, tsunamis, tides, marine mammals, pollution, underwater exploration.
+CONTEXT: FloatChat helps researchers, decision-makers, and domain experts discover insights from vast oceanographic datasets including ARGO float measurements, CTD casts, BGC sensors, and satellite observations. Users query this system to understand ocean temperature, salinity, currents, marine ecosystems, and climate patterns.
 
-Exclude: land-based topics, freshwater, general weather.
+EVALUATION CRITERIA:
+Analyze each article for relevance to oceanographic science and ocean data discovery. Score based on direct connection to:
 
+PRIMARY RELEVANCE (Score 8-10):
+- ARGO float data, autonomous profiling floats, oceanographic instruments
+- Ocean temperature, salinity, density measurements and profiles  
+- Ocean currents, circulation patterns, thermohaline circulation
+- Deep sea research, abyssal zones, ocean trenches, hydrothermal vents
+- Marine biogeochemistry (BGC), ocean carbon cycle, oxygen levels
+- Sea level rise, ocean warming, climate change impacts on oceans
+- Ocean acidification, pH changes, carbonate chemistry
+- Oceanographic research methods, CTD casts, in-situ measurements
+
+SECONDARY RELEVANCE (Score 5-7):
+- Marine ecosystems, coral reefs, marine biodiversity
+- Coastal oceanography, upwelling, coastal currents
+- Marine mammals, fish populations, marine food webs  
+- Ocean pollution, microplastics, marine contamination
+- Tsunamis, storm surge, ocean-atmosphere interactions
+- Arctic/Antarctic ocean research, polar ice interactions
+- Maritime technology, underwater exploration, ocean sensors
+- Satellite oceanography, remote sensing of oceans
+
+LOW RELEVANCE (Score 1-4):
+- General environmental topics without ocean focus
+- Freshwater systems (lakes, rivers) without ocean connection
+- Land-based climate topics without marine component
+- General weather without oceanographic implications
+
+EXCLUDE (Score 0):
+- Pure terrestrial topics, land-based ecosystems
+- Freshwater-only studies without ocean relevance
+- General weather forecasting without ocean data
+- Non-scientific maritime topics (shipping, ports without research context)
+- Political news, elections, governance, policy debates (unless directly about ocean research funding, marine protected areas, or oceanographic regulations)
+- Military/defense topics (unless about oceanographic research vessels or marine science collaboration)
+- Economic/trade news (unless specifically about ocean technology, marine resources, or oceanographic industry)
+- Social issues, crime, entertainment, sports (unless directly related to marine science education or ocean research)
+
+ARTICLES TO ANALYZE:
 ${articlesText}
 
-JSON format: [{"index":1,"isOceanRelated":true,"relevanceScore":8},...]`;
+REQUIRED OUTPUT FORMAT:
+Return a JSON array with evaluations for each article. Each evaluation must include:
+- index: Article number (1-based)
+- isOceanRelated: boolean (true if score ≥ 4)
+- relevanceScore: integer 0-10 based on criteria above
+- reasoning: brief explanation of score (optional but helpful)
+
+Example: [{"index":1,"isOceanRelated":true,"relevanceScore":8,"reasoning":"Discusses ARGO float temperature measurements"},{"index":2,"isOceanRelated":false,"relevanceScore":2,"reasoning":"Focuses on terrestrial climate without ocean data"}]`;
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -373,7 +422,27 @@ JSON format: [{"index":1,"isOceanRelated":true,"relevanceScore":8},...]`;
       messages: [
         {
           role: 'system',
-          content: 'You are a marine science expert. Analyze news for ocean relevance. Return only valid JSON array.'
+          content: `You are Dr. Marina Rodriguez, a leading oceanographic data scientist and Principal Investigator at the Indian National Centre for Ocean Information Services (INCOIS). You have 15+ years of experience working with ARGO float data, CTD measurements, and marine biogeochemical sensors.
+
+EXPERTISE AREAS:
+- ARGO Global Data Repository management and analysis
+- Ocean temperature and salinity profile interpretation  
+- Deep ocean circulation and thermohaline dynamics
+- Marine biogeochemistry and carbon cycle research
+- Oceanographic instrumentation and in-situ measurements
+- Climate change impacts on ocean systems
+- NetCDF data formats and oceanographic databases
+
+YOUR ROLE: You are evaluating news articles for the FloatChat AI system - a conversational interface that helps researchers discover insights from vast oceanographic datasets. Your evaluation determines which articles are relevant for users who query about ocean temperature profiles, salinity measurements, ARGO float trajectories, marine ecosystems, and climate-ocean interactions.
+
+EVALUATION PHILOSOPHY:
+- Prioritize articles directly related to oceanographic measurements and data
+- Value content about autonomous ocean sensors, floats, and research instruments  
+- Consider relevance to researchers studying ocean-climate interactions
+- Focus on scientific advancement in marine and oceanographic sciences
+- Assess utility for decision-makers working with ocean data systems
+
+OUTPUT REQUIREMENT: Return ONLY a valid JSON array with precise evaluations. No additional text, explanations, or formatting outside the JSON structure.`
         },
         {
           role: 'user', 
@@ -408,27 +477,53 @@ JSON format: [{"index":1,"isOceanRelated":true,"relevanceScore":8},...]`;
   });
 }
 
-// Fallback keyword filtering when AI is not available
+// ARGO-focused keyword filtering when AI is not available
 function basicKeywordFilter(articles: any[]): any[] {
   return articles.filter((article: any) => {
     if (!article.title || !article.description) return false;
     
     const content = (article.title + ' ' + article.description).toLowerCase();
-    const oceanTerms = [
-      'ocean', 'sea', 'marine', 'coral', 'whale', 'dolphin', 'shark', 
-      'tide', 'current', 'wave', 'deep sea', 'underwater', 'salinity',
-      'plankton', 'reef', 'maritime', 'aquatic', 'seawater',
-      'algae', 'kelp', 'seabed', 'polar ice', 'iceberg', 'tsunami', 
-      'storm surge', 'sea level', 'pacific', 'atlantic', 'arctic', 'antarctic',
-      'bay', 'gulf', 'strait', 'channel', 'diving', 'scuba',
-      'acidification', 'oceanographic', 'marine life', 'sea ice',
-      'water', 'blue', 'coast', 'beach', 'port', 'harbor', 'fish', 
-      'naval', 'shipping', 'cruise', 'sailing', 'fishing', 'surfing',
-      'climate', 'weather', 'temperature', 'warming', 'cooling',
-      'ecosystem', 'biodiversity', 'conservation', 'environment'
+    
+    // High-priority oceanographic and ARGO-related terms
+    const coreOceanTerms = [
+      'argo', 'float', 'profiling float', 'autonomous float',
+      'ctd', 'conductivity temperature depth', 'salinity', 'temperature profile',
+      'ocean', 'sea', 'marine', 'oceanographic', 'deep sea', 'abyssal',
+      'thermohaline', 'circulation', 'current', 'upwelling', 'downwelling',
+      'bgc', 'biogeochemical', 'oxygen', 'nitrate', 'chlorophyll',
+      'sea level', 'ocean warming', 'ocean heat', 'heat content',
+      'acidification', 'ph', 'carbon cycle', 'co2', 'carbonate'
     ];
     
-    return oceanTerms.some(term => content.includes(term));
+    // Secondary marine science terms
+    const marineTerms = [
+      'marine life', 'coral', 'reef', 'phytoplankton', 'zooplankton',
+      'whale', 'dolphin', 'marine mammals', 'fish', 'ecosystem',
+      'tide', 'tidal', 'wave', 'tsunami', 'storm surge',
+      'polar ice', 'sea ice', 'iceberg', 'arctic', 'antarctic',
+      'pacific', 'atlantic', 'indian ocean', 'southern ocean',
+      'underwater', 'seawater', 'maritime', 'aquatic', 'coastal'
+    ];
+    
+    // Climate and environmental terms with ocean context
+    const climateOceanTerms = [
+      'climate change', 'global warming', 'greenhouse gas',
+      'el niño', 'la niña', 'enso', 'monsoon',
+      'weather pattern', 'precipitation', 'evaporation',
+      'water cycle', 'hydrosphere', 'cryosphere'
+    ];
+    
+    // Geographic and technical terms
+    const technicalTerms = [
+      'satellite', 'remote sensing', 'altimetry', 'bathymetry',
+      'sonar', 'hydrophone', 'buoy', 'mooring', 'sensor',
+      'netcdf', 'data repository', 'incois', 'ifremer',
+      'bay', 'gulf', 'strait', 'channel', 'basin', 'trench'
+    ];
+    
+    const allTerms = [...coreOceanTerms, ...marineTerms, ...climateOceanTerms, ...technicalTerms];
+    
+    return allTerms.some(term => content.includes(term));
   });
 }
 
@@ -655,14 +750,17 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
     const aiFilteredArticles = await filterWithAI(validArticles);
     console.log(`AI filtering resulted in ${aiFilteredArticles.length} articles`);
 
-    const transformedNews: NewsItem[] = aiFilteredArticles.map((article: any) => ({
-      title: article.title,
-      description: article.description,
-      url: article.url,
-      image: article.urlToImage,
-      publishedAt: article.publishedAt,
-      source: article.source?.name || 'News Source'
-    }));
+    const transformedNews: NewsItem[] = aiFilteredArticles.map((article: any) => {
+      console.log(`Article: "${article.title.substring(0, 50)}..." - Published: ${article.publishedAt}`);
+      return {
+        title: article.title,
+        description: article.description,
+        url: article.url,
+        image: article.urlToImage,
+        publishedAt: article.publishedAt,
+        source: article.source?.name || 'News Source'
+      };
+    });
 
     // Always return exactly 9 articles (fill with fallback if needed)
     const results = transformedNews.length < 9
