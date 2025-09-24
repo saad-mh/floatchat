@@ -368,10 +368,21 @@ async function processBatchWithAI(articles: any[], apiKey: string): Promise<any[
 
 CONTEXT: FloatChat helps researchers, decision-makers, and domain experts discover insights from vast oceanographic datasets including ARGO float measurements, CTD casts, BGC sensors, and satellite observations. Users query this system to understand ocean temperature, salinity, currents, marine ecosystems, and climate patterns.
 
-EVALUATION CRITERIA:
-Analyze each article for relevance to oceanographic science and ocean data discovery. Score based on direct connection to:
+STRICT EVALUATION CRITERIA:
+You must be EXTREMELY selective. Reject anything that is not directly about oceanographic science, marine research, or ocean data. Be especially strict about entertainment, gaming, music, awards, and cultural content.
 
-PRIMARY RELEVANCE (Score 8-10):
+IMMEDIATE REJECTION (Score 0) - These should NEVER pass:
+- Entertainment: TV shows, movies, series, anime, manga, streaming platforms
+- Gaming: Video games, mobile games, smartphone apps, gaming platforms
+- Music/Awards: K-pop, music albums, entertainment awards, celebrity news
+- Romance/Dating: Dating apps, romance games, relationship content
+- Business/Finance: Stock markets, investments, corporate news (unless ocean tech)
+- Sports: All sports content (unless marine sports research)
+- Politics: Elections, governance, policy (unless direct ocean research funding)
+- Technology: General tech news (unless specifically oceanographic instruments)
+- Cultural: Korean entertainment, variety shows, cultural events
+
+PRIMARY RELEVANCE (Score 8-10) - ONLY these should score high:
 - ARGO float data, autonomous profiling floats, oceanographic instruments
 - Ocean temperature, salinity, density measurements and profiles  
 - Ocean currents, circulation patterns, thermohaline circulation
@@ -380,32 +391,22 @@ PRIMARY RELEVANCE (Score 8-10):
 - Sea level rise, ocean warming, climate change impacts on oceans
 - Ocean acidification, pH changes, carbonate chemistry
 - Oceanographic research methods, CTD casts, in-situ measurements
+- Tsunami research, cyclone impacts on oceans, storm surge studies
 
-SECONDARY RELEVANCE (Score 5-7):
-- Marine ecosystems, coral reefs, marine biodiversity
+SECONDARY RELEVANCE (Score 5-7) - Be cautious, most should be lower:
+- Marine ecosystems, coral reefs, marine biodiversity (scientific studies only)
 - Coastal oceanography, upwelling, coastal currents
-- Marine mammals, fish populations, marine food webs  
+- Marine mammals, fish populations (scientific research only)
 - Ocean pollution, microplastics, marine contamination
-- Tsunamis, storm surge, ocean-atmosphere interactions
 - Arctic/Antarctic ocean research, polar ice interactions
 - Maritime technology, underwater exploration, ocean sensors
-- Satellite oceanography, remote sensing of oceans
 
 LOW RELEVANCE (Score 1-4):
-- General environmental topics without ocean focus
-- Freshwater systems (lakes, rivers) without ocean connection
-- Land-based climate topics without marine component
-- General weather without oceanographic implications
+- General environmental topics with minimal ocean connection
+- Weather patterns with minor ocean implications
+- Freshwater systems without ocean connection
 
-EXCLUDE (Score 0):
-- Pure terrestrial topics, land-based ecosystems
-- Freshwater-only studies without ocean relevance
-- General weather forecasting without ocean data
-- Non-scientific maritime topics (shipping, ports without research context)
-- Political news, elections, governance, policy debates (unless directly about ocean research funding, marine protected areas, or oceanographic regulations)
-- Military/defense topics (unless about oceanographic research vessels or marine science collaboration)
-- Economic/trade news (unless specifically about ocean technology, marine resources, or oceanographic industry)
-- Social issues, crime, entertainment, sports (unless directly related to marine science education or ocean research)
+CRITICAL: If an article mentions "ocean", "sea", or "marine" but is actually about entertainment, gaming, music, awards, culture, or business - give it a score of 0. Context matters more than keywords.
 
 ARTICLES TO ANALYZE:
 ${articlesText}
@@ -430,14 +431,17 @@ EXPERTISE AREAS:
 - Climate change impacts on ocean systems
 - NetCDF data formats and oceanographic databases
 
-YOUR ROLE: You are evaluating news articles for the FloatChat AI system - a conversational interface that helps researchers discover insights from vast oceanographic datasets. Your evaluation determines which articles are relevant for users who query about ocean temperature profiles, salinity measurements, ARGO float trajectories, marine ecosystems, and climate-ocean interactions.
+YOUR ROLE: You are a STRICT GATEKEEPER for the FloatChat AI system. Your job is to REJECT entertainment, gaming, music, awards, cultural, and business content that often gets misclassified as oceanographic due to keywords like "sea", "ocean", or "marine".
 
-EVALUATION PHILOSOPHY:
-- Prioritize articles directly related to oceanographic measurements and data
-- Value content about autonomous ocean sensors, floats, and research instruments  
-- Consider relevance to researchers studying ocean-climate interactions
-- Focus on scientific advancement in marine and oceanographic sciences
-- Assess utility for decision-makers working with ocean data systems
+CRITICAL MISSION: FloatChat users are serious oceanographic researchers who need articles about ocean data, measurements, and marine science - NOT Korean entertainment shows, mobile games, or music awards.
+
+STRICT FILTERING PHILOSOPHY:
+- IMMEDIATELY REJECT entertainment, gaming, music, awards, cultural content
+- ONLY ACCEPT genuine oceanographic research, measurements, and marine science
+- If an article mentions "ocean" or "sea" but is about entertainment/gaming - SCORE IT 0
+- Context and content matter more than keywords
+- When in doubt about entertainment vs science - REJECT IT
+- Be extremely conservative - better to miss borderline articles than accept entertainment
 
 OUTPUT REQUIREMENT: Return ONLY a valid JSON array with precise evaluations. No additional text, explanations, or formatting outside the JSON structure.`
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -482,7 +486,7 @@ OUTPUT REQUIREMENT: Return ONLY a valid JSON array with precise evaluations. No 
 
   return articles.filter((_, index) => {
     const result = filterResults.find(r => r.index === index + 1);
-    return result && result.isOceanRelated && result.relevanceScore >= 9;
+    return result && result.isOceanRelated && result.relevanceScore >= 8;
   });
 }
 
@@ -493,67 +497,18 @@ function basicKeywordFilter(articles: any[]): any[] {
     
     const content = (article.title + ' ' + article.description).toLowerCase();
     
-    // EXCLUSION TERMS - immediately reject articles with these
-    const excludeTerms = [
-      'gaming', 'games', 'video game', 'mobile game', 'smartphone app', 'ios', 'android',
-      'entertainment', 'tv show', 'movie', 'film', 'anime', 'manga', 'series',
-      'romance', 'dating', 'couple', 'palace', 'celebrity', 'actor', 'actress',
-      'k-pop', 'korean', 'music', 'album', 'song', 'band', 'idol',
-      'awards', 'ceremony', 'trophy', 'winner', 'competition',
-      'streaming', 'netflix', 'disney', 'platform', 'channel',
-      'casino', 'gambling', 'betting', 'lottery', 'poker',
-      'fashion', 'beauty', 'cosmetics', 'makeup', 'skincare',
-      'restaurant', 'food', 'cuisine', 'chef', 'cooking',
-      'politics', 'election', 'government', 'policy', 'minister',
-      'business', 'company', 'stock', 'investment', 'market',
-      'sports', 'football', 'basketball', 'soccer', 'athlete'
+    // Broad oceanographic and environmental terms - keep this permissive
+    const oceanTerms = [
+      'ocean', 'sea', 'marine', 'water', 'coral', 'reef', 'fish', 'whale',
+      'climate', 'weather', 'storm', 'hurricane', 'cyclone', 'tsunami',
+      'ice', 'glacier', 'polar', 'arctic', 'antarctic',
+      'coast', 'coastal', 'beach', 'tide', 'wave',
+      'temperature', 'warming', 'pollution', 'environment',
+      'pacific', 'atlantic', 'indian', 'mediterranean',
+      'research', 'study', 'science', 'data', 'monitoring'
     ];
     
-    // Check for exclusion terms first
-    if (excludeTerms.some(term => content.includes(term))) {
-      return false;
-    }
-    
-    // SPECIFIC OCEANOGRAPHIC TERMS - more targeted than generic 'ocean'/'sea'
-    const coreOceanTerms = [
-      'argo float', 'profiling float', 'autonomous float', 'ocean float',
-      'ctd', 'conductivity temperature depth', 'salinity profile', 'temperature profile',
-      'oceanographic', 'deep sea research', 'abyssal', 'bathyal', 'pelagic',
-      'thermohaline circulation', 'ocean current', 'upwelling', 'downwelling',
-      'bgc argo', 'biogeochemical', 'dissolved oxygen', 'nitrate', 'chlorophyll-a',
-      'sea level rise', 'ocean warming', 'ocean heat content', 'marine heatwave',
-      'ocean acidification', 'ocean ph', 'carbon cycle', 'oceanic co2',
-      'cyclone', 'hurricane', 'typhoon', 'tsunami', 'storm surge'
-    ];
-    
-    // Marine ecosystem and life terms
-    const marineLifeTerms = [
-      'marine ecosystem', 'coral reef', 'coral bleaching', 'phytoplankton bloom',
-      'zooplankton', 'marine mammals', 'whale migration', 'dolphin', 'seal',
-      'marine protected area', 'fisheries', 'overfishing', 'marine biodiversity',
-      'kelp forest', 'seagrass', 'mangrove', 'coastal ecosystem'
-    ];
-    
-    // Climate and oceanography intersection
-    const climateOceanTerms = [
-      'el niño', 'la niña', 'enso', 'pacific decadal oscillation',
-      'atlantic meridional overturning circulation', 'gulf stream',
-      'antarctic circumpolar current', 'ice sheet', 'sea ice extent',
-      'polar ice cap', 'glacier', 'ice shelf', 'permafrost'
-    ];
-    
-    // Technical and geographic oceanography
-    const technicalTerms = [
-      'ocean monitoring', 'satellite altimetry', 'bathymetry', 'seafloor mapping',
-      'sonar', 'hydrophone', 'oceanographic buoy', 'mooring', 'ocean sensor',
-      'netcdf', 'ocean data', 'incois', 'ifremer', 'noaa', 'whoi',
-      'ocean basin', 'abyssal plain', 'mid-ocean ridge', 'ocean trench',
-      'continental shelf', 'hydrothermal vent', 'seamount'
-    ];
-    
-    const allTerms = [...coreOceanTerms, ...marineLifeTerms, ...climateOceanTerms, ...technicalTerms];
-    
-    return allTerms.some(term => content.includes(term));
+    return oceanTerms.some(term => content.includes(term));
   });
 }
 
@@ -743,11 +698,7 @@ async function fetchNewsFromAPI(): Promise<NewsItem[]> {
     const fromDate = new Date(toDate);
     fromDate.setMonth(fromDate.getMonth() - 1);
 
-    const searchQueries = [
-      'oceanographic research', 'ARGO float', 'ocean temperature', 'ocean acidification', 
-      'coral bleaching', 'sea level rise', 'ocean current', 'marine ecosystem',
-      'tsunami', 'cyclone', 'hurricane', 'climate change ocean', 'deep sea exploration'
-    ];
+    const searchQueries = ['ocean', 'marine', 'sea', 'coral', 'climate', 'water', 'tsunami', 'cyclone'];
     const searchQuery = searchQueries.join(' OR ');
     
     const url = `https://newsapi.org/v2/everything?` +
