@@ -1,0 +1,54 @@
+{
+  "headers": [
+    "Float ID",
+    "Cycle",
+    "Date",
+    "Latitude",
+    "Longitude",
+    "Profiles",
+    "QC Status"
+  ],
+  "rows": [
+    [
+      "WMO_5901234",
+      "182",
+      "2023-03-15",
+      "0.12°N",
+      "0.03°W",
+      "3",
+      "Good"
+    ],
+    [
+      "WMO_5902345",
+      "183",
+      "2023-03-18",
+      "0.20°S",
+      "0.80°E",
+      "2",
+      "Good"
+    ],
+    [
+      "WMO_5903456",
+      "184",
+      "2023-03-21",
+      "0.05°N",
+      "0.15°E",
+      "4",
+      "Flagged"
+    ],
+    [
+      "WMO_5904567",
+      "185",
+      "2023-03-24",
+      "0.30°S",
+      "0.25°W",
+      "1",
+      "Good"
+    ]
+  ],
+  "metadata": {
+    "totalRows": 4,
+    "source": "Argo Global Data Assembly Centre",
+    "lastUpdated": "2023-04-05T12:00:00Z"
+  }
+}

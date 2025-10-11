@@ -1,0 +1,14 @@
+{
+  "type": "proximitySearch",
+  "title": "BGC Floats with pH < 7.9 — Pacific Ocean (2024)",
+  "targetCoords": {"lat": -5.0, "lng": -150.0},
+  "searchRadius": "1000 km",
+  "markers": [
+    { "lat": -5.0, "lng": -150.0, "label": "Region Center (Pacific Search Zone)", "color": "#f43f5e" },
+    { "lat": -4.8, "lng": -149.6, "label": "Float WMO_5909012 — pH 7.85", "color": "#3b82f6" },
+    { "lat": -5.3, "lng": -150.4, "label": "Float WMO_5909025 — pH 7.88", "color": "#f59e42" },
+    { "lat": -4.5, "lng": -150.8, "label": "Float WMO_5908765 — pH 7.82", "color": "#10b981" },
+    { "lat": -5.7, "lng": -149.2, "label": "Float WMO_5908899 — pH 7.87", "color": "#8b5cf6" },
+    { "lat": -6.1, "lng": -150.5, "label": "Float WMO_5908934 — pH 7.84", "color": "#eab308" }
+  ]
+}

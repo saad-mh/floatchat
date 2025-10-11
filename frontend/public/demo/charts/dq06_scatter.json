@@ -1,0 +1,68 @@
+{
+  "type": "scatter",
+  "title": "Temperature vs Salinity Correlation",
+  "x_axis": {
+    "label": "Temperature (°C)",
+    "range": [4, 30]
+  },
+  "y_axis": {
+    "label": "Salinity (PSU)",
+    "range": [34.5, 36.5]
+  },
+  "series": [
+    {
+      "name": "Surface (0-50m)",
+      "color": "#ef4444",
+      "data": [
+        {"x": 28.5, "y": 35.1, "label": "Float 5901234"},
+        {"x": 29.2, "y": 35.3, "label": "Float 5902345"},
+        {"x": 27.8, "y": 34.9, "label": "Float 5903456"},
+        {"x": 28.9, "y": 35.2, "label": "Float 5904567"},
+        {"x": 28.1, "y": 35.0, "label": "Float 5905678"},
+        {"x": 29.5, "y": 35.4, "label": "Float 5906789"},
+        {"x": 27.5, "y": 34.8, "label": "Float 5907890"},
+        {"x": 28.7, "y": 35.1, "label": "Float 5908901"}
+      ]
+    },
+    {
+      "name": "Thermocline (50-200m)",
+      "color": "#3b82f6",
+      "data": [
+        {"x": 24.2, "y": 35.0, "label": "Float 5901234"},
+        {"x": 25.1, "y": 35.1, "label": "Float 5902345"},
+        {"x": 23.5, "y": 34.9, "label": "Float 5903456"},
+        {"x": 24.8, "y": 35.0, "label": "Float 5904567"},
+        {"x": 23.9, "y": 34.9, "label": "Float 5905678"},
+        {"x": 25.3, "y": 35.2, "label": "Float 5906789"},
+        {"x": 23.2, "y": 34.8, "label": "Float 5907890"},
+        {"x": 24.5, "y": 35.0, "label": "Float 5908901"}
+      ]
+    },
+    {
+      "name": "Deep (>500m)",
+      "color": "#22c55e",
+      "data": [
+        {"x": 12.1, "y": 34.7, "label": "Float 5901234"},
+        {"x": 11.8, "y": 34.6, "label": "Float 5902345"},
+        {"x": 13.2, "y": 34.8, "label": "Float 5903456"},
+        {"x": 12.5, "y": 34.7, "label": "Float 5904567"},
+        {"x": 11.9, "y": 34.6, "label": "Float 5905678"},
+        {"x": 13.0, "y": 34.8, "label": "Float 5906789"},
+        {"x": 11.5, "y": 34.6, "label": "Float 5907890"},
+        {"x": 12.3, "y": 34.7, "label": "Float 5908901"}
+      ]
+    }
+  ],
+  "correlation": {
+    "overall": 0.78,
+    "surface": 0.65,
+    "thermocline": 0.72,
+    "deep": 0.43
+  },
+  "metadata": {
+    "region": "Arabian Sea",
+    "totalPoints": 24,
+    "timeRange": "March 2023",
+    "description": "T-S diagram showing water mass characteristics"
+  }
+}

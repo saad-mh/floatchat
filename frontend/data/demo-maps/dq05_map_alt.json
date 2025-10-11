@@ -1,0 +1,12 @@
+{
+  "type": "oxygenSampling",
+  "title": "Oxygen Heatmap Sampling Locations",
+  "variable": "dissolved_oxygen",
+  "units": "μmol/kg",
+  "timeRange": "Jan-Aug 2023",
+  "markers": [
+    { "lat": -10.0, "lng": 80.0, "label": "O2 Sample 1", "color": "#22d3ee" },
+    { "lat": -9.8, "lng": 80.2, "label": "O2 Sample 2", "color": "#eab308" },
+    { "lat": -10.2, "lng": 79.9, "label": "O2 Sample 3", "color": "#ef4444" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "proximitySearch",
+  "title": "Mixed Layer Depth Variations - Bay of Bengal (Monsoon 2023)",
+  "targetCoords": {"lat": 14.5, "lng": 88.0},
+  "searchRadius": "600 km",
+  "markers": [
+    { "lat": 14.5, "lng": 88.0, "label": "Region Center (Bay of Bengal)", "color": "#f43f5e" },
+    { "lat": 15.2, "lng": 88.6, "label": "Station A — MLD 22 m (Jun 2023)", "color": "#3b82f6" },
+    { "lat": 13.9, "lng": 87.5, "label": "Station B — MLD 48 m (Jul 2023)", "color": "#f59e42" },
+    { "lat": 15.8, "lng": 89.4, "label": "Station C — MLD 31 m (Aug 2023)", "color": "#10b981" },
+    { "lat": 14.1, "lng": 90.2, "label": "Station D — MLD 60 m (Sep 2023)", "color": "#8b5cf6" },
+    { "lat": 16.0, "lng": 86.9, "label": "Station E — MLD 15 m (Monsoon mean)", "color": "#eab308" }
+  ]
+}
