@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as argon2 from 'argon2';
-import { findUserByEmail, logLoginAttempt, logEmailNotification } from '@/lib/db';
+import { findUserByEmail, logLoginAttempt, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
