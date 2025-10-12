@@ -47,16 +47,21 @@ export function getBaseUrl(request?: Request): string {
     const vercelUrl = process.env.VERCEL_URL;
     const nextAuthUrl = process.env.NEXTAUTH_URL;
 
-    // Priority order for production: Vercel URL > NEXTAUTH_URL > fallback
-    if (vercelUrl) {
-        return `https://${vercelUrl}`;
-    }
-
+    // Priority order: Custom domain > NEXTAUTH_URL > Vercel URL > fallback
+    // Always prefer the production domain over deployment-specific URLs
     if (nextAuthUrl && !nextAuthUrl.includes('localhost')) {
         return nextAuthUrl;
     }
 
-    // Final fallback to production URL
+    // Check if we're on the production domain by looking at host header
+    if (request) {
+        const host = request.headers.get('host');
+        if (host === 'floatchat-chi.vercel.app') {
+            return 'https://floatchat-chi.vercel.app';
+        }
+    }
+
+    // Use production domain as priority over deployment URLs
     return 'https://floatchat-chi.vercel.app';
 }
 
