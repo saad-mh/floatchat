@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { findUserByEmail, updateUser, findUserById, logEmailNotification } from '@/lib/db';
+import { findUserByEmail, updateUser, findUserById, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
 
 export async function PUT(request: NextRequest) {

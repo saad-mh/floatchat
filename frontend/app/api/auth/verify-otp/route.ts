@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyOTP } from '@/lib/db';
+import { verifyOTP } from '@/lib/supabase-db';
 
 export async function POST(request: NextRequest) {
     try {

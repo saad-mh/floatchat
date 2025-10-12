@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyPasswordResetToken, usePasswordResetToken, changePassword, findUserById, logEmailNotification } from '@/lib/db';
+import { verifyPasswordResetToken, updateUser, findUserById, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
-import * as argon2 from 'argon2';
+import argon2 from 'argon2';
 
 export async function POST(request: NextRequest) {
     try {
@@ -44,10 +44,9 @@ export async function POST(request: NextRequest) {
         const hashedPassword = await argon2.hash(newPassword);
 
         // Update the password
-        await changePassword(userId, hashedPassword);
+        await updateUser(userId, { password: hashedPassword });
 
-        // Mark the token as used
-        await usePasswordResetToken(token);
+        // Token is already marked as used by verifyPasswordResetToken
 
         // Send password change confirmation email
         try {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { findUserByEmail, generatePasswordResetToken, logEmailNotification } from '@/lib/db';
+import { findUserByEmail, createPasswordResetToken, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import crypto from 'crypto';
 
 export async function POST(request: NextRequest) {
     try {
@@ -24,7 +25,9 @@ export async function POST(request: NextRequest) {
         }
 
         // Generate password reset token
-        const token = await generatePasswordResetToken(user.id);
+        const token = crypto.randomBytes(32).toString('hex');
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
+        await createPasswordResetToken(user.id, token, expiresAt);
 
         // Send password reset email
         try {

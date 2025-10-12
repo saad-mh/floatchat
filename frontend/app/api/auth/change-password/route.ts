@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as argon2 from 'argon2';
-import { findUserById, changePassword, logEmailNotification, verifyOTP } from '@/lib/db';
+import argon2 from 'argon2';
+import { findUserById, updateUser, logEmailNotification, verifyOTP } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
 
 export async function PUT(request: NextRequest) {
@@ -60,7 +60,8 @@ export async function PUT(request: NextRequest) {
         const hashedNewPassword = await argon2.hash(newPassword);
 
         // Update password
-        const result = await changePassword(userId, hashedNewPassword);
+        // Update password
+        const result = await updateUser(userId, { password: hashedNewPassword });
 
         if (!result) {
             return NextResponse.json(

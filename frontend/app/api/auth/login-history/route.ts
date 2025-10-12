@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getLoginHistory } from '@/lib/db';
+import { getLoginHistory } from '@/lib/supabase-db';
 
 export async function GET(request: NextRequest) {
     try {

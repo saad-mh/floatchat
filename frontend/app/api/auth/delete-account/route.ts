@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as argon2 from 'argon2';
-import { findUserById, deleteUser, logEmailNotification } from '@/lib/db';
+import { findUserById, deleteUser, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
 
 export async function DELETE(request: NextRequest) {
@@ -57,9 +57,10 @@ export async function DELETE(request: NextRequest) {
         }
 
         // Delete user from database
-        const result = await deleteUser(userId);
-
-        if (!result) {
+        try {
+            await deleteUser(userId);
+        } catch (deleteError) {
+            console.error('Failed to delete user:', deleteError);
             return NextResponse.json(
                 { error: 'Failed to delete account' },
                 { status: 500 }

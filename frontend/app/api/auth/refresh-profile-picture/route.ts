@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { findUserByEmail, refreshUserProfilePicture } from '@/lib/db';
+import { findUserByEmail, updateUser, findUserById } from '@/lib/supabase-db';
 
 export async function POST(request: NextRequest) {
     try {
@@ -25,8 +25,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Unable to identify user' }, { status: 400 });
         }
 
-        // Refresh the profile picture
-        const updatedUser = await refreshUserProfilePicture(targetUserId, targetEmail);
+        // Get current user data
+        const currentUser = await findUserById(targetUserId);
+        if (!currentUser) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
+
+        // Generate new profile picture URL based on name
+        const profilePicture = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name.charAt(0))}&size=200&background=10b981&color=fff&format=png&bold=true&seed=${Date.now()}`;
+
+        // Update the profile picture
+        const updatedUser = await updateUser(targetUserId, { profile_picture: profilePicture });
 
         if (updatedUser) {
             return NextResponse.json({

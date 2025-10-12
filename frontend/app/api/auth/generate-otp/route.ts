@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateOTP, findUserById, logEmailNotification } from '@/lib/db';
+import { storeOTP, findUserById, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import crypto from 'crypto';
 
 export async function POST(request: NextRequest) {
     try {
@@ -32,7 +33,9 @@ export async function POST(request: NextRequest) {
         }
 
         // Generate OTP
-        const otpCode = await generateOTP(userId, user.email, purpose);
+        const otpCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+        await storeOTP(userId, otpCode, purpose, expiresAt);
 
         // Send OTP email
         try {
