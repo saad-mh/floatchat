@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import * as argon2 from 'argon2';
 import { findUserByEmail, logLoginAttempt, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import { createSession, setSessionCookie } from '@/lib/session';
 
 export async function POST(request: NextRequest) {
     try {
@@ -52,20 +53,37 @@ export async function POST(request: NextRequest) {
         }
 
         // Log successful login
-        await logLoginAttempt(user.id, email, ipAddress, userAgent, true);
+        await logLoginAttempt(user.id, email, ipAddress, userAgent, true, 'Success');
 
-        // Send login alert email (optional - you might want to make this configurable)
+        // Return user data (excluding password)
+        const { password: _, ...userWithoutPassword } = user;
+
+        // Create session
+        const sessionToken = await createSession({
+            userId: user.id,
+            email: user.email,
+            name: user.name,
+            provider: user.provider || 'local'
+        });
+
+        // Set session cookie
+        const response = NextResponse.json({
+            user: userWithoutPassword,
+            message: 'Login successful'
+        });
+
+        await setSessionCookie(response, sessionToken);
+
+        // Send login alert email (non-blocking)
         try {
-            const loginInfo = {
+            const template = emailTemplates.loginAlert(user.name, {
                 ip: ipAddress,
-                userAgent: userAgent,
-                timestamp: new Date(),
-                // You could add geolocation lookup here using ipAddress
-            };
+                userAgent,
+                timestamp: new Date()
+            });
 
-            const template = emailTemplates.loginAlert(user.name, loginInfo);
             await sendEmail({
-                to: email,
+                to: user.email,
                 subject: template.subject,
                 html: template.html,
             });
@@ -94,13 +112,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Return user data (excluding password)
-        const { password: _, ...userWithoutPassword } = user;
-
-        return NextResponse.json({
-            user: userWithoutPassword,
-            message: 'Login successful'
-        });
+        return response;
 
     } catch (error) {
         console.error('Login error:', error);

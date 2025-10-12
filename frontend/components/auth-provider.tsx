@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { getBaseUrl } from "@/lib/environment";
 
 interface User {
     id: string | number; // Allow both string and number for compatibility
@@ -48,49 +49,64 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const checkAuthStatus = async () => {
         setIsLoading(true);
         try {
-            // Check localStorage for session
-            const guestMode = localStorage.getItem("floatchat_guest_mode");
-            const userSession = localStorage.getItem("floatchat_user_session");
+            // Check server session instead of localStorage
+            const response = await fetch('/api/auth/session', {
+                credentials: 'include' // Include cookies
+            });
 
-            if (guestMode === "true") {
-                setIsGuest(true);
-            } else if (userSession) {
-                // TODO: Validate session with backend
-                const userData = JSON.parse(userSession);
-                setUser(userData);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.authenticated && data.user) {
+                    setUser(data.user);
+                    setIsGuest(false);
+                } else {
+                    // Check localStorage for guest mode
+                    const guestMode = localStorage.getItem("floatchat_guest_mode");
+                    if (guestMode === "true") {
+                        setIsGuest(true);
+                    }
+                }
+            } else {
+                // Check localStorage for guest mode
+                const guestMode = localStorage.getItem("floatchat_guest_mode");
+                if (guestMode === "true") {
+                    setIsGuest(true);
+                }
             }
         } catch (error) {
-            console.error("Auth check failed:", error);
+            console.error("Auth status check failed:", error);
+            // Fallback to localStorage check for guest mode
+            const guestMode = localStorage.getItem("floatchat_guest_mode");
+            if (guestMode === "true") {
+                setIsGuest(true);
+            }
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const login = async (email: string, password: string) => {
+    }; const login = async (email: string, password: string) => {
         setIsLoading(true);
         try {
-            // TODO: Implement actual login API call
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
+                credentials: 'include' // Include cookies
             });
 
+            const userData = await response.json();
+
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-                console.error('Login failed with status:', response.status);
-                console.error('Error details:', errorData);
-                throw new Error(errorData.error || "Login failed");
+                throw new Error(userData.error || "Login failed");
             }
 
-            const userData = await response.json();
-            setUser(userData.user); // Extract the user object from the response
-            localStorage.setItem("floatchat_user_session", JSON.stringify(userData.user));
-            localStorage.removeItem("floatchat_guest_mode");
+            setUser(userData.user);
+            setIsGuest(false);
+            // Remove localStorage usage - session is now handled server-side
+
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("Login failed:", error);
             throw error;
         } finally {
             setIsLoading(false);
@@ -100,23 +116,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const signup = async (name: string, email: string, password: string) => {
         setIsLoading(true);
         try {
-            // TODO: Implement actual signup API call
             const response = await fetch("/api/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ name, email, password }),
+                credentials: 'include' // Include cookies
             });
 
             if (!response.ok) {
-                throw new Error("Signup failed");
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Signup failed");
             }
 
             const userData = await response.json();
-            setUser(userData.user); // Extract the user object from the response
-            localStorage.setItem("floatchat_user_session", JSON.stringify(userData.user));
-            localStorage.removeItem("floatchat_guest_mode");
+            setUser(userData.user);
+            setIsGuest(false);
+            // Remove localStorage usage - session is now handled server-side
         } catch (error) {
             console.error("Signup error:", error);
             throw error;
@@ -128,9 +145,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const loginWithGoogle = async () => {
         setIsLoading(true);
         try {
-            // TODO: Implement Google OAuth
-            // This would typically redirect to Google OAuth or open a popup
-            window.location.href = "/api/auth/google";
+            // Get the current base URL dynamically
+            const baseUrl = getBaseUrl();
+            window.location.href = `${baseUrl}/api/auth/google`;
         } catch (error) {
             console.error("Google login error:", error);
             throw error;
@@ -139,8 +156,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
         setIsLogoutRequested(true);
+        try {
+            // Call logout API to clear server session
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
+        } catch (error) {
+            console.error('Logout API call failed:', error);
+        }
+
         setUser(null);
         setIsGuest(false);
         localStorage.removeItem("floatchat_user_session");

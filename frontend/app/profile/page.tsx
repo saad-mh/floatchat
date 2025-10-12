@@ -82,10 +82,8 @@ export default function ProfilePage() {
         setShowOtpDialog(false);
         setOtpCode('');
         setOtpSent(false);
-        // Update user context to reflect email verification
-        if (updateUser) {
-          updateUser({ ...user });
-        }
+        // Refresh user data to get updated email_verified status
+        window.location.reload();
       } else {
         const data = await response.json();
         setMessage({ type: 'error', text: data.error || 'Invalid OTP code' });
@@ -325,7 +323,12 @@ export default function ProfilePage() {
                         {user.email_verified ? 'Your email is verified' : 'Verify your email address'}
                       </p>
                     </div>
-                    {!user.email_verified && (
+                    {user.email_verified ? (
+                      <Button variant="outline" size="sm" disabled className="bg-green-50 border-green-200 text-green-700 dark:bg-green-950 dark:border-green-800 dark:text-green-300">
+                        <UserCheck className="w-4 h-4 mr-2" />
+                        Verified ✓
+                      </Button>
+                    ) : (
                       <Dialog open={showOtpDialog} onOpenChange={setShowOtpDialog}>
                         <DialogTrigger asChild>
                           <Button variant="outline" size="sm">

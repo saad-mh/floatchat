@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyOTP } from '@/lib/supabase-db';
+import { verifyOTP, updateUser } from '@/lib/supabase-db';
 
 export async function POST(request: NextRequest) {
     try {
@@ -20,6 +20,17 @@ export async function POST(request: NextRequest) {
                 { error: 'Invalid or expired OTP code' },
                 { status: 400 }
             );
+        }
+
+        // If this is email verification, update the user's email_verified status
+        if (purpose === 'email_verification') {
+            try {
+                await updateUser(userId, { email_verified: true });
+                console.log(`Email verification completed for user ${userId}`);
+            } catch (updateError) {
+                console.error('Failed to update email verification status:', updateError);
+                // Don't fail the request if verification was successful
+            }
         }
 
         return NextResponse.json({

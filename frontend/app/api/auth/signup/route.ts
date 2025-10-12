@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as argon2 from 'argon2';
+import argon2 from 'argon2';
 import { createUser, findUserByEmail, logEmailNotification } from '@/lib/supabase-db';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import { createSession, setSessionCookie } from '@/lib/session';
 
 export async function POST(request: NextRequest) {
     try {
@@ -73,10 +74,23 @@ export async function POST(request: NextRequest) {
         // Return user data (excluding password)
         const { password: _, ...userWithoutPassword } = user;
 
-        return NextResponse.json({
+        // Create session for immediate login
+        const sessionToken = await createSession({
+            userId: user.id,
+            email: user.email,
+            name: user.name,
+            provider: 'local'
+        });
+
+        const response = NextResponse.json({
             user: userWithoutPassword,
             message: 'User created successfully'
         }, { status: 201 });
+
+        // Set session cookie
+        await setSessionCookie(response, sessionToken);
+
+        return response;
 
     } catch (error) {
         console.error('Signup error:', error);
