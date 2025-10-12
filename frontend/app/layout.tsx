@@ -33,7 +33,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/logo.ico" type="image/x-icon" />
       </head>
-      <body className={`font-sans ${inter.variable} antialiased`} suppressHydrationWarning>
+      <body className={`font-sans ${inter.variable} antialiased overflow-y-auto no-scrollbar`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

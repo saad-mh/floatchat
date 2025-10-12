@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
+import { useSplash } from '@/components/splash-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,12 +13,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, Shield, Calendar, LogOut, UserCheck } from 'lucide-react';
+import { User, Mail, Shield, Calendar, LogOut, UserCheck, RefreshCw } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Link from 'next/link';
 
 export default function ProfilePage() {
-  const { user, updateUser, logout } = useAuth();
+  const { user, updateUser, logout, isLoading: authLoading } = useAuth();
+  const { showSplash } = useSplash();
   const router = useRouter();
 
   const [name, setName] = useState(user?.name || '');
@@ -28,6 +30,7 @@ export default function ProfilePage() {
   const [otpCode, setOtpCode] = useState('');
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
+  const [isRefreshingAvatar, setIsRefreshingAvatar] = useState(false);
 
   const sendOtp = async () => {
     if (!user) return;
@@ -131,15 +134,68 @@ export default function ProfilePage() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    router.push('/auth');
+  const refreshProfilePicture = async () => {
+    if (!user) return;
+
+    setIsRefreshingAvatar(true);
+    setMessage(null);
+
+    try {
+      const response = await fetch('/api/auth/refresh-profile-picture', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          email: user.email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        if (updateUser && data.user) {
+          updateUser(data.user);
+        }
+        setMessage({ type: 'success', text: 'Profile picture updated successfully!' });
+      } else {
+        setMessage({ type: 'error', text: data.message || 'No profile picture found for this email' });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to refresh profile picture. Please try again.' });
+    } finally {
+      setIsRefreshingAvatar(false);
+    }
   };
 
-  if (!user) {
-    router.push('/auth');
-    return null;
+  const handleLogout = () => {
+    logout();
+    showSplash();
+    // No immediate redirect - AppWrapper will handle it after splash
+  };
+
+  // Handle redirect if user is not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/auth');
+    }
+  }, [user, authLoading, router]);
+
+  // Show loading while auth is checking or while redirecting
+  if (authLoading || (!user && !authLoading)) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
   }
+
+  // At this point, we know user exists due to the guard clause above
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -176,13 +232,15 @@ export default function ProfilePage() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-4 mb-6">
-                  <Avatar className="w-20 h-20">
-                    <AvatarImage src={user.profile_picture || ''} alt={user.name} />
-                    <AvatarFallback className="text-lg">
-                      {user.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
+                  <div className="relative">
+                    <Avatar className="w-20 h-20">
+                      <AvatarImage src={user.profile_picture || ''} alt={user.name} />
+                      <AvatarFallback className="text-lg">
+                        {user.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <div className="flex-1">
                     <h3 className="text-xl font-semibold">{user.name}</h3>
                     <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
                     <div className="flex items-center gap-2 mt-2">
@@ -195,6 +253,19 @@ export default function ProfilePage() {
                         {user.email_verified ? '✓ Verified' : '✗ Unverified'}
                       </Badge>
                     </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={refreshProfilePicture}
+                      disabled={isRefreshingAvatar}
+                      className="mt-3"
+                    >
+                      <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshingAvatar ? 'animate-spin' : ''}`} />
+                      {isRefreshingAvatar ? 'Refreshing...' : 'Refresh Profile Picture'}
+                    </Button>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Automatically fetches your Google/Gravatar profile picture
+                    </p>
                   </div>
                 </div>
 

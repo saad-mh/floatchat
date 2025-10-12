@@ -142,9 +142,31 @@ export async function findUserByEmail(email: string) {
 export async function createUser(name: string, email: string, hashedPassword: string) {
     const client = await pool.connect();
     try {
+        // First, try to fetch profile picture from Google/Gravatar
+        let profilePicture = null;
+        try {
+            const avatarResponse = await fetch(`${process.env.APP_URL || 'http://localhost:3000'}/api/auth/fetch-google-avatar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            if (avatarResponse.ok) {
+                const avatarData = await avatarResponse.json();
+                if (avatarData.success) {
+                    profilePicture = avatarData.profilePicture;
+                }
+            }
+        } catch (error) {
+            console.log('Failed to fetch profile picture during user creation:', error);
+        }
+
+        // Create user with profile picture if found
         const result = await client.query(
-            'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email, created_at',
-            [name, email, hashedPassword]
+            'INSERT INTO users (name, email, password, profile_picture) VALUES ($1, $2, $3, $4) RETURNING id, name, email, profile_picture, created_at',
+            [name, email, hashedPassword, profilePicture]
         );
         return result.rows[0];
     } catch (error) {
@@ -174,16 +196,25 @@ export async function updateUser(id: number, updates: { name?: string; email?: s
             paramCount++;
         }
 
+        if (updates.profile_picture !== undefined) {
+            setParts.push(`profile_picture = $${paramCount}`);
+            values.push(updates.profile_picture);
+            paramCount++;
+        }
+
         if (setParts.length === 0) {
             throw new Error('No updates provided');
         }
+
+        // Add updated_at timestamp
+        setParts.push(`updated_at = CURRENT_TIMESTAMP`);
 
         values.push(id);
         const query = `
             UPDATE users 
             SET ${setParts.join(', ')} 
             WHERE id = $${paramCount} 
-            RETURNING id, name, email, created_at
+            RETURNING id, name, email, profile_picture, created_at, updated_at
         `;
 
         const result = await client.query(query, values);
@@ -228,11 +259,53 @@ export async function deleteUser(id: number) {
     }
 }
 
+export async function refreshUserProfilePicture(userId: number, email: string) {
+    const client = await pool.connect();
+    try {
+        // Fetch new profile picture
+        let profilePicture = null;
+        try {
+            const avatarResponse = await fetch(`${process.env.APP_URL || 'http://localhost:3000'}/api/auth/fetch-google-avatar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            if (avatarResponse.ok) {
+                const avatarData = await avatarResponse.json();
+                if (avatarData.success) {
+                    profilePicture = avatarData.profilePicture;
+                }
+            }
+        } catch (error) {
+            console.log('Failed to fetch profile picture:', error);
+            return null;
+        }
+
+        if (profilePicture) {
+            const result = await client.query(
+                'UPDATE users SET profile_picture = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, name, email, profile_picture',
+                [profilePicture, userId]
+            );
+            return result.rows[0] || null;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error refreshing profile picture:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
 export async function findUserById(id: number) {
     const client = await pool.connect();
     try {
         const result = await client.query(
-            'SELECT id, name, email, profile_picture, created_at FROM users WHERE id = $1',
+            'SELECT id, name, email, password, profile_picture, provider, provider_id, email_verified, created_at, updated_at FROM users WHERE id = $1',
             [id]
         );
         return result.rows[0] || null;

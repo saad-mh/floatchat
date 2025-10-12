@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
+import { useSplash } from '@/components/splash-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,7 +39,8 @@ interface LoginEntry {
 }
 
 export default function SettingsPage() {
-    const { user, logout } = useAuth();
+    const { user, logout, isLoading: authLoading } = useAuth();
+    const { showSplash } = useSplash();
     const router = useRouter();
     const { theme, setTheme } = useTheme();
 
@@ -51,6 +53,12 @@ export default function SettingsPage() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isChangingPassword, setIsChangingPassword] = useState(false);
 
+    // OTP state for password change
+    const [otpCode, setOtpCode] = useState('');
+    const [isOtpSent, setIsOtpSent] = useState(false);
+    const [isGeneratingOtp, setIsGeneratingOtp] = useState(false);
+    const [otpCooldown, setOtpCooldown] = useState(0);
+
     // Settings state
     const [emailNotifications, setEmailNotifications] = useState(true);
     const [loginAlerts, setLoginAlerts] = useState(true);
@@ -62,6 +70,8 @@ export default function SettingsPage() {
     const [isDeletingAccount, setIsDeletingAccount] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
+    const [deletePassword, setDeletePassword] = useState('');
+    const [showDeletePassword, setShowDeletePassword] = useState(false);
 
     // Login history state
     const [loginHistory, setLoginHistory] = useState<LoginEntry[]>([]);
@@ -73,6 +83,50 @@ export default function SettingsPage() {
             loadLoginHistory();
         }
     }, [user]);
+
+    // OTP cooldown effect
+    useEffect(() => {
+        if (otpCooldown > 0) {
+            const timer = setTimeout(() => setOtpCooldown(otpCooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [otpCooldown]);
+
+    const generateOTP = async () => {
+        if (!user) return;
+
+        setIsGeneratingOtp(true);
+        setMessage(null);
+
+        try {
+            const response = await fetch('/api/auth/generate-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    purpose: 'password_change'
+                }),
+            });
+
+            if (response.ok) {
+                setIsOtpSent(true);
+                setOtpCooldown(60); // 60 second cooldown
+                setMessage({
+                    type: 'success',
+                    text: 'OTP sent to your email. Please check your inbox.'
+                });
+            } else {
+                const data = await response.json();
+                setMessage({ type: 'error', text: data.error || 'Failed to send OTP' });
+            }
+        } catch (error) {
+            setMessage({ type: 'error', text: 'Failed to send OTP. Please try again.' });
+        } finally {
+            setIsGeneratingOtp(false);
+        }
+    };
 
     const loadLoginHistory = async () => {
         if (!user) return;
@@ -99,8 +153,13 @@ export default function SettingsPage() {
             return;
         }
 
-        if (newPassword.length < 6) {
-            setMessage({ type: 'error', text: 'Password must be at least 6 characters long' });
+        if (newPassword.length < 8) {
+            setMessage({ type: 'error', text: 'Password must be at least 8 characters long' });
+            return;
+        }
+
+        if (!isOtpSent || !otpCode) {
+            setMessage({ type: 'error', text: 'Please generate and enter OTP code first' });
             return;
         }
 
@@ -117,6 +176,7 @@ export default function SettingsPage() {
                     userId: user.id,
                     currentPassword,
                     newPassword,
+                    otpCode,
                 }),
             });
 
@@ -125,6 +185,8 @@ export default function SettingsPage() {
                 setCurrentPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
+                setOtpCode('');
+                setIsOtpSent(false);
             } else {
                 const data = await response.json();
                 setMessage({ type: 'error', text: data.error || 'Failed to change password' });
@@ -149,13 +211,14 @@ export default function SettingsPage() {
                 },
                 body: JSON.stringify({
                     userId: user.id,
-                    password: currentPassword,
+                    password: deletePassword,
                 }),
             });
 
             if (response.ok) {
                 logout();
-                router.push('/auth');
+                showSplash();
+                // No immediate redirect - AppWrapper will handle it after splash
             } else {
                 const data = await response.json();
                 setMessage({ type: 'error', text: data.error || 'Failed to delete account' });
@@ -192,10 +255,27 @@ export default function SettingsPage() {
         }
     }, []);
 
-    if (!user) {
-        router.push('/auth');
-        return null;
+    // Handle redirect if user is not authenticated
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.push('/auth');
+        }
+    }, [user, authLoading, router]);
+
+    // Show loading while auth is checking or while redirecting
+    if (authLoading || (!user && !authLoading)) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="mt-2 text-gray-600 dark:text-gray-400">Loading...</p>
+                </div>
+            </div>
+        );
     }
+
+    // At this point, we know user exists due to the guard clause above
+    if (!user) return null;
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -457,7 +537,43 @@ export default function SettingsPage() {
                                                 </div>
                                             </div>
 
-                                            <Button type="submit" disabled={isChangingPassword}>
+                                            {/* OTP Verification */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <Label>Email Verification</Label>
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={generateOTP}
+                                                        disabled={isGeneratingOtp || otpCooldown > 0}
+                                                    >
+                                                        {isGeneratingOtp ? 'Sending...' :
+                                                            otpCooldown > 0 ? `Resend in ${otpCooldown}s` :
+                                                                isOtpSent ? 'Resend OTP' : 'Send OTP'}
+                                                    </Button>
+                                                </div>
+
+                                                {isOtpSent && (
+                                                    <div>
+                                                        <Label htmlFor="otpCode">Enter OTP Code</Label>
+                                                        <Input
+                                                            id="otpCode"
+                                                            type="text"
+                                                            value={otpCode}
+                                                            onChange={(e) => setOtpCode(e.target.value)}
+                                                            placeholder="Enter 6-digit OTP"
+                                                            maxLength={6}
+                                                            className="mt-1"
+                                                        />
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                                            Check your email for the verification code
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <Button type="submit" disabled={isChangingPassword || !isOtpSent || !otpCode}>
                                                 {isChangingPassword ? 'Changing Password...' : 'Change Password'}
                                             </Button>
                                         </form>
@@ -515,12 +631,22 @@ export default function SettingsPage() {
                                                 {user.provider !== 'google' && (
                                                     <div>
                                                         <Label>Enter your password to confirm</Label>
-                                                        <Input
-                                                            type="password"
-                                                            value={currentPassword}
-                                                            onChange={(e) => setCurrentPassword(e.target.value)}
-                                                            placeholder="Enter your password"
-                                                        />
+                                                        <div className="relative">
+                                                            <Input
+                                                                type={showDeletePassword ? 'text' : 'password'}
+                                                                value={deletePassword}
+                                                                onChange={(e) => setDeletePassword(e.target.value)}
+                                                                placeholder="Enter your password"
+                                                                className="pr-10"
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setShowDeletePassword(!showDeletePassword)}
+                                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                                            >
+                                                                {showDeletePassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 )}
 
@@ -528,7 +654,7 @@ export default function SettingsPage() {
                                                     <Button
                                                         variant="destructive"
                                                         onClick={handleDeleteAccount}
-                                                        disabled={isDeletingAccount || deleteConfirmText !== 'DELETE' || (user.provider !== 'google' && !currentPassword)}
+                                                        disabled={isDeletingAccount || deleteConfirmText !== 'DELETE' || (user.provider !== 'google' && !deletePassword)}
                                                     >
                                                         {isDeletingAccount ? 'Deleting...' : 'Delete Account'}
                                                     </Button>
@@ -537,7 +663,7 @@ export default function SettingsPage() {
                                                         onClick={() => {
                                                             setShowDeleteConfirm(false);
                                                             setDeleteConfirmText('');
-                                                            setCurrentPassword('');
+                                                            setDeletePassword('');
                                                         }}
                                                     >
                                                         Cancel

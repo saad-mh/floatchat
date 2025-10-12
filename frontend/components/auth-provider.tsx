@@ -18,12 +18,14 @@ interface AuthContextType {
     isLoading: boolean;
     isAuthenticated: boolean;
     isGuest: boolean;
+    isLogoutRequested: boolean;
     login: (email: string, password: string) => Promise<void>;
     signup: (name: string, email: string, password: string) => Promise<void>;
     loginWithGoogle: () => Promise<void>;
     logout: () => void;
     continueAsGuest: () => void;
     updateUser: (userData: Partial<User>) => void;
+    clearLogoutRequest: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -36,6 +38,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isGuest, setIsGuest] = useState(false);
+    const [isLogoutRequested, setIsLogoutRequested] = useState(false);
 
     useEffect(() => {
         // Check if user is logged in on app start
@@ -137,12 +140,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     const logout = () => {
+        setIsLogoutRequested(true);
         setUser(null);
         setIsGuest(false);
         localStorage.removeItem("floatchat_user_session");
         localStorage.removeItem("floatchat_guest_mode");
-        // Redirect to auth page
-        window.location.href = "/auth";
+        // Don't automatically redirect - let the calling code handle it
     };
 
     const continueAsGuest = () => {
@@ -159,6 +162,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     };
 
+    const clearLogoutRequest = () => {
+        setIsLogoutRequested(false);
+    };
+
     const isAuthenticated = !!user || isGuest;
 
     return (
@@ -167,12 +174,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
             isLoading,
             isAuthenticated,
             isGuest,
+            isLogoutRequested,
             login,
             signup,
             loginWithGoogle,
             logout,
             continueAsGuest,
             updateUser,
+            clearLogoutRequest,
         }}>
             {children}
         </AuthContext.Provider>

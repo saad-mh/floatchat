@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as argon2 from 'argon2';
-import { findUserById, changePassword, logEmailNotification } from '@/lib/db';
+import { findUserById, changePassword, logEmailNotification, verifyOTP } from '@/lib/db';
 import { sendEmail, emailTemplates } from '@/lib/email';
 
 export async function PUT(request: NextRequest) {
     try {
-        const { userId, currentPassword, newPassword } = await request.json();
+        const { userId, currentPassword, newPassword, otpCode } = await request.json();
 
-        if (!userId || !currentPassword || !newPassword) {
+        if (!userId || !currentPassword || !newPassword || !otpCode) {
             return NextResponse.json(
-                { error: 'User ID, current password, and new password are required' },
+                { error: 'User ID, current password, new password, and OTP code are required' },
                 { status: 400 }
             );
         }
@@ -30,11 +30,28 @@ export async function PUT(request: NextRequest) {
             );
         }
 
+        // Check if user has a password (not a Google OAuth user)
+        if (!user.password) {
+            return NextResponse.json(
+                { error: 'This account was created with Google OAuth and does not have a password. Please use Google to sign in.' },
+                { status: 400 }
+            );
+        }
+
         // Verify current password
         const validPassword = await argon2.verify(user.password, currentPassword);
         if (!validPassword) {
             return NextResponse.json(
                 { error: 'Current password is incorrect' },
+                { status: 401 }
+            );
+        }
+
+        // Verify OTP for password change
+        const otpValid = await verifyOTP(userId, otpCode, 'password_change');
+        if (!otpValid) {
+            return NextResponse.json(
+                { error: 'Invalid or expired OTP code. Please request a new OTP.' },
                 { status: 401 }
             );
         }
@@ -86,7 +103,7 @@ export async function PUT(request: NextRequest) {
         }
 
         return NextResponse.json({
-            message: 'Password changed successfully'
+            message: 'Password changed successfully. A confirmation email has been sent.'
         });
 
     } catch (error) {

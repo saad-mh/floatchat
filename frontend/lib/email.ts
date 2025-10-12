@@ -1,44 +1,44 @@
 import nodemailer from 'nodemailer';
 
 interface EmailOptions {
-    to: string;
-    subject: string;
-    html: string;
-    text?: string;
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
 }
 
 // Create transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD, // App password for Gmail
-    },
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD, // App password for Gmail
+  },
 });
 
 export async function sendEmail({ to, subject, html, text }: EmailOptions) {
-    try {
-        const info = await transporter.sendMail({
-            from: `"FloatChat" <${process.env.EMAIL_USER}>`,
-            to,
-            subject,
-            html,
-            text: text || html.replace(/<[^>]*>/g, ''), // Strip HTML for text version
-        });
+  try {
+    const info = await transporter.sendMail({
+      from: `"FloatChat" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+      text: text || html.replace(/<[^>]*>/g, ''), // Strip HTML for text version
+    });
 
-        console.log('Email sent successfully:', info.messageId);
-        return { success: true, messageId: info.messageId };
-    } catch (error) {
-        console.error('Email sending failed:', error);
-        throw error;
-    }
+    console.log('Email sent successfully:', info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('Email sending failed:', error);
+    throw error;
+  }
 }
 
 // Email templates
 export const emailTemplates = {
-    welcome: (name: string, email: string) => ({
-        subject: 'Welcome to FloatChat! 🌊',
-        html: `
+  welcome: (name: string, email: string) => ({
+    subject: 'Welcome to FloatChat! 🌊',
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -82,11 +82,11 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    loginAlert: (name: string, loginInfo: { ip: string; userAgent: string; location?: string; timestamp: Date }) => ({
-        subject: 'New Login to Your FloatChat Account',
-        html: `
+  loginAlert: (name: string, loginInfo: { ip: string; userAgent: string; location?: string; timestamp: Date }) => ({
+    subject: 'New Login to Your FloatChat Account',
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -137,11 +137,11 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    passwordReset: (name: string, resetToken: string) => ({
-        subject: 'Reset Your FloatChat Password',
-        html: `
+  passwordReset: (name: string, resetToken: string) => ({
+    subject: 'Reset Your FloatChat Password',
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -190,11 +190,11 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    accountDeleted: (name: string) => ({
-        subject: `Farewell, ${name} 💙 We'll Miss You! - FloatChat`,
-        html: `
+  accountDeleted: (name: string) => ({
+    subject: `Farewell, ${name} 💙 We'll Miss You! - FloatChat`,
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -259,11 +259,11 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    emailVerification: (name: string, otp: string) => ({
-        subject: 'Verify Your Email Address - FloatChat',
-        html: `
+  emailVerification: (name: string, otp: string) => ({
+    subject: 'Verify Your Email Address - FloatChat',
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -310,11 +310,66 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    passwordChanged: (name: string) => ({
-        subject: 'Password Changed Successfully - FloatChat',
-        html: `
+  passwordChangeOTP: (name: string, otp: string) => ({
+    subject: 'Password Change Verification - FloatChat',
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Password Change Verification</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { text-align: center; padding: 20px 0; border-bottom: 1px solid #eee; }
+          .logo { font-size: 24px; font-weight: bold; color: #0066cc; }
+          .content { padding: 30px 0; }
+          .otp-box { background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; }
+          .otp-code { font-size: 32px; font-weight: bold; color: #856404; letter-spacing: 8px; font-family: monospace; }
+          .warning-box { background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 6px; padding: 15px; margin: 20px 0; color: #721c24; }
+          .footer { text-align: center; padding: 20px 0; border-top: 1px solid #eee; color: #666; font-size: 14px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <div class="logo">FloatChat 🌊</div>
+          </div>
+          <div class="content">
+            <h2>🔒 Password Change Verification</h2>
+            <p>Hello ${name},</p>
+            <p>We received a request to change your password. Please enter the following verification code to confirm this change:</p>
+            <div class="otp-box">
+              <div class="otp-code">${otp}</div>
+              <p style="margin: 10px 0 0 0; color: #856404; font-size: 14px;">This code expires in 10 minutes</p>
+            </div>
+            <div class="warning-box">
+              <strong>⚠️ Security Notice:</strong> If you didn't request this password change, please ignore this email and consider securing your account.
+            </div>
+            <p><strong>After entering this code:</strong></p>
+            <ul>
+              <li>Your password will be updated immediately</li>
+              <li>You'll receive a confirmation email</li>
+              <li>All active sessions will remain valid</li>
+            </ul>
+            <p>This verification helps ensure that only you can change your password.</p>
+          </div>
+          <div class="footer">
+            <p>© 2025 FloatChat. All rights reserved.</p>
+            <p>This verification code was requested for your FloatChat account password change.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  }),
+
+  passwordChanged: (name: string) => ({
+    subject: 'Password Changed Successfully - FloatChat',
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -366,11 +421,11 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    profileUpdated: (name: string, changes: string[]) => ({
-        subject: 'Profile Updated - FloatChat',
-        html: `
+  profileUpdated: (name: string, changes: string[]) => ({
+    subject: 'Profile Updated - FloatChat',
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -412,11 +467,11 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    logoutNotification: (name: string, logoutInfo: { ip: string; userAgent: string; timestamp: Date }) => ({
-        subject: `Until Next Time, ${name}! 👋 - FloatChat`,
-        html: `
+  logoutNotification: (name: string, logoutInfo: { ip: string; userAgent: string; timestamp: Date }) => ({
+    subject: `Until Next Time, ${name}! 👋 - FloatChat`,
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -490,11 +545,11 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 
-    welcomeBack: (name: string, loginInfo: { ip: string; lastLogin?: Date; sessionCount?: number }) => ({
-        subject: 'Welcome Back to FloatChat! 🌊',
-        html: `
+  welcomeBack: (name: string, loginInfo: { ip: string; lastLogin?: Date; sessionCount?: number }) => ({
+    subject: 'Welcome Back to FloatChat! 🌊',
+    html: `
       <!DOCTYPE html>
       <html>
       <head>
@@ -548,5 +603,5 @@ export const emailTemplates = {
       </body>
       </html>
     `,
-    }),
+  }),
 };

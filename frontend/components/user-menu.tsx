@@ -13,10 +13,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/components/auth-provider";
+import { useSplash } from "@/components/splash-provider";
 import { User, LogOut, Settings, UserCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function UserMenu() {
     const { user, isGuest, logout } = useAuth();
+    const { showSplash } = useSplash();
+    const router = useRouter();
+
+    const handleLogout = () => {
+        logout();
+        showSplash();
+        // No immediate redirect - AppWrapper will handle it after splash
+    };
 
     if (isGuest) {
         return (
@@ -77,7 +87,7 @@ export function UserMenu() {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
+                <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                 </DropdownMenuItem>

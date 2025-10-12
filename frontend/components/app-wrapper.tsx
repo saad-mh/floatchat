@@ -12,7 +12,7 @@ interface AppWrapperProps {
 
 export function AppWrapper({ children }: AppWrapperProps) {
   const { isVisible, setIsVisible } = useSplash();
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, isLogoutRequested, clearLogoutRequest } = useAuth();
   const [showContent, setShowContent] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
@@ -28,8 +28,15 @@ export function AppWrapper({ children }: AppWrapperProps) {
   const handleSplashComplete = () => {
     // Check authentication status after splash
     if (!authLoading) {
+      // If logout was requested, redirect to auth page
+      if (isLogoutRequested) {
+        clearLogoutRequest();
+        router.push("/auth");
+        return;
+      }
+
+      // If user is not authenticated and not in guest mode, redirect to auth
       if (!isAuthenticated) {
-        // Redirect to auth page if not authenticated
         router.push("/auth");
         return;
       }

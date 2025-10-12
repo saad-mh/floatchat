@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Validate purpose
-        const validPurposes = ['email_verification', 'profile_change', 'account_security'];
+        const validPurposes = ['email_verification', 'profile_change', 'account_security', 'password_change'];
         if (!validPurposes.includes(purpose)) {
             return NextResponse.json(
                 { error: 'Invalid OTP purpose' },
@@ -36,7 +36,22 @@ export async function POST(request: NextRequest) {
 
         // Send OTP email
         try {
-            const template = emailTemplates.emailVerification(user.name, otpCode);
+            let template;
+            let emailType = 'otp_verification';
+
+            switch (purpose) {
+                case 'password_change':
+                    template = emailTemplates.passwordChangeOTP(user.name, otpCode);
+                    emailType = 'password_change_otp';
+                    break;
+                case 'email_verification':
+                case 'profile_change':
+                case 'account_security':
+                default:
+                    template = emailTemplates.emailVerification(user.name, otpCode);
+                    break;
+            }
+
             await sendEmail({
                 to: user.email,
                 subject: template.subject,
@@ -47,7 +62,7 @@ export async function POST(request: NextRequest) {
             await logEmailNotification(
                 user.id,
                 user.email,
-                'otp_verification',
+                emailType,
                 template.subject,
                 true
             );
