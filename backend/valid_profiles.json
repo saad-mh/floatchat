@@ -1,0 +1,4554 @@
+[
+  {
+    "id": "1900121",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1900121/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1900122",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1900122/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902669",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902669/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902670",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902670/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902671",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902671/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902672",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902672/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902673",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902673/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902674",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902674/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902675",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902675/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902676",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902676/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902677",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902677/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902767",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902767/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "1902785",
+    "url": "https://data-argo.ifremer.fr/dac/incois/1902785/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900226",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900226/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900228",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900228/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900229",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900229/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900230",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900230/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900232",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900232/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900233",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900233/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900234",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900234/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900235",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900235/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900256",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900256/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900257",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900257/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900258",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900258/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900259",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900259/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900260",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900260/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900261",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900261/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900262",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900262/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900263",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900263/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900264",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900264/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900265",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900265/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900266",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900266/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900267",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900267/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900268",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900268/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": false
+  },
+  {
+    "id": "2900269",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900269/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900270",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900270/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900271",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900271/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900272",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900272/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900273",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900273/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900274",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900274/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900275",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900275/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": false
+  },
+  {
+    "id": "2900276",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900276/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900335",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900335/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900336",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900336/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900337",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900337/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900338",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900338/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900339",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900339/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900340",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900340/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900341",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900341/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900342",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900342/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900343",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900343/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900344",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900344/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900345",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900345/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900346",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900346/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900347",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900347/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900348",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900348/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900349",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900349/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900350",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900350/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900351",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900351/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900352",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900352/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900353",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900353/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900354",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900354/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900355",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900355/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900356",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900356/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900357",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900357/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900358",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900358/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900359",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900359/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900459",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900459/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900461",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900461/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900462",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900462/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900463",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900463/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900464",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900464/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900493",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900493/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900494",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900494/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900495",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900495/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900496",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900496/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900497",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900497/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900498",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900498/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900530",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900530/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900531",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900531/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900532",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900532/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900533",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900533/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900534",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900534/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900535",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900535/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900536",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900536/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900537",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900537/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900538",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900538/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900539",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900539/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900552",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900552/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900553",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900553/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900554",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900554/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900555",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900555/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900556",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900556/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900557",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900557/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900558",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900558/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900559",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900559/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900560",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900560/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900561",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900561/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900562",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900562/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900563",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900563/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900564",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900564/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900565",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900565/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900566",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900566/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900567",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900567/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900568",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900568/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900569",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900569/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900570",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900570/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900571",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900571/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900754",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900754/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900755",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900755/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900756",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900756/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900757",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900757/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900758",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900758/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900759",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900759/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900760",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900760/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900761",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900761/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900762",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900762/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900764",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900764/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900765",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900765/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900766",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900766/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900767",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900767/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900768",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900768/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900769",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900769/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900770",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900770/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900771",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900771/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900773",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900773/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900774",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900774/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900776",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900776/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900777",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900777/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900778",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900778/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900779",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900779/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900780",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900780/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": false
+  },
+  {
+    "id": "2900781",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900781/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900782",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900782/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900783",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900783/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900876",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900876/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900877",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900877/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900878",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900878/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900879",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900879/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900880",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900880/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900881",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900881/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900882",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900882/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900883",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900883/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900884",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900884/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900885",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900885/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900886",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900886/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900887",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900887/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2900888",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2900888/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901073",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901073/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901074",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901074/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901075",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901075/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901076",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901076/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901077",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901077/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901078",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901078/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901079",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901079/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901080",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901080/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901081",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901081/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901082",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901082/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901083",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901083/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901084",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901084/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901085",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901085/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901086",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901086/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901087",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901087/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901088",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901088/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901089",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901089/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901090",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901090/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901091",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901091/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901092",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901092/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901253",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901253/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901254",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901254/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901255",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901255/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901256",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901256/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901257",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901257/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901258",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901258/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901259",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901259/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901260",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901260/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901261",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901261/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901262",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901262/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901263",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901263/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901264",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901264/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901265",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901265/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901266",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901266/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901267",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901267/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901283",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901283/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901284",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901284/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901285",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901285/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901286",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901286/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901287",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901287/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901288",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901288/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901289",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901289/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901290",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901290/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901291",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901291/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901292",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901292/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901293",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901293/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901294",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901294/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901296",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901296/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901297",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901297/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901298",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901298/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901299",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901299/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901300",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901300/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901301",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901301/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901302",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901302/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901303",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901303/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901304",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901304/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901305",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901305/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901306",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901306/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901307",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901307/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901308",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901308/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901309",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901309/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901310",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901310/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901311",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901311/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901312",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901312/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901313",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901313/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901314",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901314/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901315",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901315/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901316",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901316/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": false
+  },
+  {
+    "id": "2901317",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901317/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901318",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901318/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901319",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901319/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901320",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901320/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901321",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901321/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901322",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901322/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901323",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901323/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901324",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901324/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901325",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901325/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901326",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901326/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901327",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901327/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901328",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901328/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901329",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901329/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901330",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901330/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901331",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901331/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901332",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901332/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901333",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901333/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901334",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901334/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901335",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901335/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901336",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901336/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901337",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901337/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901338",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901338/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901339",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901339/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901340",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901340/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901341",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901341/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901342",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901342/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901343",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901343/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901344",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901344/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901345",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901345/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901346",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901346/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901347",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901347/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901348",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901348/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901349",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901349/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901350",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901350/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2901351",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2901351/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902066",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902066/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902067",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902067/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902068",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902068/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902069",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902069/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902070",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902070/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902071",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902071/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902072",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902072/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902073",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902073/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902074",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902074/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902075",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902075/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902076",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902076/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902077",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902077/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902078",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902078/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902079",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902079/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902080",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902080/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902081",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902081/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902082",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902082/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902083",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902083/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902084",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902084/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902085",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902085/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902086",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902086/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902087",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902087/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902088",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902088/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902089",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902089/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902090",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902090/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902091",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902091/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902092",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902092/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902093",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902093/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902094",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902094/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902095",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902095/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902096",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902096/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902097",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902097/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902098",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902098/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902099",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902099/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902100",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902100/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902101",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902101/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902102",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902102/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902103",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902103/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902105",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902105/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902106",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902106/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902107",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902107/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902108",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902108/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902109",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902109/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902110",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902110/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902111",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902111/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902112",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902112/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902113",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902113/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902114",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902114/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902115",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902115/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902118",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902118/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902119",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902119/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902120",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902120/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902121",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902121/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902122",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902122/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902123",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902123/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902124",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902124/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902125",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902125/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902127",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902127/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902128",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902128/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902129",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902129/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902130",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902130/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902131",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902131/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902132",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902132/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902133",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902133/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902134",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902134/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902135",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902135/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902136",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902136/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902137",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902137/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902138",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902138/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902139",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902139/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902140",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902140/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902141",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902141/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902142",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902142/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902143",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902143/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902146",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902146/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902147",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902147/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902148",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902148/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902149",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902149/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902150",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902150/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902151",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902151/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902152",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902152/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902153",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902153/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902154",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902154/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902156",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902156/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902157",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902157/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902158",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902158/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902159",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902159/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902160",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902160/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902161",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902161/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902162",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902162/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902163",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902163/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902164",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902164/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902165",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902165/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902166",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902166/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902167",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902167/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902168",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902168/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902169",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902169/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902170",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902170/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902171",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902171/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902172",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902172/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902173",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902173/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902174",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902174/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902175",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902175/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902177",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902177/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902178",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902178/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902179",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902179/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902180",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902180/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902181",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902181/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902182",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902182/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902183",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902183/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902184",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902184/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902185",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902185/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902186",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902186/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902187",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902187/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902188",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902188/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902189",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902189/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902190",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902190/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902191",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902191/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902192",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902192/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902193",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902193/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902194",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902194/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902195",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902195/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902196",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902196/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902197",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902197/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902198",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902198/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902199",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902199/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902200",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902200/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902201",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902201/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902202",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902202/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902203",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902203/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902204",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902204/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902205",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902205/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902206",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902206/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902209",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902209/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902210",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902210/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902211",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902211/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902212",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902212/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902213",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902213/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902214",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902214/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902215",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902215/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902216",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902216/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902217",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902217/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902218",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902218/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902219",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902219/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902220",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902220/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902221",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902221/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902222",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902222/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902223",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902223/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902224",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902224/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902225",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902225/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902226",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902226/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902227",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902227/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902228",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902228/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902229",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902229/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902230",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902230/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902231",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902231/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902232",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902232/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902233",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902233/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902234",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902234/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902235",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902235/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902236",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902236/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902238",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902238/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902239",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902239/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902240",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902240/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902241",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902241/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902242",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902242/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902243",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902243/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902244",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902244/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902245",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902245/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902246",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902246/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902248",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902248/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902249",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902249/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902250",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902250/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902251",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902251/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902252",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902252/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902253",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902253/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902254",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902254/",
+    "doMetaExist": false,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902255",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902255/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902256",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902256/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902257",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902257/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": false
+  },
+  {
+    "id": "2902258",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902258/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902259",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902259/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902260",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902260/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902261",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902261/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902262",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902262/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902263",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902263/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902264",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902264/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902265",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902265/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902266",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902266/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902267",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902267/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902268",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902268/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902269",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902269/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902270",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902270/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902271",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902271/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902272",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902272/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902273",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902273/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902274",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902274/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902275",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902275/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902276",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902276/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902277",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902277/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902278",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902278/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902279",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902279/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902280",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902280/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902281",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902281/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902282",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902282/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902283",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902283/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902284",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902284/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902285",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902285/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902286",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902286/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902287",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902287/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902288",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902288/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902289",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902289/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902290",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902290/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902291",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902291/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902292",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902292/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902293",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902293/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902294",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902294/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902295",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902295/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902296",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902296/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902297",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902297/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902298",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902298/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902299",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902299/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902300",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902300/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902301",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902301/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902302",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902302/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902303",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902303/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902304",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902304/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2902306",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2902306/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903891",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903891/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903892",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903892/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903893",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903893/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903894",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903894/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903895",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903895/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903950",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903950/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903951",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903951/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903952",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903952/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903953",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903953/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903954",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903954/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903988",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903988/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "2903989",
+    "url": "https://data-argo.ifremer.fr/dac/incois/2903989/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "3902573",
+    "url": "https://data-argo.ifremer.fr/dac/incois/3902573/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": false
+  },
+  {
+    "id": "3902581",
+    "url": "https://data-argo.ifremer.fr/dac/incois/3902581/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "3902629",
+    "url": "https://data-argo.ifremer.fr/dac/incois/3902629/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "3902630",
+    "url": "https://data-argo.ifremer.fr/dac/incois/3902630/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "3902668",
+    "url": "https://data-argo.ifremer.fr/dac/incois/3902668/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "3902669",
+    "url": "https://data-argo.ifremer.fr/dac/incois/3902669/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900510",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900510/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900511",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900511/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900668",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900668/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900669",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900669/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900670",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900670/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900671",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900671/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900672",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900672/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900673",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900673/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900674",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900674/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4900675",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4900675/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903775",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903775/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903776",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903776/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903777",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903777/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903783",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903783/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903837",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903837/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903838",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903838/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903869",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903869/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903873",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903873/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903874",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903874/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903875",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903875/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903876",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903876/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "4903877",
+    "url": "https://data-argo.ifremer.fr/dac/incois/4903877/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907082",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907082/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907083",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907083/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907084",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907084/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907085",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907085/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907092",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907092/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907138",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907138/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907139",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907139/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907140",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907140/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907171",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907171/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907176",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907176/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907179",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907179/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907180",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907180/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "5907192",
+    "url": "https://data-argo.ifremer.fr/dac/incois/5907192/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990608",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990608/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990609",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990609/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990610",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990610/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990611",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990611/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990612",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990612/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990613",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990613/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990614",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990614/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990615",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990615/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990616",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990616/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990617",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990617/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990618",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990618/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990678",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990678/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990679",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990679/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990705",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990705/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990711",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990711/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990715",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990715/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "6990716",
+    "url": "https://data-argo.ifremer.fr/dac/incois/6990716/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7901125",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7901125/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7901126",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7901126/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7901127",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7901127/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7901128",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7901128/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7901130",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7901130/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7901131",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7901131/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7901136",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7901136/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902170",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902170/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902190",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902190/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902200",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902200/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902242",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902242/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902243",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902243/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902244",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902244/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902246",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902246/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902247",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902247/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902248",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902248/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902249",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902249/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902250",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902250/",
+    "doMetaExist": true,
+    "doRTrajExist": true,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902251",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902251/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  },
+  {
+    "id": "7902287",
+    "url": "https://data-argo.ifremer.fr/dac/incois/7902287/",
+    "doMetaExist": true,
+    "doRTrajExist": false,
+    "doDTrajExist": false,
+    "doTechExist": true
+  }
+]
