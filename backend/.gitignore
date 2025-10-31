@@ -28,3 +28,5 @@ next-env.d.ts
 
 /.venv
 .python-version
+
+*.csv
