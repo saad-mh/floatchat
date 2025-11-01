@@ -5,62 +5,68 @@ import requests
 import tempfile
 import pandas as pd
 import numpy as np
-from sqlalchemy import create_engine, inspect, text
-from dotenv import load_dotenv
-import chromadb
-from sentence_transformers import SentenceTransformer
-import sys
 from datetime import datetime
+from dotenv import load_dotenv
+from upstash_vector import Index, Vector
+from sentence_transformers import SentenceTransformer
+from supabase import create_client, Client
+import sys
+import warnings
 
 # -----------------------------------
 # SETUP SECTION
 # -----------------------------------
 
+warnings.filterwarnings("ignore", message="Discarding nonzero nanoseconds")
 load_dotenv()
 
-# PostgreSQL connection
-engine = create_engine(
-    f"postgresql+psycopg2://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@"
-    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
-)
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-# ChromaDB setup
-chroma_client = chromadb.PersistentClient(path="./chroma_store")
-chroma_collection = chroma_client.get_or_create_collection(name="float_metadata")
+if not SUPABASE_URL or not SUPABASE_KEY:
+    print("❌ Supabase credentials missing.")
+    sys.exit(1)
 
-# Embedding model
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+print("✅ Connected to Supabase.")
+
+UPSTASH_VECTOR_REST_URL = os.getenv("UPSTASH_VECTOR_REST_URL")
+UPSTASH_VECTOR_REST_TOKEN = os.getenv("UPSTASH_VECTOR_REST_TOKEN")
+
+if not UPSTASH_VECTOR_REST_URL or not UPSTASH_VECTOR_REST_TOKEN:
+    print("❌ Upstash Vector credentials missing.")
+    sys.exit(1)
+
+index = Index(url=UPSTASH_VECTOR_REST_URL, token=UPSTASH_VECTOR_REST_TOKEN)
+print("✅ Connected to Upstash Vector database.")
+
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
-
-
-# -----------------------------------
-# DATABASE TEST
-# -----------------------------------
-
-def test_db_connection():
-    """Check if PostgreSQL connection is alive before anything else."""
-    print("🔍 Testing PostgreSQL connection...")
-    try:
-        with engine.connect() as conn:
-            result = conn.execute(text("SELECT 1;"))
-            if result.scalar() == 1:
-                print("✅ Database connection successful.")
-            else:
-                print("⚠️ Unexpected database response.")
-                sys.exit(1)
-    except Exception as e:
-        print(f"❌ Failed to connect to PostgreSQL: {e}")
-        sys.exit(1)
-
-
-test_db_connection()
-
 
 # -----------------------------------
 # UTILITIES
 # -----------------------------------
 
-def clean_bytes(val):
-    """Convert bytes to string safely."""
+def clean_value(val):
+    """Normalize values to be JSON and database safe."""
+    if isinstance(val, (float, np.floating)):
+        if np.isnan(val) or np.isinf(val):
+            return None
+        return float(val)
+    if isinstance(val, (np.datetime64, pd.Timestamp)):
+        try:
+            if pd.isna(val):
+                return None
+            return float(pd.Timestamp(val).to_julian_date())
+        except Exception:
+            return None
+    if isinstance(val, str):
+        try:
+            dt = datetime.fromisoformat(val)
+            return float(pd.Timestamp(dt).to_julian_date())
+        except Exception:
+            return val.strip()
+    if pd.isna(val) or val is pd.NaT or str(val) == "NaT":
+        return None
     if isinstance(val, (bytes, np.bytes_)):
         try:
             return val.decode("utf-8").strip()
@@ -69,112 +75,55 @@ def clean_bytes(val):
     return val
 
 
-def normalize_value(val):
-    """Universal cleaner for NaN, NaT, and datetime issues."""
-    if pd.isna(val) or val is pd.NaT or str(val) == "NaT":
-        return None
-    if isinstance(val, np.generic):
-        val = val.item()
-    if isinstance(val, (np.datetime64, pd.Timestamp)):
-        try:
-            if pd.isna(val):
-                return None
-            return pd.Timestamp(val).to_pydatetime()
-        except Exception:
-            return None
-    return val
-
-
 def clean_dataframe(df: pd.DataFrame):
-    """Remove duplicates, all-NaN rows, and normalize values."""
+    """Clean NaN, Inf, and invalid data across DataFrames."""
+    df = df.replace([np.inf, -np.inf], np.nan, inplace=False)
+    df = df.map(lambda x: clean_value(x))
     df = df.drop_duplicates()
     df = df.dropna(how="all")
-    df = df.map(lambda x: normalize_value(x))
     return df
 
 
-def ensure_table_exists(df: pd.DataFrame, table_name: str, primary_keys=None):
-    """Ensure table exists; create it if missing."""
-    inspector = inspect(engine)
-    if table_name not in inspector.get_table_names():
-        print(f"🧱 Creating new table: {table_name}")
-        df.head(0).to_sql(table_name, engine, if_exists="replace", index=False)
-        if primary_keys:
-            with engine.begin() as conn:
-                pk_cols = ", ".join(f'"{pk}"' for pk in primary_keys)
-                conn.execute(text(f'ALTER TABLE "{table_name}" ADD PRIMARY KEY ({pk_cols});'))
-    else:
-        existing_cols = [col["name"] for col in inspector.get_columns(table_name)]
-        missing_cols = [col for col in df.columns if col not in existing_cols]
-        if missing_cols:
-            print(f"⚠️ Adding missing columns to {table_name}: {missing_cols}")
-            with engine.begin() as conn:
-                for col in missing_cols:
-                    conn.execute(text(f'ALTER TABLE "{table_name}" ADD COLUMN "{col}" TEXT;'))
-
-
-def ensure_minimal_table(table_name: str, schema: dict, primary_keys=None):
-    """Create a minimal table with given schema if it doesn't exist."""
-    inspector = inspect(engine)
-    if table_name not in inspector.get_table_names():
-        cols = ", ".join(f'"{col}" {dtype}' for col, dtype in schema.items())
-        pk = f", PRIMARY KEY ({', '.join(primary_keys)})" if primary_keys else ""
-        create_sql = text(f'CREATE TABLE "{table_name}" ({cols}{pk});')
-        with engine.begin() as conn:
-            conn.execute(create_sql)
-        print(f"🧱 Created minimal table '{table_name}' with schema: {list(schema.keys())}")
-
-
-def upsert_dataframe(df: pd.DataFrame, table_name: str, conflict_cols: list):
-    if df.empty:
+def upsert_to_supabase(table_name: str, records: list):
+    """Safe bulk upsert to Supabase with NaN cleaning."""
+    if not records:
         return
 
-    ensure_table_exists(df, table_name, primary_keys=conflict_cols)
+    def sanitize(obj):
+        if isinstance(obj, float) and (np.isnan(obj) or np.isinf(obj)):
+            return None
+        if isinstance(obj, dict):
+            return {k: sanitize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [sanitize(v) for v in obj]
+        return obj
 
-    cols = list(df.columns)
-    columns_sql = ", ".join([f'"{c}"' for c in cols])
-    values_sql = ", ".join([f":{c}" for c in cols])
-    update_sql = ", ".join([f'"{c}" = EXCLUDED."{c}"' for c in cols if c not in conflict_cols])
+    safe_records = [sanitize(r) for r in records]
 
-    sql = text(f"""
-        INSERT INTO "{table_name}" ({columns_sql})
-        VALUES ({values_sql})
-        ON CONFLICT ({', '.join(conflict_cols)}) DO UPDATE
-        SET {update_sql};
-    """)
-
-    records = df.to_dict(orient="records")
-    with engine.begin() as conn:
-        for record in records:
-            record = {k: normalize_value(v) for k, v in record.items()}
-            conn.execute(sql, record)
-
-    print(f"📦 Upserted {len(df)} rows into {table_name}")
+    try:
+        supabase.table(table_name).upsert(safe_records).execute()
+        print(f"📦 Upserted {len(safe_records)} rows into {table_name}.")
+    except Exception as e:
+        print(f"❌ Failed to upsert into {table_name}: {e}")
 
 
-# -----------------------------------
-# FLOAT HANDLERS
-# -----------------------------------
+def insert_metadata_to_upstash(float_id: str, meta_dict: dict):
+    """Send metadata to Upstash vector DB for semantic search."""
+    try:
+        text_data = "\n".join(f"{k}: {v}" for k, v in meta_dict.items() if v and not pd.isna(v))
+        if not text_data.strip():
+            print(f"⚠️ No valid metadata text for {float_id}. Skipping Upstash insert.")
+            return
+        index.upsert(vectors=[
+            Vector(id=float_id, data=text_data, metadata={"float_id": float_id})
+        ])
+        print(f"🧠 Metadata for {float_id} inserted into Upstash Vector DB.")
+    except Exception as e:
+        print(f"❌ Failed to insert metadata for {float_id} into Upstash: {e}")
 
-def ensure_float_exists(float_id: str):
-    """Ensure 'floats' table and record exist before inserting."""
-    ensure_minimal_table(
-        "floats",
-        {"float_id": "TEXT"},
-        primary_keys=["float_id"]
-    )
-    with engine.begin() as conn:
-        result = conn.execute(text('SELECT COUNT(*) FROM floats WHERE float_id = :fid'), {'fid': float_id})
-        if result.scalar() == 0:
-            conn.execute(text('INSERT INTO floats (float_id) VALUES (:fid)'), {'fid': float_id})
-            print(f"🪣 Created parent float record for {float_id}")
-
-
-# -----------------------------------
-# MAIN ETL
-# -----------------------------------
 
 def open_with_best_engine(url: str):
+    """Download and safely open .nc files."""
     try:
         with tempfile.NamedTemporaryFile(suffix=".nc") as tmp:
             print(f"⬇️  Downloading file -> {url}")
@@ -190,7 +139,20 @@ def open_with_best_engine(url: str):
         raise
 
 
+def normalize_variable_data(variable_data):
+    """Pad variable arrays to equal lengths."""
+    max_len = max(len(v) for v in variable_data.values() if isinstance(v, (list, np.ndarray)))
+    for k, v in variable_data.items():
+        arr = np.array(v, dtype=object)
+        if len(arr) < max_len:
+            pad_width = max_len - len(arr)
+            arr = np.pad(arr, (0, pad_width), constant_values=np.nan)
+        variable_data[k] = arr
+    return variable_data
+
+
 def process_prof_file(url: str, float_id: str):
+    """Extract dataframes from NetCDF: metadata, measurements, locations."""
     ds = open_with_best_engine(url)
     variable_data = {}
 
@@ -198,7 +160,7 @@ def process_prof_file(url: str, float_id: str):
         try:
             data = var.values
             if data.size > 0:
-                variable_data[var_name] = [clean_bytes(v) for v in data.flatten()]
+                variable_data[var_name] = [clean_value(v) for v in data.flatten()]
         except Exception:
             continue
 
@@ -206,74 +168,98 @@ def process_prof_file(url: str, float_id: str):
 
     if not variable_data:
         print("⚠️ No valid variables found.")
-        return pd.DataFrame(), pd.DataFrame()
+        return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
-    max_len = max(len(v) for v in variable_data.values())
-    for k, v in variable_data.items():
-        arr = np.array(v, dtype=object)
-        if len(arr) < max_len:
-            arr = np.pad(arr, (0, max_len - len(arr)), constant_values=np.nan)
-        variable_data[k] = arr
-
+    variable_data = normalize_variable_data(variable_data)
     df = pd.DataFrame(variable_data)
     df = clean_dataframe(df)
+    df.columns = df.columns.str.lower()
 
     metadata_cols = [
-        "DATA_TYPE", "FORMAT_VERSION", "HANDBOOK_VERSION",
-        "REFERENCE_DATE_TIME", "DATE_CREATION", "DATE_UPDATE",
-        "PLATFORM_NUMBER", "PROJECT_NAME", "PI_NAME", "STATION_PARAMETERS",
-        "CYCLE_NUMBER", "DIRECTION", "DATA_CENTRE", "DC_REFERENCE",
-        "DATA_STATE_INDICATOR", "DATA_MODE", "PLATFORM_TYPE", "FLOAT_SERIAL_NO",
-        "FIRMWARE_VERSION", "WMO_INST_TYPE", "POSITIONING_SYSTEM",
-        "VERTICAL_SAMPLING_SCHEME", "CONFIG_MISSION_NUMBER",
-        "PARAMETER", "SCIENTIFIC_CALIB_EQUATION", "SCIENTIFIC_CALIB_COEFFICIENT",
-        "SCIENTIFIC_CALIB_COMMENT", "SCIENTIFIC_CALIB_DATE"
+        "data_type", "format_version", "handbook_version",
+        "reference_date_time", "date_creation", "date_update",
+        "platform_number", "project_name", "pi_name",
+        "cycle_number", "direction", "data_mode",
     ]
 
     measurement_cols = [
-        "JULD", "JULD_QC", "JULD_LOCATION", "LATITUDE", "LONGITUDE", "POSITION_QC",
-        "PROFILE_PRES_QC", "PROFILE_TEMP_QC", "PROFILE_PSAL_QC",
-        "PRES_QC", "PRES_ADJUSTED", "PRES_ADJUSTED_QC", "PRES_ADJUSTED_ERROR",
-        "TEMP_QC", "TEMP_ADJUSTED", "TEMP_ADJUSTED_QC", "TEMP_ADJUSTED_ERROR",
-        "PSAL_QC", "PSAL_ADJUSTED", "PSAL_ADJUSTED_QC", "PSAL_ADJUSTED_ERROR"
+        "pres_adjusted", "temp_adjusted", "psal_adjusted",
     ]
 
-    meta_df = clean_dataframe(df[[c for c in df.columns if c in metadata_cols]])
-    meas_df = clean_dataframe(df[[c for c in df.columns if c in measurement_cols]])
+    location_cols = [
+        "juld", "latitude", "longitude",
+    ]
 
-    cycle_number = str(df["CYCLE_NUMBER"].dropna().iloc[0]) if "CYCLE_NUMBER" in df.columns and not df["CYCLE_NUMBER"].dropna().empty else "unknown"
+    meta_df = df[[c for c in df.columns if c in metadata_cols]].copy()
+    meas_df = df[[c for c in df.columns if c in measurement_cols]].copy()
+    loc_df = df[[c for c in df.columns if c in location_cols]].copy()
+
+    meta_df = clean_dataframe(meta_df)
+    meas_df = clean_dataframe(meas_df)
+    loc_df = clean_dataframe(loc_df)
+
+    cycle_number = (
+        str(df["cycle_number"].dropna().iloc[0])
+        if "cycle_number" in df.columns and not df["cycle_number"].dropna().empty
+        else "unknown"
+    )
+
     meta_df["float_id"] = float_id
     meta_df["cycle_number"] = cycle_number
+
+    # ✅ Unique measurement IDs
     meas_df.insert(0, "measurement_id", [f"{float_id}_{cycle_number}_{i}" for i in range(len(meas_df))])
     meas_df.insert(1, "float_id", float_id)
     meas_df.insert(2, "cycle_number", cycle_number)
 
-    return meta_df, meas_df
+    # ✅ Independent location IDs (safe even if counts differ)
+    if not loc_df.empty:
+        loc_df.insert(0, "measurement_id", [f"{float_id}_{cycle_number}_loc_{i}" for i in range(len(loc_df))])
+        loc_df["float_id"] = float_id
+        loc_df["cycle_number"] = cycle_number
+        loc_df = loc_df.dropna(subset=["juld", "latitude", "longitude"], how="all")
+
+    return meta_df, meas_df, loc_df
 
 
 def process_float(entry):
+    """Handle full float ingestion: metadata, profiles, locations."""
     float_id = entry["id"]
     base_url = entry["url"]
     print(f"\n🌊 Processing Float {float_id}")
 
-    ensure_float_exists(float_id)
-
     prof_url = f"{base_url}{float_id}_prof.nc"
     meta_exists = entry.get("doMetaExist", False)
 
-    meta_df, meas_df = process_prof_file(prof_url, float_id)
+    # ✅ STEP 1: Ensure float entry exists
+    upsert_to_supabase("floats", [{"float_id": float_id, "meta": {}}])
 
-    upsert_dataframe(meta_df, "float_profiles", conflict_cols=["float_id", "cycle_number"])
-    upsert_dataframe(meas_df, "float_measurements", conflict_cols=["measurement_id"])
+    try:
+        # ✅ STEP 2: Process profile and insert dependent tables
+        meta_df, meas_df, loc_df = process_prof_file(prof_url, float_id)
 
+        meta_df = meta_df.drop_duplicates(subset=["float_id", "cycle_number"])
+        meas_df = meas_df.drop_duplicates(subset=["measurement_id"])
+        loc_df = loc_df.drop_duplicates(subset=["measurement_id"])
+
+        upsert_to_supabase("float_profiles", meta_df.to_dict(orient="records"))
+        upsert_to_supabase("float_measurements", meas_df.to_dict(orient="records"))
+        upsert_to_supabase("float_locations", loc_df.to_dict(orient="records"))
+    except Exception as e:
+        print(f"❌ Error while processing {float_id}: {e}")
+        return
+
+    # ✅ STEP 3: Update floats meta (if available)
     if meta_exists:
         meta_url = f"{base_url}{float_id}_meta.nc"
         try:
             ds = open_with_best_engine(meta_url)
-            meta_attrs = {k: clean_bytes(v) for k, v in ds.attrs.items()}
+            meta_attrs = {k: clean_value(v) for k, v in ds.attrs.items()}
             ds.close()
-            meta_df = pd.DataFrame([meta_attrs]).assign(float_id=float_id)
-            upsert_dataframe(meta_df, "floats", conflict_cols=["float_id"])
+
+            record = {"float_id": float_id, "meta": meta_attrs}
+            upsert_to_supabase("floats", [record])
+            insert_metadata_to_upstash(float_id, meta_attrs)
         except Exception as e:
             print(f"❌ Failed to process meta.nc for {float_id}: {e}")
 
@@ -284,16 +270,16 @@ def process_float(entry):
 
 if __name__ == "__main__":
     json_path = "valid_profiles.json"
-    threshold = int(input("Enter the threshhold value (eg: threshold = 5 means only the first 5 entries from the valid_profiles.json will be selected.)"))
+    threshold = int(input("Enter threshold (e.g. 5 means first 5 floats): "))
 
     if not os.path.exists(json_path):
         print("⚠️ valid_profiles.json not found.")
-        raise SystemExit(1)
+        sys.exit(1)
 
     with open(json_path, "r") as f:
         floats = json.load(f)
 
-    if threshold and threshold > 0:
+    if threshold > 0:
         floats = floats[:threshold]
 
     print(f"\n🚀 Starting ingestion for {len(floats)} float(s)...")
