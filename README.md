@@ -690,6 +690,13 @@ floatchat/
 │   ├── check_date_range.py        # Database analysis
 │   ├── generate_erd.py            # ER diagram generator
 │   ├── requirements.txt           # Python dependencies
+│   ├── Dockerfile                 # Docker configuration
+│   ├── docker-compose.yml         # Docker Compose setup
+│   ├── .dockerignore              # Docker ignore rules
+│   ├── Procfile                   # Heroku process file
+│   ├── heroku.yml                 # Heroku Docker config
+│   ├── runtime.txt                # Python version for Heroku
+│   ├── HEROKU_DEPLOYMENT.md       # Heroku deployment guide
 │   ├── .env                       # Environment variables
 │   ├── .gitignore                 # Git ignore rules
 │   └── valid_profiles.json        # Generated profile URLs
@@ -776,29 +783,103 @@ floatchat/
 
 ## 🚢 Deployment
 
+### Docker Deployment
+
+The backend includes Docker support for easy deployment:
+
+**Build and run locally:**
+```bash
+cd backend
+
+# Build Docker image
+docker build -t floatchat-backend .
+
+# Run container
+docker run -p 8000:8000 --env-file .env floatchat-backend
+
+# Or use Docker Compose
+docker-compose up
+```
+
+**Test the deployment:**
+```bash
+curl http://localhost:8000/health
+```
+
+### Heroku Deployment
+
+Deploy the backend to Heroku with Docker:
+
+**Quick deployment:**
+```bash
+cd backend
+
+# Login to Heroku
+heroku login
+heroku container:login
+
+# Create app
+heroku create floatchat-backend
+
+# Set environment variables
+heroku config:set SUPABASE_URL="your_url" -a floatchat-backend
+heroku config:set SUPABASE_KEY="your_key" -a floatchat-backend
+heroku config:set UPSTASH_VECTOR_REST_URL="your_url" -a floatchat-backend
+heroku config:set UPSTASH_VECTOR_REST_TOKEN="your_token" -a floatchat-backend
+heroku config:set HUGGINGFACE_API_TOKEN="your_token" -a floatchat-backend
+
+# Deploy
+heroku container:push web -a floatchat-backend
+heroku container:release web -a floatchat-backend
+
+# Open app
+heroku open -a floatchat-backend
+```
+
+**See `backend/HEROKU_DEPLOYMENT.md` for complete deployment guide.**
+
+### Frontend Deployment (Vercel)
+
+```bash
+cd frontend
+
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel deploy
+
+# Set environment variable
+vercel env add NEXT_PUBLIC_API_URL
+# Enter: https://floatchat-backend.herokuapp.com
+
+# Deploy to production
+vercel --prod
+```
+
 ### Production Checklist
-- [ ] Set production environment variables
-- [ ] Configure CORS for production domain
-- [ ] Set up SSL certificates
-- [ ] Configure database connection pooling
-- [ ] Set up monitoring and logging
-- [ ] Configure rate limiting
-- [ ] Set up backup strategy
+- [ ] Backend deployed to Heroku with Docker
+- [ ] Frontend deployed to Vercel
+- [ ] Environment variables configured
+- [ ] CORS configured for production domain
+- [ ] SSL/HTTPS enabled (automatic on Heroku/Vercel)
+- [ ] Database connection tested
+- [ ] Monitoring and logging set up
+- [ ] Rate limiting configured
 - [ ] Test with production data
-- [ ] Load testing
-- [ ] Security audit
+- [ ] Security audit completed
 
 ### Environment Variables (Production)
 ```env
-# Backend
-SUPABASE_URL=https://prod.supabase.co
-SUPABASE_KEY=prod_key
-HUGGINGFACE_API_TOKEN=prod_token
-UPSTASH_VECTOR_REST_URL=https://prod-upstash
-UPSTASH_VECTOR_REST_TOKEN=prod_token
+# Backend (Heroku Config Vars)
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your_production_key
+HUGGINGFACE_API_TOKEN=your_hf_token
+UPSTASH_VECTOR_REST_URL=https://your-upstash-url
+UPSTASH_VECTOR_REST_TOKEN=your_upstash_token
 
-# Frontend
-NEXT_PUBLIC_API_URL=https://api.floatchat.com
+# Frontend (Vercel Environment Variables)
+NEXT_PUBLIC_API_URL=https://floatchat-backend.herokuapp.com
 ```
 
 ---
@@ -854,15 +935,219 @@ For issues or questions:
 
 ---
 
+## 🐳 Docker Setup & Deployment
+
+### Docker is Ready!
+
+Your backend is containerized and ready to run or deploy:
+
+**Quick Start:**
+```bash
+cd backend
+
+# Run locally
+docker run -p 8000:8000 --env-file .env floatchat-backend
+
+# Or use Docker Compose
+docker-compose up
+```
+
+**Test the API:**
+```bash
+curl http://localhost:8000/health
+```
+
+### Docker Commands Reference
+
+**Build:**
+```bash
+cd backend
+./build.sh
+# Or manually:
+docker buildx build -t floatchat-backend .
+```
+
+**Run:**
+```bash
+# Foreground
+docker run -p 8000:8000 --env-file .env floatchat-backend
+
+# Background (detached)
+docker run -d --name floatchat-api -p 8000:8000 --env-file .env floatchat-backend
+
+# With Docker Compose
+docker-compose up -d
+```
+
+**Manage:**
+```bash
+# View logs
+docker logs -f floatchat-api
+
+# Stop
+docker stop floatchat-api
+
+# Start again
+docker start floatchat-api
+
+# Remove
+docker rm floatchat-api
+```
+
+**Important:** Your `.env` file should NOT have quotes around values for Docker compatibility.
+
+---
+
+## 🚀 Deploy to Heroku
+
+### Prerequisites
+- ✅ Heroku CLI installed (v10.15.0)
+- ✅ Docker image built
+- ✅ Heroku account
+
+### Quick Deploy (Interactive)
+
+```bash
+cd backend
+./deploy-heroku.sh
+```
+
+This script will guide you through the entire deployment process!
+
+### Manual Deployment Steps
+
+**1. Login to Heroku:**
+```bash
+heroku login
+heroku container:login
+```
+
+**2. Create App:**
+```bash
+# Auto-generate name
+heroku create
+
+# Or specify name
+heroku create floatchat-backend
+```
+
+**3. Set Environment Variables:**
+```bash
+# Replace YOUR_APP_NAME with your actual app name
+heroku config:set SUPABASE_URL=https://xgmdbhcbpfjetasfozmf.supabase.co -a YOUR_APP_NAME
+heroku config:set SUPABASE_KEY=your_key -a YOUR_APP_NAME
+heroku config:set UPSTASH_VECTOR_REST_URL=https://popular-gnu-62467-us1-vector.upstash.io -a YOUR_APP_NAME
+heroku config:set UPSTASH_VECTOR_REST_TOKEN=your_token -a YOUR_APP_NAME
+heroku config:set HUGGINGFACE_API_TOKEN=your_hf_token -a YOUR_APP_NAME
+heroku config:set HISTORY_SUPABASE_URL=https://rndphgdeferckbfrcmwv.supabase.co -a YOUR_APP_NAME
+heroku config:set HISTORY_SUPABASE_KEY=your_history_key -a YOUR_APP_NAME
+```
+
+**4. Deploy:**
+```bash
+cd backend
+
+# Push Docker image (builds on Heroku's servers)
+heroku container:push web -a YOUR_APP_NAME
+
+# Release to production
+heroku container:release web -a YOUR_APP_NAME
+```
+
+**5. Verify:**
+```bash
+# Check status
+heroku ps -a YOUR_APP_NAME
+
+# View logs
+heroku logs --tail -a YOUR_APP_NAME
+
+# Test API
+curl https://YOUR_APP_NAME.herokuapp.com/health
+
+# Open in browser
+heroku open -a YOUR_APP_NAME
+```
+
+### Update Frontend
+
+After deploying backend, update `frontend/.env.local`:
+```env
+NEXT_PUBLIC_API_URL=https://YOUR_APP_NAME.herokuapp.com
+```
+
+### Useful Heroku Commands
+
+```bash
+# View app info
+heroku info -a YOUR_APP_NAME
+
+# Restart app
+heroku restart -a YOUR_APP_NAME
+
+# View config
+heroku config -a YOUR_APP_NAME
+
+# Run command
+heroku run python check_date_range.py -a YOUR_APP_NAME
+
+# Open shell
+heroku run bash -a YOUR_APP_NAME
+
+# Scale dynos
+heroku ps:scale web=1 -a YOUR_APP_NAME
+
+# Upgrade to hobby ($7/month, never sleeps)
+heroku ps:type hobby -a YOUR_APP_NAME
+```
+
+### Troubleshooting Heroku
+
+**App crashes on startup:**
+```bash
+# Check logs
+heroku logs --tail -a YOUR_APP_NAME
+
+# Common issues:
+# 1. Missing environment variables
+heroku config -a YOUR_APP_NAME
+
+# 2. Database connection failed
+# Verify SUPABASE_URL and SUPABASE_KEY
+
+# 3. Port binding (already handled in Dockerfile)
+```
+
+**Build timeout:**
+```bash
+# Heroku has 15-minute build limit
+# If timeout, try again:
+heroku container:push web -a YOUR_APP_NAME
+```
+
+**App name taken:**
+```bash
+# Try different name
+heroku create floatchat-backend-yourname
+heroku create floatchat-api-2024
+```
+
+---
+
 ## 📋 Deployment Checklist
 
 ### Pre-Deployment
 
 **Environment Setup:**
-- [ ] Backend `.env` configured (Supabase, Upstash, HuggingFace tokens)
-- [ ] Frontend `.env.local` configured (Backend API URL)
-- [ ] Python 3.8+ and Node.js 18+ installed
-- [ ] All dependencies installed (`pip install -r requirements.txt`, `npm install`)
+- [ ] Backend `.env` configured (no quotes around values!)
+- [ ] Frontend `.env.local` configured
+- [ ] Docker installed and working
+- [ ] Heroku CLI installed
+
+**Docker:**
+- [ ] Image built successfully (`docker images | grep floatchat`)
+- [ ] Container runs locally (`docker run -p 8000:8000 --env-file backend/.env floatchat-backend`)
+- [ ] Health check passes (`curl http://localhost:8000/health`)
 
 **Database:**
 - [ ] Supabase tables created and indexed
@@ -874,47 +1159,40 @@ For issues or questions:
 - [ ] Upstash Vector index created
 - [ ] All service connections verified
 
-**Testing:**
-- [ ] Backend health check passes (`curl http://localhost:8000/health`)
-- [ ] Frontend loads successfully
-- [ ] Test queries work end-to-end
-- [ ] Visualizations render correctly
+### Heroku Deployment
 
-**Security:**
-- [ ] `.env` files not committed to git
-- [ ] API tokens secured
-- [ ] CORS configured correctly
-- [ ] Input validation working
+- [ ] Logged into Heroku (`heroku login`)
+- [ ] Container registry login (`heroku container:login`)
+- [ ] App created (`heroku create`)
+- [ ] Environment variables set (`heroku config:set ...`)
+- [ ] Docker image pushed (`heroku container:push web`)
+- [ ] Image released (`heroku container:release web`)
+- [ ] Health check passes (`curl https://YOUR_APP.herokuapp.com/health`)
+- [ ] Logs checked (`heroku logs --tail`)
 
-### Production Deployment
+### Frontend Deployment
 
-**Backend (Docker/Cloud):**
-```bash
-cd backend
-docker build -t floatchat-backend .
-docker run -p 8000:8000 floatchat-backend
-```
-- [ ] Container deployed to AWS/GCP/Azure
-- [ ] Environment variables configured
-- [ ] HTTPS enabled
-- [ ] Monitoring and logging configured
-
-**Frontend (Vercel):**
+**Vercel:**
 ```bash
 cd frontend
 npm run build
-vercel deploy
+vercel deploy --prod
 ```
-- [ ] Deployment successful
+
+- [ ] Build successful
 - [ ] Environment variables configured
-- [ ] Custom domain configured
+- [ ] `NEXT_PUBLIC_API_URL` points to Heroku
+- [ ] Deployment successful
 - [ ] HTTPS enabled
 
-**Post-Deployment:**
-- [ ] All functionality tests pass
-- [ ] Performance metrics acceptable (< 5s response time)
+### Post-Deployment
+
+- [ ] Backend API accessible
+- [ ] Frontend loads successfully
+- [ ] Test queries work end-to-end
+- [ ] Visualizations render correctly
 - [ ] No console or network errors
-- [ ] Monitoring and alerts configured
+- [ ] Performance acceptable (< 5s response time)
 
 ---
 
