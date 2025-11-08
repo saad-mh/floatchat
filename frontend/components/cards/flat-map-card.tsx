@@ -101,7 +101,7 @@ const LeafletMapComponent = dynamic(
                       <div className="text-sm">
                         <strong>{marker.label}</strong>
                         <br />
-                        {marker.popup}
+                        <div dangerouslySetInnerHTML={{ __html: marker.popup }} />
                         <br />
                         <span className="text-xs text-muted-foreground">
                           Lat: {marker.lat.toFixed(4)}, Lon:{" "}

@@ -22,6 +22,42 @@ interface ChatInterfaceProps {
   onGoToReport?: () => void;
 }
 
+// Simple markdown to HTML converter
+function convertMarkdownToHTML(text: string, isDetailed: boolean = false): string {
+  let html = text;
+
+  // Headers (## text)
+  html = html.replace(/^##\s+(.+)$/gm, '<h4 class="font-semibold text-blue-600 dark:text-blue-400 mt-3 mb-1">$1</h4>');
+
+  // Bold (**text**)
+  html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+  // Emojis in larger size (only for detailed)
+  if (isDetailed) {
+    html = html.replace(
+      /📍|📊|📈|🗺️|📋|🔥|🌍|⚡|🌡️|🔬|🔍|📏|🎯|🛰️|🌱/g,
+      '<span class="text-lg">$&</span>'
+    );
+  }
+
+  // Paragraphs
+  html = html.replace(/\n\n/g, "</p><p>");
+
+  // Bold headers with colons (**Text:**)
+  html = html.replace(
+    /^\*\*([^:]+):\*\*/gm,
+    '<h4 class="font-semibold text-blue-600 dark:text-blue-400 mt-3 mb-1">$1:</h4>'
+  );
+
+  // List items with bold (- **Text:**)
+  html = html.replace(/^- \*\*([^:]+):\*\*/gm, "<strong>• $1:</strong>");
+
+  // Single line breaks
+  html = html.replace(/\n/g, "<br />");
+
+  return html;
+}
+
 interface ChatMessage {
   id: string;
   type: "user" | "assistant" | "error";
@@ -480,7 +516,12 @@ export function ChatInterface({
                     />
                   </div>
                 ) : (
-                  <p className="text-sm">{message.content}</p>
+                  <div
+                    className="text-sm"
+                    dangerouslySetInnerHTML={{
+                      __html: convertMarkdownToHTML(message.content, false)
+                    }}
+                  />
                 )}
                 <p className="text-xs opacity-70 mt-1">
                   {message.timestamp.toLocaleTimeString([], {

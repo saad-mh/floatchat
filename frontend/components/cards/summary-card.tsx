@@ -86,7 +86,15 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
                 <FileText className="w-3 h-3 md:w-4 md:h-4 text-primary" />
               </div>
               <div className="flex-1">
-                <p className="text-foreground leading-relaxed text-sm mb-0">{text}</p>
+                <div
+                  className="text-foreground leading-relaxed text-sm mb-0"
+                  dangerouslySetInnerHTML={{
+                    __html: text
+                      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                      .replace(/\n\n/g, "<br /><br />")
+                      .replace(/\n/g, "<br />")
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -143,13 +151,12 @@ export function SummaryCard({ text, provenance }: SummaryCardProps) {
                   <div className="flex items-center gap-2">
                     <Badge
                       variant="secondary"
-                      className={`text-xs ${
-                        isNetCDF
+                      className={`text-xs ${isNetCDF
                           ? "bg-blue-500/20 text-blue-400"
                           : isJSON
                             ? "bg-green-500/20 text-green-400"
                             : "bg-gray-500/20 text-gray-400"
-                      }`}
+                        }`}
                     >
                       {isNetCDF ? "NetCDF" : isJSON ? "JSON" : isCSV ? "CSV" : "DATA"}
                     </Badge>
