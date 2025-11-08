@@ -168,11 +168,22 @@ export function FlatMapCard({ dataUri }: FlatMapCardProps) {
   useEffect(() => {
     const loadMapData = async () => {
       try {
+        // Check if we have real backend data first
+        if (typeof window !== 'undefined' && (window as any).floatChatData?.map) {
+          const data = (window as any).floatChatData.map;
+          if (data && data.markers && data.markers.length > 0) {
+            setMapData(data);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Fallback to demo data only if no real data available
         const questionId = dataUri?.includes("dq01")
           ? "dq01"
           : dataUri?.includes("dq02")
-          ? "dq02"
-          : "dq01";
+            ? "dq02"
+            : "dq01";
         const data = await fetchDemoData(questionId, "map");
 
         if (data) {

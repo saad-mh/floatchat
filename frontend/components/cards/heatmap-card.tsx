@@ -186,7 +186,7 @@ const LeafletHeatmapComponent = dynamic(
 
                     const distanceFromCenter = Math.sqrt(
                       Math.pow(lat - centerLat, 2) +
-                        Math.pow(lng - centerLon, 2)
+                      Math.pow(lng - centerLon, 2)
                     );
 
                     const baseValue = heatmapData.values[0]?.[0] || 0;
@@ -195,35 +195,34 @@ const LeafletHeatmapComponent = dynamic(
 
                     const simulatedTime =
                       heatmapData.times[
-                        Math.floor(
-                          ((lat - centerLat + 2) / 4) * heatmapData.times.length
-                        )
+                      Math.floor(
+                        ((lat - centerLat + 2) / 4) * heatmapData.times.length
+                      )
                       ] || heatmapData.times[0];
                     const simulatedDepth =
                       heatmapData.depths[
-                        Math.floor(
-                          ((lng - centerLon + 2) / 4) *
-                            heatmapData.depths.length
-                        )
+                      Math.floor(
+                        ((lng - centerLon + 2) / 4) *
+                        heatmapData.depths.length
+                      )
                       ] || heatmapData.depths[0];
 
                     // Create clickable tooltip content
                     const tooltipId = `tooltip-${Date.now()}-${Math.random()}`;
                     const tooltipContent = `
                       <div id="${tooltipId}" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(4px); border-radius: 8px; padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.1); font-size: 14px; cursor: pointer; min-width: 200px;">
-                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">${
-                          heatmapData.variable.charAt(0).toUpperCase() +
-                          heatmapData.variable.slice(1)
-                        } Data</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">${heatmapData.variable.charAt(0).toUpperCase() +
+                      heatmapData.variable.slice(1)
+                      } Data</div>
                         <div style="font-size: 12px; color: #4b5563; line-height: 1.4;">
                           <div><span style="font-weight: 500;">Value:</span> ${estimatedValue.toFixed(
-                            2
-                          )} ${heatmapData.units}</div>
+                        2
+                      )} ${heatmapData.units}</div>
                           <div><span style="font-weight: 500;">Time:</span> ${simulatedTime}</div>
                           <div><span style="font-weight: 500;">Depth:</span> ${simulatedDepth}m</div>
                           <div><span style="font-weight: 500;">Position:</span> ${lat.toFixed(
-                            3
-                          )}°, ${lng.toFixed(3)}°</div>
+                        3
+                      )}°, ${lng.toFixed(3)}°</div>
                         </div>
                         <div style="font-size: 10px; color: #9ca3af; margin-top: 8px; font-style: italic;">Click to close</div>
                       </div>
@@ -451,6 +450,17 @@ export function HeatmapCard({ dataUri }: HeatmapCardProps) {
   useEffect(() => {
     const loadHeatmapData = async () => {
       try {
+        // Check if we have real backend data first
+        if (typeof window !== 'undefined' && (window as any).floatChatData?.heatmap) {
+          const data = (window as any).floatChatData.heatmap;
+          if (data && data.values && data.values.length > 0) {
+            setHeatmapData(data);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Fallback to demo data only if no real data available
         let questionId = "dq01";
         let variable = "oxygen";
 

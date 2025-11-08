@@ -54,7 +54,27 @@ export function ReportCard({ card }: ReportCardProps) {
         setLoadingGlobe(true);
         setGlobeError(null);
         try {
-          // Extract questionId and dataType from dataUri
+          // Check if we have real backend data first
+          if (typeof window !== 'undefined' && (window as any).floatChatData) {
+            const backendData = (window as any).floatChatData;
+
+            if (card.type === "globe" || card.type === "mapglobe") {
+              if (backendData.map && backendData.map.markers && backendData.map.markers.length > 0) {
+                setGlobePoints(
+                  backendData.map.markers.map((m: any) => ({
+                    lat: m.lat,
+                    lng: m.lon ?? m.lng,
+                    label: m.label,
+                    color: m.color || "#4A90E2",
+                  }))
+                );
+                setLoadingGlobe(false);
+                return;
+              }
+            }
+          }
+
+          // Fallback to demo data only if no real data available
           const filename =
             card.dataUri.split("/").pop()?.replace(".json", "") || "";
           const questionMatch = filename.match(/^(dq\d+)/);

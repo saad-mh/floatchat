@@ -26,13 +26,25 @@ export function ChartCard({ dataUri }: ChartCardProps) {
   useEffect(() => {
     const loadChartData = async () => {
       try {
+        // Check if we have real backend data first
+        if (typeof window !== 'undefined' && (window as any).floatChatData?.chart) {
+          const data = (window as any).floatChatData.chart;
+          if (data && data.traces && data.traces.length > 0) {
+            setChartData(data);
+            setVisibleTraces(new Set(data.traces.map((trace: any) => trace.id)));
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Fallback to demo data only if no real data available
         const questionId = dataUri?.includes("dq01")
           ? "dq01"
           : dataUri?.includes("dq02")
-          ? "dq02"
-          : dataUri?.includes("dq04")
-          ? "dq04"
-          : "dq01";
+            ? "dq02"
+            : dataUri?.includes("dq04")
+              ? "dq04"
+              : "dq01";
         const data = await fetchDemoData(questionId, "chart");
         setChartData(data);
         setVisibleTraces(new Set(data.traces.map((trace: any) => trace.id)));
@@ -95,12 +107,18 @@ export function ChartCard({ dataUri }: ChartCardProps) {
       ? ["#4A90E2", "#475569", "#64748b", "#3b82f6", "#10b981"]
       : ["#4A90E2", "#6B7280", "#9CA3AF", "#60A5FA", "#34D399"];
 
-  const allValues = chartData.traces.flatMap((t: any) => t.values);
-  const allDepths = chartData.traces.flatMap((t: any) => t.depths);
-  const minValue = Math.min(...allValues);
-  const maxValue = Math.max(...allValues);
-  const minDepth = Math.min(...allDepths);
-  const maxDepth = Math.max(...allDepths);
+  // Filter out invalid values (NaN, null, undefined)
+  const allValues = chartData.traces
+    .flatMap((t: any) => t.values)
+    .filter((v: any) => typeof v === 'number' && !isNaN(v));
+  const allDepths = chartData.traces
+    .flatMap((t: any) => t.depths)
+    .filter((d: any) => typeof d === 'number' && !isNaN(d));
+
+  const minValue = allValues.length > 0 ? Math.min(...allValues) : 0;
+  const maxValue = allValues.length > 0 ? Math.max(...allValues) : 100;
+  const minDepth = allDepths.length > 0 ? Math.min(...allDepths) : 0;
+  const maxDepth = allDepths.length > 0 ? Math.max(...allDepths) : 1000;
 
   return (
     <Card className="space-y-3 sm:space-y-4 p-3 sm:p-4 w-full">
@@ -142,9 +160,8 @@ export function ChartCard({ dataUri }: ChartCardProps) {
               key={trace.id}
               variant={isVisible ? "default" : "outline"}
               size="sm"
-              className={`text-xs px-2 py-1 flex items-center gap-1 border ${
-                isVisible ? "border-primary" : "border-border opacity-60"
-              }`}
+              className={`text-xs px-2 py-1 flex items-center gap-1 border ${isVisible ? "border-primary" : "border-border opacity-60"
+                }`}
               style={{
                 backgroundColor: isVisible ? color + "22" : undefined,
                 color: color,
@@ -227,26 +244,37 @@ export function ChartCard({ dataUri }: ChartCardProps) {
             {chartData.traces.map((trace: any, traceIdx: number) => {
               if (!visibleTraces.has(trace.id)) return null;
               const color = colors[traceIdx % colors.length];
-              const points = trace.depths.map(
-                (
-                  depth: number,
-                  i: number
-                ): {
-                  x: number;
-                  y: number;
-                  value: number;
-                  depth: number;
-                  idx: number;
-                } => {
-                  const x =
-                    60 +
-                    ((trace.values[i] - minValue) / (maxValue - minValue)) *
-                      880;
-                  const y =
-                    260 - ((depth - minDepth) / (maxDepth - minDepth)) * 240;
-                  return { x, y, value: trace.values[i], depth, idx: i };
-                }
-              );
+              const points = trace.depths
+                .map(
+                  (
+                    depth: number,
+                    i: number
+                  ): {
+                    x: number;
+                    y: number;
+                    value: number;
+                    depth: number;
+                    idx: number;
+                  } | null => {
+                    const value = trace.values[i];
+                    // Skip invalid data points
+                    if (typeof depth !== 'number' || isNaN(depth) ||
+                      typeof value !== 'number' || isNaN(value)) {
+                      return null;
+                    }
+                    const x =
+                      60 +
+                      ((value - minValue) / (maxValue - minValue)) * 880;
+                    const y =
+                      260 - ((depth - minDepth) / (maxDepth - minDepth)) * 240;
+                    // Check if calculated coordinates are valid
+                    if (isNaN(x) || isNaN(y)) {
+                      return null;
+                    }
+                    return { x, y, value, depth, idx: i };
+                  }
+                )
+                .filter((p): p is NonNullable<typeof p> => p !== null);
               const linePath = points
                 .map(
                   (p: { x: number; y: number }, i: number) =>
@@ -278,7 +306,7 @@ export function ChartCard({ dataUri }: ChartCardProps) {
                         cy={p.y}
                         r={
                           hovered?.traceIdx === traceIdx &&
-                          hovered?.pointIdx === i
+                            hovered?.pointIdx === i
                             ? 8
                             : 5
                         }
@@ -331,10 +359,10 @@ export function ChartCard({ dataUri }: ChartCardProps) {
                     {trace.float}
                   </div>
                   <div className="text-muted-foreground text-xs">
-                    Depth: {depth}m
+                    Depth: {typeof depth === 'number' && !isNaN(depth) ? depth.toFixed(1) : 'N/A'}m
                   </div>
                   <div className="text-muted-foreground text-xs">
-                    {chartData.variable}: {value.toFixed(2)} {chartData.units}
+                    {chartData.variable}: {typeof value === 'number' && !isNaN(value) ? value.toFixed(2) : 'N/A'} {chartData.units}
                   </div>
                 </div>
               );
@@ -346,10 +374,10 @@ export function ChartCard({ dataUri }: ChartCardProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 text-xs text-muted-foreground bg-muted/20 rounded-lg p-2 sm:p-3">
         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
           <span className="whitespace-nowrap">
-            Range: {minValue.toFixed(2)} - {maxValue.toFixed(2)}{" "}
+            Range: {typeof minValue === 'number' && !isNaN(minValue) ? minValue.toFixed(2) : 'N/A'} - {typeof maxValue === 'number' && !isNaN(maxValue) ? maxValue.toFixed(2) : 'N/A'}{" "}
             {chartData.units}
           </span>
-          <span className="whitespace-nowrap">Max depth: {maxDepth}m</span>
+          <span className="whitespace-nowrap">Max depth: {typeof maxDepth === 'number' && !isNaN(maxDepth) ? maxDepth.toFixed(1) : 'N/A'}m</span>
         </div>
         <div className="text-center sm:text-right">
           {chartData.traces.reduce(

@@ -49,6 +49,41 @@ export function TableCard({ dataUri }: TableCardProps) {
 
   useEffect(() => {
     const loadTableData = async () => {
+      // Check if we have real backend data first
+      if (typeof window !== 'undefined' && (window as any).floatChatData?.table) {
+        const backendTableData = (window as any).floatChatData.table;
+        if (backendTableData && backendTableData.rows && backendTableData.rows.length > 0) {
+          // Convert backend format to component format
+          const formattedData: TableData = {
+            headers: backendTableData.columns || Object.keys(backendTableData.rows[0] || {}),
+            rows: backendTableData.rows.map((row: any) =>
+              (backendTableData.columns || Object.keys(row)).map((col: string) => {
+                const value = row[col];
+                // Format numeric values nicely
+                if (typeof value === 'number') {
+                  if (isNaN(value)) return 'N/A';
+                  // Format floats with 2 decimal places, integers as-is
+                  return Number.isInteger(value) ? String(value) : value.toFixed(2);
+                }
+                // Handle null/undefined
+                if (value === null || value === undefined) return 'N/A';
+                // Convert to string
+                return String(value);
+              })
+            ),
+            metadata: {
+              totalRows: backendTableData.rows.length,
+              source: "FloatChat Backend - Real-time Data",
+              lastUpdated: new Date().toISOString(),
+            },
+          };
+          setTableData(formattedData);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Fallback to demo data only if no real data available
       if (!dataUri) {
         setTableData({
           headers: [
@@ -169,8 +204,8 @@ export function TableCard({ dataUri }: TableCardProps) {
         sortDirection === "asc"
           ? "desc"
           : sortDirection === "desc"
-          ? null
-          : "asc"
+            ? null
+            : "asc"
       );
       if (sortDirection === "desc") {
         setSortColumn(null);
@@ -232,7 +267,7 @@ export function TableCard({ dataUri }: TableCardProps) {
           .map((cell) =>
             // Escape quotes and wrap in quotes if contains comma, quote, or newline
             typeof cell === "string" &&
-            (cell.includes(",") || cell.includes('"') || cell.includes("\n"))
+              (cell.includes(",") || cell.includes('"') || cell.includes("\n"))
               ? `"${cell.replace(/"/g, '""')}"`
               : cell
           )

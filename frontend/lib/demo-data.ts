@@ -1,4 +1,6 @@
 // Demo data service for FloatChat
+// NOTE: This is FALLBACK data only. All visualization components should prioritize
+// real backend data from window.floatChatData before using this demo data.
 export interface DemoDataResponse {
   map?: any
   globe?: any

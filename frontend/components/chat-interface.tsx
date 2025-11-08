@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Send, MessageCircle, BarChart3 } from "lucide-react";
+import { Send, Loader2, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -24,11 +24,13 @@ interface ChatInterfaceProps {
 
 interface ChatMessage {
   id: string;
-  type: "user" | "assistant";
+  type: "user" | "assistant" | "error";
   content: string;
   timestamp: Date;
   isDetailedDescription?: boolean;
   questionId?: string;
+  sqlQuery?: string;
+  resultCount?: number;
 }
 
 export function ChatInterface({
@@ -41,9 +43,9 @@ export function ChatInterface({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [showQueryId, setShowQueryId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [usedSuggestions, setUsedSuggestions] = useState<string[]>([]);
-  // Compact suggestion indices state
   const [suggestionIndices, setSuggestionIndices] = useState([0, 1]);
 
   // Detect mobile viewport
@@ -83,77 +85,142 @@ export function ChatInterface({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isLoading) return;
 
-    // Find matching demo question
-    const matchedQuestion = demoData.demo_questions.find(
-      (q) => q.prompt.toLowerCase() === inputValue.toLowerCase()
-    ) as DemoQuestion | undefined;
+    const userQuery = inputValue;
 
-    if (matchedQuestion) {
-      // Add user message
-      const userMessage: ChatMessage = {
-        id: Date.now().toString(),
-        type: "user",
-        content: inputValue,
-        timestamp: new Date(),
-      };
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      type: "user",
+      content: userQuery,
+      timestamp: new Date(),
+    };
 
-      setMessages((prev) => [...prev, userMessage]);
-      setInputValue("");
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue("");
+    setIsLoading(true);
 
-      // Submit the question
-      onQuestionSubmit(matchedQuestion);
+    try {
+      // Call the real backend API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: userQuery,
+          user_id: 'user_' + Date.now(),
+          use_rag: true,
+        }),
+      });
 
-      // Add assistant response after delay
-      setTimeout(() => {
+      if (!response.ok) {
+        throw new Error('Failed to process query');
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Add assistant response with summary
         const assistantMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           type: "assistant",
-          content:
-            "I found relevant data for your query. Check the report panel for detailed analysis.",
+          content: data.processed_data?.summary || "Query executed successfully.",
           timestamp: new Date(),
-          questionId: matchedQuestion.id,
+          sqlQuery: data.sql_query,
+          resultCount: data.raw_data?.length || 0,
         };
-        setMessages((prev) => [...prev, assistantMessage]);
-        setShowQueryId(null);
 
-        // Add detailed description after another delay if available
-        if (matchedQuestion.detailedDescription) {
+        setMessages((prev) => [...prev, assistantMessage]);
+
+        // Add detailed explanation if available
+        if (data.processed_data?.explanation) {
           setTimeout(() => {
-            const descriptionMessage: ChatMessage = {
+            const explanationMessage: ChatMessage = {
               id: (Date.now() + 2).toString(),
               type: "assistant",
-              content: matchedQuestion.detailedDescription!,
+              content: data.processed_data.explanation,
               timestamp: new Date(),
               isDetailedDescription: true,
-              questionId: matchedQuestion.id,
             };
-            setMessages((prev) => [...prev, descriptionMessage]);
-          }, 2500);
+            setMessages((prev) => [...prev, explanationMessage]);
+          }, 500);
         }
-      }, 1500);
-    } else {
-      // Handle unrecognized question
-      const userMessage: ChatMessage = {
-        id: Date.now().toString(),
-        type: "user",
-        content: inputValue,
-        timestamp: new Date(),
-      };
 
-      const assistantMessage: ChatMessage = {
+        // Store the data globally for visualization components
+        if (typeof window !== 'undefined') {
+          (window as any).floatChatData = {
+            map: data.processed_data?.map_data,
+            chart: data.processed_data?.chart_data,
+            table: data.processed_data?.table_data,
+            heatmap: data.processed_data?.heatmap_data,
+            raw: data.raw_data
+          };
+        }
+
+        // Create a demo question from the real data to trigger visualizations
+        const syntheticQuestion: DemoQuestion = {
+          id: 'real_' + Date.now(),
+          prompt: userQuery,
+          primaryContentType: 'map',
+          detailedDescription: data.processed_data?.explanation,
+          cards: []
+        };
+
+        // ALWAYS add 3D Globe and 2D Map as first cards (they will use real data or fall back to demo)
+        syntheticQuestion.cards.push({
+          type: 'globe',
+          title: 'Float Locations - 3D Globe View',
+          dataUri: '/demo/maps/real_data.json'
+        });
+        syntheticQuestion.cards.push({
+          type: 'flat-map',
+          title: 'Float Locations - 2D Map',
+          dataUri: '/demo/maps/real_data.json'
+        });
+
+        // Add other cards based on available data
+        if (data.processed_data?.chart_data?.traces?.length > 0) {
+          syntheticQuestion.cards.push({
+            type: 'chart',
+            title: 'Depth Profiles',
+            dataUri: '/demo/charts/real_data.json'
+          });
+        }
+
+        if (data.processed_data?.table_data?.rows?.length > 0) {
+          syntheticQuestion.cards.push({
+            type: 'table',
+            title: 'Data Table',
+            dataUri: '/demo/tables/real_data.json'
+          });
+        }
+
+        syntheticQuestion.cards.push({
+          type: 'summary',
+          title: 'Query Summary',
+          text: data.processed_data?.summary || 'Query executed successfully',
+          provenance: ['Real-time data from Supabase']
+        });
+
+        // Trigger visualization panel
+        onQuestionSubmit(syntheticQuestion);
+      } else {
+        throw new Error(data.error || 'Query failed');
+      }
+    } catch (error) {
+      const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        type: "assistant",
-        content:
-          "I'm sorry, I don't recognize that question. Please try one of the suggested demo questions.",
+        type: "error",
+        content: error instanceof Error ? error.message : "An error occurred while processing your query.",
         timestamp: new Date(),
       };
-
-      setMessages((prev) => [...prev, userMessage, assistantMessage]);
-      setInputValue("");
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -333,7 +400,7 @@ export function ChatInterface({
         )}
 
         {/* Chat Messages */}
-        {messages.map((message, idx) => {
+        {!isLanding && messages.map((message, idx) => {
           const isAssistant = message.type === "assistant";
           let matchedQuestion: DemoQuestion | undefined = undefined;
           const isLastNonDescriptionAssistant =
@@ -362,9 +429,11 @@ export function ChatInterface({
                 className={`${message.isDetailedDescription ? "max-w-[95%]" : "max-w-[80%]"
                   } rounded-2xl px-4 py-3 ${message.type === "user"
                     ? "bg-primary text-primary-foreground"
-                    : message.isDetailedDescription
-                      ? "bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 text-card-foreground border border-blue-200 dark:border-blue-800"
-                      : "bg-card text-card-foreground border border-border"
+                    : message.type === "error"
+                      ? "bg-destructive/10 text-destructive border border-destructive"
+                      : message.isDetailedDescription
+                        ? "bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 text-card-foreground border border-blue-200 dark:border-blue-800"
+                        : "bg-card text-card-foreground border border-border"
                   }`}
               >
                 {message.isDetailedDescription ? (
@@ -405,38 +474,55 @@ export function ChatInterface({
                     minute: "2-digit",
                   })}
                 </p>
-                {/* Query toggle for the last non-description assistant message */}
-                {isLastNonDescriptionAssistant &&
-                  matchedQuestion &&
-                  !message.isDetailedDescription && (
-                    <div className="mt-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs border-border"
-                        onClick={() =>
-                          setShowQueryId(
-                            showQueryId === matchedQuestion.id
-                              ? null
-                              : matchedQuestion.id
-                          )
-                        }
-                      >
-                        {showQueryId === matchedQuestion.id
-                          ? "Hide Query"
-                          : "Show Query"}
-                      </Button>
-                      {showQueryId === matchedQuestion.id && (
-                        <div className="mt-2 p-2 rounded bg-muted text-xs font-mono whitespace-pre-wrap border border-border">
-                          {matchedQuestion.querieGenerated}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                {/* Query toggle for SQL display */}
+                {message.sqlQuery && message.type === "assistant" && (
+                  <div className="mt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs border-border"
+                      onClick={() =>
+                        setShowQueryId(
+                          showQueryId === message.id ? null : message.id
+                        )
+                      }
+                    >
+                      {showQueryId === message.id ? "Hide Query" : "Show Query"}
+                    </Button>
+                    {showQueryId === message.id && (
+                      <div className="mt-2 p-2 rounded bg-muted text-xs font-mono whitespace-pre-wrap border border-border">
+                        {message.sqlQuery}
+                      </div>
+                    )}
+                  </div>
+                )}
+                {/* Show result count if available */}
+                {message.resultCount !== undefined && message.resultCount > 0 && (
+                  <div className="mt-1 text-xs opacity-70">
+                    Found {message.resultCount} records
+                  </div>
+                )}
               </div>
             </motion.div>
           );
         })}
+
+        {/* Loading indicator */}
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex justify-start"
+          >
+            <div className="bg-card text-card-foreground border border-border rounded-2xl px-4 py-3">
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-sm">Processing your query...</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
 
