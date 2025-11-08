@@ -712,10 +712,7 @@ floatchat/
 │   ├── package.json               # Node dependencies
 │   └── .env.local                 # Environment variables
 ├── start_floatchat.sh             # Startup script
-├── README.md                      # This file (comprehensive docs)
-├── DEPLOYMENT_CHECKLIST.md        # Production deployment guide
-├── LLM_IMPLEMENTATION_SUMMARY.md  # LLM architecture details
-└── VISUAL_GUIDE.md                # Visual documentation
+└── README.md                      # Complete documentation
 ```
 
 ---
