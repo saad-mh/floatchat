@@ -884,57 +884,6 @@ NEXT_PUBLIC_API_URL=https://floatchat-backend.herokuapp.com
 
 ---
 
-## 📝 License
-
-This project is developed for INCOIS/MoES (Ministry of Earth Sciences, India).
-
----
-
-## 👥 Team
-
-**Team Picasso**
-- [Saad](https://github.com/saad-mh) - Project Lead
-- [Khushi](https://github.com/khushimehta18) - Frontend Developer
-- [Nirmalya](https://github.com/devniru2704) - Backend Developer
-- [Ariyan](https://github.com/ariyan-cmd) - Data Engineer
-- [Priyan](https://github.com/priyan212) - Full Stack Developer
-- [Mizan](https://github.com/octopus) - DevOps Engineer
-
----
-
-## 🙏 Acknowledgments
-
-- **Ministry of Earth Sciences (MoES)**
-- **Indian National Centre for Ocean Information Services (INCOIS)**
-- **Argo Program** - Global ocean observing system
-- **Ifremer** - Argo data distribution
-- **HuggingFace** - LLM infrastructure
-- **Supabase** - Database platform
-- **Upstash** - Vector database
-
----
-
-## 📞 Support
-
-For issues or questions:
-- 📧 Email: support@floatchat.com
-- 🐛 Issues: [GitHub Issues](https://github.com/your-org/floatchat/issues)
-- 📚 Docs: [Full Documentation](https://docs.floatchat.com)
-- 💬 Discord: [Join our community](https://discord.gg/floatchat)
-
----
-
-## 🔗 Related Links
-
-- [Indian Argo Project](https://incois.gov.in/OON/index.jsp)
-- [Argo Data](https://data-argo.ifremer.fr/dac/aoml/)
-- [Argo Program](https://argo.ucsd.edu/)
-- [INCOIS](https://incois.gov.in/)
-
----
-
----
-
 ## 🐳 Docker Setup & Deployment
 
 ### Docker is Ready!
@@ -1196,4 +1145,57 @@ vercel deploy --prod
 
 ---
 
+
+---
+
+## 📝 License
+
+This project is developed for INCOIS/MoES (Ministry of Earth Sciences, India).
+
+---
+
+## 👥 Team
+
+**Team Picasso**
+- [Saad](https://github.com/saad-mh) - Project Lead
+- [Khushi](https://github.com/khushimehta18) - Frontend Developer
+- [Nirmalya](https://github.com/devniru2704) - Backend Developer
+- [Ariyan](https://github.com/ariyan-cmd) - Data Engineer
+- [Priyan](https://github.com/priyan212) - Full Stack Developer
+- [Mizan](https://github.com/octopus) - DevOps Engineer
+
+---
+
+## 🙏 Acknowledgments
+
+- **Ministry of Earth Sciences (MoES)**
+- **Indian National Centre for Ocean Information Services (INCOIS)**
+- **Argo Program** - Global ocean observing system
+- **Ifremer** - Argo data distribution
+- **HuggingFace** - LLM infrastructure
+- **Supabase** - Database platform
+- **Upstash** - Vector database
+
+---
+
+## 📞 Support
+
+For issues or questions:
+- 📧 Email: support@floatchat.com
+- 🐛 Issues: [GitHub Issues](https://github.com/your-org/floatchat/issues)
+- 📚 Docs: [Full Documentation](https://docs.floatchat.com)
+- 💬 Discord: [Join our community](https://discord.gg/floatchat)
+
+---
+
+## 🔗 Related Links
+
+- [Indian Argo Project](https://incois.gov.in/OON/index.jsp)
+- [Argo Data](https://data-argo.ifremer.fr/dac/aoml/)
+- [Argo Program](https://argo.ucsd.edu/)
+- [INCOIS](https://incois.gov.in/)
+
+---
+
 **Made with ❤️ for ocean science**
+
