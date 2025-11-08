@@ -653,7 +653,7 @@ SQL Query:"""
         return viz_data
     
     def _prepare_map_data(self, df: pd.DataFrame) -> Dict[str, Any]:
-        """Prepare data for map visualization"""
+        """Prepare data for map visualization with deduplication"""
         print(f"📍 Preparing map data from {len(df)} rows...")
         print(f"Columns available: {df.columns.tolist()}")
         
@@ -661,86 +661,180 @@ SQL Query:"""
             print("⚠️ No latitude/longitude columns found")
             return {"markers": []}
         
-        # Group by float_id to get unique locations
+        # Group by float_id and get average location (or first valid location)
         markers = []
-        seen_floats = set()
         
-        for _, row in df.iterrows():
-            lat = row.get('latitude')
-            lon = row.get('longitude')
-            float_id = row.get('float_id', 'Unknown')
-            
-            if pd.notna(lat) and pd.notna(lon):
-                # Only add each float once (use first occurrence)
-                if float_id not in seen_floats:
-                    seen_floats.add(float_id)
-                    
-                    # Build popup with available data
-                    popup_parts = [f"Float: {float_id}"]
-                    if 'cycle_number' in row and pd.notna(row['cycle_number']):
-                        popup_parts.append(f"Cycle: {row['cycle_number']}")
-                    if 'psal_adjusted' in row and pd.notna(row['psal_adjusted']):
-                        popup_parts.append(f"Salinity: {row['psal_adjusted']:.2f} PSU")
-                    if 'temp_adjusted' in row and pd.notna(row['temp_adjusted']):
-                        popup_parts.append(f"Temp: {row['temp_adjusted']:.2f} °C")
-                    
+        if 'float_id' in df.columns:
+            for float_id in df['float_id'].unique():
+                float_df = df[df['float_id'] == float_id]
+                
+                # Get first valid location
+                valid_locs = float_df[float_df['latitude'].notna() & float_df['longitude'].notna()]
+                if len(valid_locs) == 0:
+                    continue
+                
+                first_loc = valid_locs.iloc[0]
+                lat = first_loc['latitude']
+                lon = first_loc['longitude']
+                
+                # Build popup with aggregated data
+                popup_parts = [f"Float: {float_id}"]
+                
+                if 'cycle_number' in float_df.columns:
+                    cycles = float_df['cycle_number'].nunique()
+                    popup_parts.append(f"Cycles: {cycles}")
+                
+                if 'psal_adjusted' in float_df.columns:
+                    sal_data = float_df['psal_adjusted'].dropna()
+                    if len(sal_data) > 0:
+                        popup_parts.append(f"Salinity: {sal_data.mean():.2f} PSU (avg)")
+                
+                if 'temp_adjusted' in float_df.columns:
+                    temp_data = float_df['temp_adjusted'].dropna()
+                    if len(temp_data) > 0:
+                        popup_parts.append(f"Temp: {temp_data.mean():.2f} °C (avg)")
+                
+                markers.append({
+                    "lat": float(lat),
+                    "lon": float(lon),
+                    "label": str(float_id),
+                    "popup": "<br>".join(popup_parts),
+                    "id": str(float_id)
+                })
+        else:
+            # No float_id, just show unique locations
+            unique_locs = df[['latitude', 'longitude']].drop_duplicates()
+            for idx, row in unique_locs.iterrows():
+                if pd.notna(row['latitude']) and pd.notna(row['longitude']):
                     markers.append({
-                        "lat": float(lat),
-                        "lon": float(lon),
-                        "label": str(float_id),
-                        "popup": "<br>".join(popup_parts),
-                        "id": str(float_id)
+                        "lat": float(row['latitude']),
+                        "lon": float(row['longitude']),
+                        "label": f"Location {idx}",
+                        "popup": f"Lat: {row['latitude']:.2f}, Lon: {row['longitude']:.2f}",
+                        "id": str(idx)
                     })
         
-        print(f"✅ Created {len(markers)} map markers")
+        print(f"✅ Created {len(markers)} unique map markers")
         return {"markers": markers}
     
     def _prepare_chart_data(self, df: pd.DataFrame) -> Dict[str, Any]:
-        """Prepare data for chart visualization"""
+        """Prepare data for chart visualization with smart variable detection"""
         chart_data = {}
         
+        print(f"📊 Preparing chart data from {len(df)} rows...")
+        print(f"Columns: {df.columns.tolist()}")
+        
         # Check for profile data (depth vs parameter)
-        if 'pres_adjusted' in df.columns:
-            # Group by float_id for multiple profiles
-            if 'float_id' in df.columns:
-                traces = []
-                for float_id in df['float_id'].unique():
-                    float_df = df[df['float_id'] == float_id]
+        if 'pres_adjusted' not in df.columns:
+            print("⚠️ No pressure/depth data found")
+            return chart_data
+        
+        if 'float_id' not in df.columns:
+            print("⚠️ No float_id column found")
+            return chart_data
+        
+        # Determine which variables to plot based on available data
+        has_salinity = 'psal_adjusted' in df.columns and df['psal_adjusted'].notna().any()
+        has_temperature = 'temp_adjusted' in df.columns and df['temp_adjusted'].notna().any()
+        
+        print(f"Has salinity: {has_salinity}, Has temperature: {has_temperature}")
+        
+        traces = []
+        unique_floats = df['float_id'].unique()
+        
+        # Limit to reasonable number of floats for visualization (max 50)
+        if len(unique_floats) > 50:
+            print(f"⚠️ Too many floats ({len(unique_floats)}), limiting to 50")
+            unique_floats = unique_floats[:50]
+        
+        for float_id in unique_floats:
+            float_df = df[df['float_id'] == float_id].copy()
+            
+            # Remove duplicates - keep one measurement per depth
+            float_df = float_df.drop_duplicates(subset=['pres_adjusted'], keep='first')
+            
+            # Sort by depth
+            float_df = float_df.sort_values('pres_adjusted')
+            
+            # Remove NaN values
+            float_df = float_df[float_df['pres_adjusted'].notna()]
+            
+            if len(float_df) == 0:
+                continue
+            
+            # Create traces based on available data
+            if has_salinity:
+                sal_data = float_df[float_df['psal_adjusted'].notna()]
+                if len(sal_data) > 0:
+                    # Convert to list and replace any remaining NaN/Inf
+                    depths = sal_data['pres_adjusted'].replace([np.inf, -np.inf], None).tolist()
+                    values = sal_data['psal_adjusted'].replace([np.inf, -np.inf], None).tolist()
                     
-                    # Salinity profile
-                    if 'psal_adjusted' in float_df.columns:
+                    # Filter out None values
+                    clean_data = [(d, v) for d, v in zip(depths, values) if d is not None and v is not None]
+                    if clean_data:
+                        depths, values = zip(*clean_data)
                         trace = {
                             "id": f"{float_id}_salinity",
-                            "float": float_id,
-                            "depths": float_df['pres_adjusted'].dropna().tolist(),
-                            "values": float_df['psal_adjusted'].dropna().tolist()
+                            "float": str(float_id),
+                            "variable": "Salinity",
+                            "depths": list(depths),
+                            "values": list(values),
+                            "units": "PSU"
                         }
                         traces.append(trace)
+            
+            if has_temperature:
+                temp_data = float_df[float_df['temp_adjusted'].notna()]
+                if len(temp_data) > 0:
+                    # Convert to list and replace any remaining NaN/Inf
+                    depths = temp_data['pres_adjusted'].replace([np.inf, -np.inf], None).tolist()
+                    values = temp_data['temp_adjusted'].replace([np.inf, -np.inf], None).tolist()
                     
-                    # Temperature profile
-                    if 'temp_adjusted' in float_df.columns:
+                    # Filter out None values
+                    clean_data = [(d, v) for d, v in zip(depths, values) if d is not None and v is not None]
+                    if clean_data:
+                        depths, values = zip(*clean_data)
                         trace = {
                             "id": f"{float_id}_temperature",
-                            "float": float_id,
-                            "depths": float_df['pres_adjusted'].dropna().tolist(),
-                            "values": float_df['temp_adjusted'].dropna().tolist()
+                            "float": str(float_id),
+                            "variable": "Temperature",
+                            "depths": list(depths),
+                            "values": list(values),
+                            "units": "°C"
                         }
                         traces.append(trace)
-                
-                chart_data["traces"] = traces
-                chart_data["variable"] = "Salinity" if 'psal_adjusted' in df.columns else "Temperature"
-                chart_data["units"] = "PSU" if 'psal_adjusted' in df.columns else "°C"
+        
+        if traces:
+            chart_data["traces"] = traces
+            # Set primary variable based on what's available
+            if has_salinity and has_temperature:
+                chart_data["variable"] = "Multiple"
+                chart_data["units"] = "Mixed"
+            elif has_salinity:
+                chart_data["variable"] = "Salinity"
+                chart_data["units"] = "PSU"
+            elif has_temperature:
+                chart_data["variable"] = "Temperature"
+                chart_data["units"] = "°C"
+            
+            print(f"✅ Created {len(traces)} chart traces")
+        else:
+            print("⚠️ No valid chart data created")
         
         return chart_data
     
     def _prepare_table_data(self, df: pd.DataFrame) -> Dict[str, Any]:
         """Prepare data for table visualization"""
-        # Limit to first 100 rows for display
-        display_df = df.head(100)
+        # Replace NaN/Inf with None for JSON compatibility
+        df_clean = df.replace([np.inf, -np.inf], None)
+        df_clean = df_clean.where(pd.notna(df_clean), None)
         
+        # Return ALL rows - no limit
         return {
-            "columns": display_df.columns.tolist(),
-            "rows": display_df.to_dict(orient='records')
+            "columns": df_clean.columns.tolist(),
+            "rows": df_clean.to_dict(orient='records'),
+            "total_rows": len(df_clean)
         }
     
     def _generate_summary(self, df: pd.DataFrame, query: str) -> str:

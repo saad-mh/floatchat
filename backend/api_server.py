@@ -5,17 +5,53 @@ Provides REST API endpoints with RAG, streaming, history, and export
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.responses import StreamingResponse, FileResponse, JSONResponse
 from pydantic import BaseModel
 from typing import Optional, Dict, Any, List
 import uvicorn
 import os
+import json
+import numpy as np
+import pandas as pd
 from dotenv import load_dotenv
 
 # Import enhanced engine with RAG
 from enhanced_llm_engine import EnhancedLLMEngine
 
 load_dotenv()
+
+# Custom JSON encoder to handle NaN/Inf values
+def clean_nan_values(obj):
+    """Recursively clean NaN/Inf values from nested structures"""
+    if isinstance(obj, dict):
+        return {k: clean_nan_values(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nan_values(item) for item in obj]
+    elif isinstance(obj, float):
+        if np.isnan(obj) or np.isinf(obj):
+            return None
+        return obj
+    elif isinstance(obj, (np.integer, np.floating)):
+        if np.isnan(obj) or np.isinf(obj):
+            return None
+        return obj.item()
+    elif isinstance(obj, np.ndarray):
+        return clean_nan_values(obj.tolist())
+    elif pd.isna(obj):
+        return None
+    return obj
+
+class NaNSafeJSONResponse(JSONResponse):
+    def render(self, content: Any) -> bytes:
+        # Clean NaN values before JSON serialization
+        cleaned_content = clean_nan_values(content)
+        return json.dumps(
+            cleaned_content,
+            ensure_ascii=False,
+            allow_nan=True,  # Allow but we've already cleaned them
+            indent=None,
+            separators=(",", ":"),
+        ).encode("utf-8")
 
 app = FastAPI(
     title="FloatChat Enhanced API",
@@ -117,8 +153,8 @@ def get_engine():
 
 
 # Query Endpoints
-@app.post("/query")
-@app.post("/api/chat")  # Add alias for frontend compatibility
+@app.post("/query", response_class=NaNSafeJSONResponse)
+@app.post("/api/chat", response_class=NaNSafeJSONResponse)  # Add alias for frontend compatibility
 async def process_query(request: QueryRequest):
     """
     Process natural language query with RAG
