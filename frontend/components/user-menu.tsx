@@ -30,10 +30,31 @@ export function UserMenu() {
 
     if (isGuest) {
         return (
-            <div className="flex items-center space-x-2 px-3 py-2 bg-secondary/50 rounded-lg">
-                <UserCircle className="h-5 w-5 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Guest Mode</span>
-            </div>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="ghost"
+                        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 h-auto bg-secondary/50 hover:bg-secondary/70 rounded-lg"
+                    >
+                        <UserCircle className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground flex-shrink-0" />
+                        <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Guest</span>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40" align="end">
+                    <DropdownMenuItem asChild>
+                        <Link href="/auth?mode=login" className="flex items-center cursor-pointer">
+                            <LogOut className="mr-2 h-4 w-4" />
+                            <span>Log In</span>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/auth?mode=signup" className="flex items-center cursor-pointer">
+                            <User className="mr-2 h-4 w-4" />
+                            <span>Sign Up</span>
+                        </Link>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
         );
     }
 
