@@ -183,13 +183,27 @@ export function ChatInterface({
         });
 
         // Add other cards based on available data
-        if (data.processed_data?.chart_data?.traces?.length > 0) {
-          syntheticQuestion.cards.push({
-            type: 'chart',
-            title: 'Depth Profiles',
-            dataUri: '/demo/charts/real_data.json'
-          });
-        }
+        console.log('[ChatInterface] Checking chart_data:', data.processed_data?.chart_data);
+        console.log('[ChatInterface] Has salinity?', data.processed_data?.chart_data?.salinity);
+        console.log('[ChatInterface] Has temperature?', data.processed_data?.chart_data?.temperature);
+        console.log('[ChatInterface] Has pressure?', data.processed_data?.chart_data?.pressure);
+
+        // Check for new format (salinity/temperature/pressure) or old format (traces)
+        const hasChartData = data.processed_data?.chart_data && (
+          data.processed_data.chart_data.salinity?.available ||
+          data.processed_data.chart_data.temperature?.available ||
+          data.processed_data.chart_data.pressure?.available ||
+          (data.processed_data.chart_data.traces && data.processed_data.chart_data.traces.length > 0)
+        );
+
+        console.log('[ChatInterface] hasChartData:', hasChartData);
+
+        // ALWAYS add chart card - it will show available tabs
+        syntheticQuestion.cards.push({
+          type: 'chart',
+          title: 'Depth Profiles',
+          dataUri: '/demo/charts/real_data.json'
+        });
 
         if (data.processed_data?.table_data?.rows?.length > 0) {
           syntheticQuestion.cards.push({

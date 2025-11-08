@@ -67,6 +67,16 @@ export function LLMChatInterface({ onDataReceived }: LLMChatInterfaceProps) {
 
                 setMessages((prev) => [...prev, assistantMessage]);
 
+                // Store data globally for chart components
+                if (typeof window !== 'undefined' && response.processed_data) {
+                    (window as any).floatChatData = {
+                        chart: response.processed_data.chart_data,
+                        map: response.processed_data.map_data,
+                        table: response.processed_data.table_data,
+                        summary: response.processed_data.summary
+                    };
+                }
+
                 // Notify parent component
                 if (onDataReceived) {
                     onDataReceived(response);

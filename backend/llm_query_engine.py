@@ -718,8 +718,12 @@ SQL Query:"""
         return {"markers": markers}
     
     def _prepare_chart_data(self, df: pd.DataFrame) -> Dict[str, Any]:
-        """Prepare data for chart visualization with smart variable detection"""
-        chart_data = {}
+        """Prepare SEPARATE datasets for salinity, temperature, and pressure"""
+        chart_data = {
+            "salinity": {"traces": [], "available": False},
+            "temperature": {"traces": [], "available": False},
+            "pressure": {"traces": [], "available": False}
+        }
         
         print(f"📊 Preparing chart data from {len(df)} rows...")
         print(f"Columns: {df.columns.tolist()}")
@@ -733,19 +737,19 @@ SQL Query:"""
             print("⚠️ No float_id column found")
             return chart_data
         
-        # Determine which variables to plot based on available data
+        # Check which variables are available
         has_salinity = 'psal_adjusted' in df.columns and df['psal_adjusted'].notna().any()
         has_temperature = 'temp_adjusted' in df.columns and df['temp_adjusted'].notna().any()
+        has_pressure = 'pres_adjusted' in df.columns and df['pres_adjusted'].notna().any()
         
-        print(f"Has salinity: {has_salinity}, Has temperature: {has_temperature}")
+        print(f"Available: Salinity={has_salinity}, Temperature={has_temperature}, Pressure={has_pressure}")
         
-        traces = []
         unique_floats = df['float_id'].unique()
         
-        # Limit to reasonable number of floats for visualization (max 50)
-        if len(unique_floats) > 50:
-            print(f"⚠️ Too many floats ({len(unique_floats)}), limiting to 50")
-            unique_floats = unique_floats[:50]
+        # Limit to reasonable number of floats (max 100 since they'll be hidden by default)
+        if len(unique_floats) > 100:
+            print(f"⚠️ Too many floats ({len(unique_floats)}), limiting to 100")
+            unique_floats = unique_floats[:100]
         
         for float_id in unique_floats:
             float_df = df[df['float_id'] == float_id].copy()
@@ -756,71 +760,93 @@ SQL Query:"""
             # Sort by depth
             float_df = float_df.sort_values('pres_adjusted')
             
-            # Remove NaN values
+            # Remove NaN values from depth
             float_df = float_df[float_df['pres_adjusted'].notna()]
             
             if len(float_df) == 0:
                 continue
             
-            # Create traces based on available data
+            # SALINITY traces (Salinity vs Depth)
             if has_salinity:
                 sal_data = float_df[float_df['psal_adjusted'].notna()]
                 if len(sal_data) > 0:
-                    # Convert to list and replace any remaining NaN/Inf
                     depths = sal_data['pres_adjusted'].replace([np.inf, -np.inf], None).tolist()
                     values = sal_data['psal_adjusted'].replace([np.inf, -np.inf], None).tolist()
                     
-                    # Filter out None values
                     clean_data = [(d, v) for d, v in zip(depths, values) if d is not None and v is not None]
                     if clean_data:
                         depths, values = zip(*clean_data)
-                        trace = {
+                        chart_data["salinity"]["traces"].append({
                             "id": f"{float_id}_salinity",
                             "float": str(float_id),
-                            "variable": "Salinity",
                             "depths": list(depths),
                             "values": list(values),
-                            "units": "PSU"
-                        }
-                        traces.append(trace)
+                            "visible": False  # Hidden by default
+                        })
             
+            # TEMPERATURE traces (Temperature vs Depth)
             if has_temperature:
                 temp_data = float_df[float_df['temp_adjusted'].notna()]
                 if len(temp_data) > 0:
-                    # Convert to list and replace any remaining NaN/Inf
                     depths = temp_data['pres_adjusted'].replace([np.inf, -np.inf], None).tolist()
                     values = temp_data['temp_adjusted'].replace([np.inf, -np.inf], None).tolist()
                     
-                    # Filter out None values
                     clean_data = [(d, v) for d, v in zip(depths, values) if d is not None and v is not None]
                     if clean_data:
                         depths, values = zip(*clean_data)
-                        trace = {
+                        chart_data["temperature"]["traces"].append({
                             "id": f"{float_id}_temperature",
                             "float": str(float_id),
-                            "variable": "Temperature",
                             "depths": list(depths),
                             "values": list(values),
-                            "units": "°C"
-                        }
-                        traces.append(trace)
-        
-        if traces:
-            chart_data["traces"] = traces
-            # Set primary variable based on what's available
-            if has_salinity and has_temperature:
-                chart_data["variable"] = "Multiple"
-                chart_data["units"] = "Mixed"
-            elif has_salinity:
-                chart_data["variable"] = "Salinity"
-                chart_data["units"] = "PSU"
-            elif has_temperature:
-                chart_data["variable"] = "Temperature"
-                chart_data["units"] = "°C"
+                            "visible": False  # Hidden by default
+                        })
             
-            print(f"✅ Created {len(traces)} chart traces")
-        else:
-            print("⚠️ No valid chart data created")
+            # PRESSURE traces (Pressure vs Depth - same format as salinity/temperature)
+            if has_pressure:
+                pres_data = float_df[float_df['pres_adjusted'].notna()]
+                if len(pres_data) > 0:
+                    # For pressure, we plot pressure values vs depth (which is also pressure in dbar)
+                    # This shows the pressure profile at different depths
+                    depths = pres_data['pres_adjusted'].replace([np.inf, -np.inf], None).tolist()
+                    values = pres_data['pres_adjusted'].replace([np.inf, -np.inf], None).tolist()
+                    
+                    clean_data = [(d, v) for d, v in zip(depths, values) if d is not None and v is not None]
+                    if clean_data:
+                        depths, values = zip(*clean_data)
+                        chart_data["pressure"]["traces"].append({
+                            "id": f"{float_id}_pressure",
+                            "float": str(float_id),
+                            "depths": list(depths),
+                            "values": list(values),
+                            "visible": False  # Hidden by default
+                        })
+        
+        # Mark which datasets are available
+        chart_data["salinity"]["available"] = len(chart_data["salinity"]["traces"]) > 0
+        chart_data["temperature"]["available"] = len(chart_data["temperature"]["traces"]) > 0
+        chart_data["pressure"]["available"] = len(chart_data["pressure"]["traces"]) > 0
+        
+        # Add metadata
+        chart_data["salinity"]["variable"] = "Salinity"
+        chart_data["salinity"]["units"] = "PSU"
+        chart_data["salinity"]["xLabel"] = "Salinity (PSU)"
+        chart_data["salinity"]["yLabel"] = "Depth (m)"
+        
+        chart_data["temperature"]["variable"] = "Temperature"
+        chart_data["temperature"]["units"] = "°C"
+        chart_data["temperature"]["xLabel"] = "Temperature (°C)"
+        chart_data["temperature"]["yLabel"] = "Depth (m)"
+        
+        chart_data["pressure"]["variable"] = "Pressure"
+        chart_data["pressure"]["units"] = "dbar"
+        chart_data["pressure"]["xLabel"] = "Pressure (dbar)"
+        chart_data["pressure"]["yLabel"] = "Depth (m)"
+        
+        print(f"✅ Created chart data:")
+        print(f"   - Salinity: {len(chart_data['salinity']['traces'])} traces")
+        print(f"   - Temperature: {len(chart_data['temperature']['traces'])} traces")
+        print(f"   - Pressure: {len(chart_data['pressure']['traces'])} traces")
         
         return chart_data
     
@@ -838,60 +864,189 @@ SQL Query:"""
         }
     
     def _generate_summary(self, df: pd.DataFrame, query: str) -> str:
-        """Generate a text summary of the results"""
+        """Generate a detailed, contextual summary of the results"""
         summary_parts = []
         
         # Count statistics
-        summary_parts.append(f"Found {len(df)} records")
+        num_records = len(df)
+        summary_parts.append(f"Found **{num_records:,} records**")
         
         if 'float_id' in df.columns:
             unique_floats = df['float_id'].nunique()
-            summary_parts.append(f"from {unique_floats} float(s)")
+            summary_parts.append(f"from **{unique_floats} float(s)**")
         
-        # Parameter ranges
-        if 'psal_adjusted' in df.columns:
+        # Geographic context
+        if 'latitude' in df.columns and 'longitude' in df.columns:
+            lat_range = (df['latitude'].min(), df['latitude'].max())
+            lon_range = (df['longitude'].min(), df['longitude'].max())
+            
+            # Determine region
+            region = self._identify_region(lat_range, lon_range)
+            if region:
+                summary_parts.append(f"in the **{region}**")
+        
+        # Parameter ranges with context
+        if 'psal_adjusted' in df.columns and df['psal_adjusted'].notna().any():
             sal_min = df['psal_adjusted'].min()
             sal_max = df['psal_adjusted'].max()
-            summary_parts.append(f"Salinity range: {sal_min:.2f} to {sal_max:.2f} PSU")
+            sal_mean = df['psal_adjusted'].mean()
+            summary_parts.append(f"\n\n🌊 **Salinity**: {sal_min:.2f} to {sal_max:.2f} PSU (avg: {sal_mean:.2f} PSU)")
+            
+            # Add context about salinity values
+            if sal_mean < 34:
+                summary_parts.append("- Lower than typical ocean salinity, indicating freshwater influence or high precipitation")
+            elif sal_mean > 36:
+                summary_parts.append("- Higher than typical ocean salinity, indicating high evaporation or limited freshwater input")
         
-        if 'temp_adjusted' in df.columns:
+        if 'temp_adjusted' in df.columns and df['temp_adjusted'].notna().any():
             temp_min = df['temp_adjusted'].min()
             temp_max = df['temp_adjusted'].max()
-            summary_parts.append(f"Temperature range: {temp_min:.2f} to {temp_max:.2f} °C")
+            temp_mean = df['temp_adjusted'].mean()
+            summary_parts.append(f"\n\n🌡️ **Temperature**: {temp_min:.2f} to {temp_max:.2f} °C (avg: {temp_mean:.2f} °C)")
+            
+            # Add context about temperature
+            if temp_mean > 25:
+                summary_parts.append("- Warm tropical/subtropical waters")
+            elif temp_mean < 10:
+                summary_parts.append("- Cold waters, typical of deep ocean or polar regions")
         
-        return ". ".join(summary_parts) + "."
+        # Depth range
+        if 'pres_adjusted' in df.columns and df['pres_adjusted'].notna().any():
+            max_depth = df['pres_adjusted'].max()
+            summary_parts.append(f"\n\n🌊 **Depth Range**: Surface to {max_depth:.0f} meters")
+            
+            if max_depth > 2000:
+                summary_parts.append("- Deep ocean measurements capturing full water column structure")
+            elif max_depth > 1000:
+                summary_parts.append("- Measurements extend into intermediate depths")
+        
+        # Time context if available
+        if 'juld' in df.columns and df['juld'].notna().any():
+            # Julian date conversion (simplified)
+            date_range_days = df['juld'].max() - df['juld'].min()
+            if date_range_days > 365:
+                years = date_range_days / 365
+                summary_parts.append(f"\n\n📅 **Time Span**: Approximately {years:.1f} years of data")
+            elif date_range_days > 30:
+                months = date_range_days / 30
+                summary_parts.append(f"\n\n📅 **Time Span**: Approximately {months:.1f} months of data")
+        
+        return "".join(summary_parts)
+    
+    def _identify_region(self, lat_range: tuple, lon_range: tuple) -> str:
+        """Identify geographic region from lat/lon ranges"""
+        lat_min, lat_max = lat_range
+        lon_min, lon_max = lon_range
+        lat_center = (lat_min + lat_max) / 2
+        lon_center = (lon_min + lon_max) / 2
+        
+        # Arabian Sea
+        if 10 <= lat_center <= 25 and 60 <= lon_center <= 75:
+            return "Arabian Sea"
+        # Bay of Bengal
+        elif 5 <= lat_center <= 22 and 80 <= lon_center <= 95:
+            return "Bay of Bengal"
+        # Indian Ocean (general)
+        elif -40 <= lat_center <= 30 and 40 <= lon_center <= 120:
+            return "Indian Ocean"
+        # Equatorial region
+        elif -5 <= lat_center <= 5:
+            return "Equatorial Region"
+        # Tropical
+        elif -23.5 <= lat_center <= 23.5:
+            return "Tropical Region"
+        # Subtropical
+        elif 23.5 <= lat_center <= 40 or -40 <= lat_center <= -23.5:
+            return "Subtropical Region"
+        
+        return None
     
     def _generate_explanation(self, df: pd.DataFrame, query: str) -> str:
-        """Generate detailed explanation of the results"""
+        """Generate detailed, educational explanation of the results"""
         explanations = []
         
-        # Analyze what data we have
+        # Header
+        explanations.append("## 🔍 Detailed Analysis & Context\n")
+        
+        # Geographic context
         if 'latitude' in df.columns and 'longitude' in df.columns:
-            explanations.append("📍 **Geographic Distribution**: The data includes location information, which you can view on the interactive maps (2D and 3D globe views).")
+            unique_locs = df[['latitude', 'longitude']].drop_duplicates()
+            explanations.append(f"📍 **Geographic Distribution**: The data includes {len(unique_locs)} unique locations, which you can view on the interactive maps (2D and 3D globe views).")
         
+        # Oceanographic parameters
         if 'psal_adjusted' in df.columns or 'temp_adjusted' in df.columns:
-            explanations.append("📊 **Oceanographic Parameters**: The dataset contains measurements that can be visualized as depth profiles and charts.")
+            params = []
+            if 'psal_adjusted' in df.columns and df['psal_adjusted'].notna().any():
+                params.append("salinity")
+            if 'temp_adjusted' in df.columns and df['temp_adjusted'].notna().any():
+                params.append("temperature")
+            
+            if params:
+                param_str = " and ".join(params)
+                explanations.append(f"\n📊 **Oceanographic Parameters**: The dataset contains {param_str} measurements that can be visualized as depth profiles and charts.")
         
+        # Float coverage
         if 'float_id' in df.columns:
             unique_floats = df['float_id'].nunique()
-            explanations.append(f"🎯 **Float Coverage**: Data from {unique_floats} autonomous Argo floats, which continuously monitor ocean conditions.")
+            explanations.append(f"\n🎯 **Float Coverage**: Data from {unique_floats} autonomous Argo floats, which continuously monitor ocean conditions.")
+            
+            if unique_floats > 1:
+                explanations.append(f"Each float provides vertical profiles of the water column, allowing us to understand ocean structure and variability.")
         
+        # Depth range with context
         if 'pres_adjusted' in df.columns:
             max_depth = df['pres_adjusted'].max() if not df['pres_adjusted'].isna().all() else 0
             if max_depth > 0:
-                explanations.append(f"🌊 **Depth Range**: Measurements extend to approximately {max_depth:.0f} meters depth.")
+                explanations.append(f"\n🌊 **Depth Range**: Measurements extend to approximately {max_depth:.0f} meters depth.")
+                
+                if max_depth > 2000:
+                    explanations.append("This captures the full water column including deep ocean layers, revealing stratification, thermocline structure, and deep water properties.")
+                elif max_depth > 1000:
+                    explanations.append("This captures surface, intermediate, and some deep layers, showing the main thermocline and halocline structures.")
+                else:
+                    explanations.append("This focuses on the upper ocean layers where most biological activity and air-sea interaction occurs.")
         
-        # Add context based on query
-        if "salinity" in query.lower():
-            explanations.append("💧 **About Salinity**: Salinity (measured in PSU - Practical Salinity Units) indicates the salt content of seawater, crucial for understanding ocean circulation and climate patterns.")
+        # Query-specific context
+        query_lower = query.lower()
         
-        if "temperature" in query.lower():
-            explanations.append("🌡️ **About Temperature**: Ocean temperature profiles reveal thermal structure, mixing processes, and climate change impacts.")
+        if "salinity" in query_lower:
+            explanations.append("\n\n💧 **About Salinity**:")
+            explanations.append("- Measured in PSU (Practical Salinity Units)")
+            explanations.append("- Typical ocean salinity: 34-36 PSU")
+            explanations.append("- Affects ocean density, circulation, and mixing")
+            explanations.append("- Key indicator of evaporation, precipitation, and freshwater input")
+            explanations.append("- Critical for understanding thermohaline circulation and climate")
         
-        if not explanations:
-            explanations.append("📋 **Data Overview**: The results show Argo float data. Use the visualizations panel to explore maps, charts, and detailed tables.")
+        if "temperature" in query_lower:
+            explanations.append("\n\n🌡️ **About Temperature**:")
+            explanations.append("- Measured in degrees Celsius (°C)")
+            explanations.append("- Surface temperatures vary from -2°C (polar) to 30°C (tropical)")
+            explanations.append("- Reveals thermal structure and stratification")
+            explanations.append("- Indicates mixing processes and water mass origins")
+            explanations.append("- Essential for understanding heat transport and climate change")
         
-        return "\n\n".join(explanations)
+        if "arabian sea" in query_lower or "bay of bengal" in query_lower:
+            explanations.append("\n\n🌏 **Regional Context**:")
+            explanations.append("- This region is influenced by monsoon systems")
+            explanations.append("- Shows strong seasonal variability in temperature and salinity")
+            explanations.append("- Important for understanding Indian Ocean circulation")
+            explanations.append("- Affects regional climate and marine ecosystems")
+        
+        if "equator" in query_lower:
+            explanations.append("\n\n🌍 **Equatorial Context**:")
+            explanations.append("- Equatorial regions show minimal seasonal temperature variation")
+            explanations.append("- Strong upwelling can bring cold, nutrient-rich water to surface")
+            explanations.append("- Important for El Niño/La Niña dynamics")
+            explanations.append("- High biological productivity zones")
+        
+        # Data usage tips
+        explanations.append("\n\n💡 **How to Use This Data**:")
+        explanations.append("- **Maps**: Click markers to see float details and locations")
+        explanations.append("- **Charts**: Toggle individual float profiles on/off for comparison")
+        explanations.append("- **Table**: Sort and filter to find specific measurements")
+        explanations.append("- **Export**: Download data for further analysis")
+        
+        return "\n".join(explanations)
 
 
 # Convenience function
