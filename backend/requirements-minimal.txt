@@ -16,6 +16,7 @@ pandas==2.1.4
 # LLM (minimal - only what's needed)
 huggingface-hub==0.20.1
 langchain-core==0.1.10
+langchain-community==0.0.13
 
 # Vector DB and RAG (lightweight model)
 upstash-vector==0.3.0
