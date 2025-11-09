@@ -16,10 +16,19 @@ RUN apt-get update && apt-get install -y \
 
 # Copy requirements first for better caching
 COPY requirements.txt .
+COPY requirements-minimal.txt .
 
 # Install Python dependencies
+# Use minimal requirements for production to save memory
+ARG USE_MINIMAL=true
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    if [ "$USE_MINIMAL" = "true" ]; then \
+        echo "📦 Installing minimal dependencies for production..."; \
+        pip install --no-cache-dir -r requirements-minimal.txt; \
+    else \
+        echo "📦 Installing full dependencies..."; \
+        pip install --no-cache-dir -r requirements.txt; \
+    fi
 
 # Copy application code
 COPY . .

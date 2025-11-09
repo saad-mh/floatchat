@@ -32,27 +32,57 @@ class EnhancedLLMEngine:
     def __init__(self):
         """Initialize enhanced engine with all components"""
         self.base_engine = LLMQueryEngine()
-        # Enable all features (history uses separate database)
-        try:
-            self.rag_engine = RAGEngine()
-        except:
-            self.rag_engine = None
-            print("Warning: RAG engine disabled")
         
-        try:
-            self.conversation_manager = ConversationManager()
-        except:
+        # Disable heavy features in production to save memory
+        production_mode = os.getenv("PRODUCTION_MODE", "false").lower() == "true"
+        
+        if production_mode:
+            print("🚀 Production mode: Keeping RAG, disabling other heavy features")
+            # Keep RAG - it's essential
+            try:
+                self.rag_engine = RAGEngine()
+                print("✅ RAG engine enabled")
+            except Exception as e:
+                self.rag_engine = None
+                print(f"⚠️ RAG engine disabled: {e}")
+            
+            # Disable other heavy features
             self.conversation_manager = None
-            print("Warning: Conversation manager disabled")
-        
-        try:
-            self.history_manager = QueryHistoryManager()
-        except:
             self.history_manager = None
-            print("Warning: History manager disabled")
-        
-        self.export_engine = ExportEngine()
-        self.streaming_engine = StreamingEngine()
+            self.export_engine = None
+            self.streaming_engine = None
+            print("❌ Conversation, History, Export, Streaming disabled to save memory")
+        else:
+            # Enable all features (history uses separate database)
+            try:
+                self.rag_engine = RAGEngine()
+            except:
+                self.rag_engine = None
+                print("Warning: RAG engine disabled")
+            
+            try:
+                self.conversation_manager = ConversationManager()
+            except:
+                self.conversation_manager = None
+                print("Warning: Conversation manager disabled")
+            
+            try:
+                self.history_manager = QueryHistoryManager()
+            except:
+                self.history_manager = None
+                print("Warning: History manager disabled")
+            
+            try:
+                self.export_engine = ExportEngine()
+            except:
+                self.export_engine = None
+                print("Warning: Export engine disabled")
+            
+            try:
+                self.streaming_engine = StreamingEngine()
+            except:
+                self.streaming_engine = None
+                print("Warning: Streaming engine disabled")
     
     def process_query_with_rag(
         self,

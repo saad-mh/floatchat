@@ -1,0 +1,26 @@
+# Core API dependencies (minimal for production)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-dotenv==1.0.0
+python-multipart==0.0.6
+
+# Database
+supabase==2.3.0
+psycopg2-binary==2.9.9
+
+# Data processing (lightweight)
+numpy==1.26.2
+pandas==2.1.4
+
+# LLM (minimal - only what's needed)
+huggingface-hub==0.20.1
+langchain-core==0.1.10
+
+# Vector DB and RAG (lightweight model)
+upstash-vector==0.3.0
+sentence-transformers==2.2.2
+
+# Utilities
+requests==2.31.0
+aiohttp==3.9.1

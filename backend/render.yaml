@@ -9,6 +9,8 @@ services:
     envVars:
       - key: PORT
         value: 8000
+      - key: PRODUCTION_MODE
+        value: true
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
