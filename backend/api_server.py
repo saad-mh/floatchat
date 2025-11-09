@@ -62,7 +62,11 @@ app = FastAPI(
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=[
+        "https://floatchat-chi.vercel.app",  # Production frontend
+        "http://localhost:3000",              # Local development
+        "http://localhost:3001",              # Alternative local port
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
