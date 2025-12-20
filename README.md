@@ -28,7 +28,7 @@
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start.
 
 ### Prerequisites
 - Python 3.8+
@@ -1222,4 +1222,5 @@ For issues or questions:
 ---
 
 **Made with ❤️ for ocean science**
+
 
